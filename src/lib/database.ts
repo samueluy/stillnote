@@ -998,7 +998,7 @@ export async function trackLookup(db: SQLiteDatabase, entryId: string) {
   await db.runAsync('INSERT INTO recent_lookups (entry_id) VALUES (?)', entryId);
 }
 
-export async function getRecentLookups(db: SQLiteDatabase): Promise<Array<{ entryId: string; lookedUpAt: string }>> {
+export async function getRecentLookups(db: SQLiteDatabase): Promise<{ entryId: string; lookedUpAt: string }[]> {
   return db.getAllAsync<{ entry_id: string; looked_up_at: string }>(
     `SELECT DISTINCT entry_id, MAX(looked_up_at) as looked_up_at
      FROM recent_lookups
@@ -1008,4 +1008,24 @@ export async function getRecentLookups(db: SQLiteDatabase): Promise<Array<{ entr
   ).then((rows) =>
     rows.map((r) => ({ entryId: r.entry_id, lookedUpAt: r.looked_up_at }))
   );
+}
+
+export async function deleteNote(db: SQLiteDatabase, noteId: string) {
+  await db.runAsync('DELETE FROM notes_fts WHERE note_id = ?', noteId);
+  await db.runAsync('DELETE FROM note_tags WHERE note_id = ?', noteId);
+  await db.runAsync('DELETE FROM note_threads WHERE note_id = ?', noteId);
+  await db.runAsync('DELETE FROM verse_references WHERE note_id = ?', noteId);
+  await db.runAsync('DELETE FROM media_attachments WHERE note_id = ?', noteId);
+  await db.runAsync('DELETE FROM notes WHERE id = ?', noteId);
+}
+
+export async function toggleNoteFavorite(db: SQLiteDatabase, noteId: string) {
+  const note = await db.getFirstAsync<{ is_favorite: number }>(
+    'SELECT is_favorite FROM notes WHERE id = ?',
+    noteId
+  );
+  if (note) {
+    const next = note.is_favorite ? 0 : 1;
+    await db.runAsync('UPDATE notes SET is_favorite = ? WHERE id = ?', next, noteId);
+  }
 }

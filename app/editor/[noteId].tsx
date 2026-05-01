@@ -33,15 +33,18 @@ import {
 import { stripHtml } from '@/src/lib/editor';
 import {
   buildInsertedVerseText,
+  deleteNote,
   getBibleChapter,
   getNoteById,
   getVerseByReference,
   getVersesForReferences,
   saveNoteDraft,
+  toggleNoteFavorite,
 } from '@/src/lib/database';
 import { persistImageAsset } from '@/src/lib/media';
 import { detectVerseReferences } from '@/src/lib/verse-references';
 import type { BibleVerse, MediaAttachment } from '@/src/types/domain';
+import { useAppState } from '@/src/providers/app-provider';
 
 type AttachmentDraft = Pick<
   MediaAttachment,
@@ -52,6 +55,7 @@ export default function EditorScreen() {
   const { noteId } = useLocalSearchParams<{ noteId: string }>();
   const db = useSQLiteContext();
   const router = useRouter();
+  const { bumpRefreshToken } = useAppState();
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const richTextRef = useRef<RichEditor>(null);
@@ -63,6 +67,7 @@ export default function EditorScreen() {
   const [threadName, setThreadName] = useState('Thread');
   const [templateId, setTemplateId] = useState<string | null>(null);
   const [attachments, setAttachments] = useState<AttachmentDraft[]>([]);
+  const [isFavorite, setIsFavorite] = useState(false);
   const [isReady, setIsReady] = useState(false);
   const [chapterBook, setChapterBook] = useState('Genesis');
   const [chapterNumber, setChapterNumber] = useState(1);
@@ -87,6 +92,7 @@ export default function EditorScreen() {
       setThreadName(payload.thread?.name ?? 'Study Note');
       setTemplateId(payload.note.templateId);
       setAttachments(payload.attachments as AttachmentDraft[]);
+      setIsFavorite(payload.note.isFavorite);
       setIsReady(true);
     }
 
@@ -233,9 +239,42 @@ export default function EditorScreen() {
           <Ionicons color={palette.textMuted} name="chevron-back-outline" size={20} />
         </Pressable>
         <Text style={styles.headerTitle}>Stillnote</Text>
-        <Pressable onPress={() => bottomSheetRef.current?.present()} style={styles.headerButton}>
-          <Ionicons color={palette.blue} name="book-outline" size={20} />
-        </Pressable>
+        <View style={styles.headerActions}>
+          <Pressable
+            onPress={async () => {
+              await toggleNoteFavorite(db, noteId);
+              setIsFavorite((v) => !v);
+              bumpRefreshToken();
+            }}
+            style={styles.headerButton}>
+            <Ionicons
+              color={isFavorite ? '#E74C3C' : palette.textMuted}
+              name={isFavorite ? 'heart' : 'heart-outline'}
+              size={20}
+            />
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              Alert.alert('Delete Note', 'Are you sure you want to delete this note? This action cannot be undone.', [
+                { text: 'Cancel', style: 'cancel' },
+                {
+                  text: 'Delete',
+                  style: 'destructive',
+                  onPress: async () => {
+                    await deleteNote(db, noteId);
+                    bumpRefreshToken();
+                    router.back();
+                  },
+                },
+              ]);
+            }}
+            style={styles.headerButton}>
+            <Ionicons color={palette.textMuted} name="trash-outline" size={20} />
+          </Pressable>
+          <Pressable onPress={() => bottomSheetRef.current?.present()} style={styles.headerButton}>
+            <Ionicons color={palette.blue} name="book-outline" size={20} />
+          </Pressable>
+        </View>
       </View>
 
       <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
@@ -417,6 +456,10 @@ const styles = StyleSheet.create({
     color: palette.text,
     fontSize: 20,
     fontWeight: '700',
+  },
+  headerActions: {
+    flexDirection: 'row',
+    gap: 4,
   },
   insertReferenceButton: {
     alignItems: 'center',

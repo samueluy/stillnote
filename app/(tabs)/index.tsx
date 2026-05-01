@@ -309,13 +309,15 @@ export default function WorkspaceScreen() {
                   label="Tag"
                   outlined
                   onPress={() => {
-                    Alert.prompt
-                      ? Alert.prompt('Create Tag', 'Enter a tag name:', (name) => {
-                          if (name?.trim()) {
-                            createTag(db, name.trim()).then(loadSnapshot);
-                          }
-                        })
-                      : Alert.alert('Create Tag', 'Tag creation from notes uses #tag syntax. Type #YourTag in any note to auto-create it.');
+                    if (Alert.prompt) {
+                      Alert.prompt('Create Tag', 'Enter a tag name:', (name) => {
+                        if (name?.trim()) {
+                          createTag(db, name.trim()).then(loadSnapshot);
+                        }
+                      });
+                    } else {
+                      Alert.alert('Create Tag', 'Tag creation from notes uses #tag syntax. Type #YourTag in any note to auto-create it.');
+                    }
                   }}
                 />
               </View>

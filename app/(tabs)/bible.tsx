@@ -73,7 +73,7 @@ export default function BibleScreen() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAnnotated, setIsAnnotated] = useState(false);
   const [verseSearchQuery, setVerseSearchQuery] = useState('');
-  const [recentLookups, setRecentLookups] = useState<Array<{ entryId: string; lookedUpAt: string }>>([]);
+  const [recentLookups, setRecentLookups] = useState<{ entryId: string; lookedUpAt: string }[]>([]);
 
   useEffect(() => {
     if (params.reference) {
