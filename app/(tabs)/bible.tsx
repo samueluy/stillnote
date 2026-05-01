@@ -6,7 +6,7 @@ import { Alert, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View 
 import { ConcordanceModal } from '@/src/components/concordance-modal';
 import { Card, Screen, SectionTitle, TopBar, palette } from '@/src/components/primitives';
 import { getConcordanceEntry } from '@/src/data/concordance';
-import { getBibleChapter, createNoteFromTemplate, getWorkspaceSnapshot } from '@/src/lib/database';
+import { getBibleChapter, createNoteFromTemplate, getWorkspaceSnapshot, trackLookup, getRecentLookups } from '@/src/lib/database';
 import { useAppState } from '@/src/providers/app-provider';
 import type { BibleVerse } from '@/src/types/domain';
 import { BIBLE_BOOKS } from '@/src/data/bible-books';
@@ -73,6 +73,7 @@ export default function BibleScreen() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAnnotated, setIsAnnotated] = useState(false);
   const [verseSearchQuery, setVerseSearchQuery] = useState('');
+  const [recentLookups, setRecentLookups] = useState<Array<{ entryId: string; lookedUpAt: string }>>([]);
 
   useEffect(() => {
     if (params.reference) {
@@ -95,6 +96,10 @@ export default function BibleScreen() {
       cancelled = true;
     };
   }, [book, chapter, db]);
+
+  useEffect(() => {
+    getRecentLookups(db).then(setRecentLookups);
+  }, [db, isModalVisible]);
 
   const entry = useMemo(() => getConcordanceEntry(visibleEntryId), [visibleEntryId]);
 
@@ -197,9 +202,10 @@ export default function BibleScreen() {
                     key={verse.reference}
                     isAnnotated={isAnnotated}
                     onOpenConcordance={(entryId) => {
-                    setVisibleEntryId(entryId);
-                    setIsModalVisible(true);
-                  }}
+                      setVisibleEntryId(entryId);
+                      setIsModalVisible(true);
+                      trackLookup(db, entryId);
+                    }}
                   verse={verse}
                 />
               ))}
@@ -238,7 +244,29 @@ export default function BibleScreen() {
             </View>
             <View style={{ flex: 1 }}>
               <Text style={styles.lookupTitle}>Recent Lookups</Text>
-              <Text style={styles.lookupSubtitle}>Logos, Arche, Phos</Text>
+              {recentLookups.length ? (
+                <View style={styles.lookupChips}>
+                  {recentLookups.map((lookup) => {
+                    const entry = getConcordanceEntry(lookup.entryId);
+                    return (
+                      <Pressable
+                        key={lookup.entryId}
+                        onPress={() => {
+                          setVisibleEntryId(lookup.entryId);
+                          setIsModalVisible(true);
+                          trackLookup(db, lookup.entryId);
+                        }}
+                        style={({ pressed }) => [styles.lookupChip, pressed && styles.pressed]}>
+                        <Text style={styles.lookupChipText}>
+                          {entry?.transliteration ?? lookup.entryId}
+                        </Text>
+                      </Pressable>
+                    );
+                  })}
+                </View>
+              ) : (
+                <Text style={styles.lookupSubtitle}>No lookups yet. Long-press a verse to start.</Text>
+              )}
             </View>
           </View>
         </View>
@@ -459,9 +487,26 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   lookupSubtitle: {
-    color: '#78716C',
+    color: palette.textMuted,
     fontSize: 12,
     marginTop: 2,
+  },
+  lookupChips: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginTop: 8,
+  },
+  lookupChip: {
+    backgroundColor: palette.blueSoft,
+    borderRadius: 999,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+  },
+  lookupChipText: {
+    color: palette.blue,
+    fontSize: 12,
+    fontWeight: '600',
   },
   suggestionStack: {
     gap: 12,

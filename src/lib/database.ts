@@ -496,6 +496,12 @@ export async function migrateDbIfNeeded(db: SQLiteDatabase) {
       reference,
       text
     );
+
+    CREATE TABLE IF NOT EXISTS recent_lookups (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      entry_id TEXT NOT NULL,
+      looked_up_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
   `);
 
   await seedBibleIfNeeded(db);
@@ -986,4 +992,20 @@ export async function getNotesByCollection(
 export async function createTag(db: SQLiteDatabase, name: string) {
   const id = `tag-${name}`;
   await db.runAsync('INSERT OR IGNORE INTO tags (id, name) VALUES (?, ?)', id, name);
+}
+
+export async function trackLookup(db: SQLiteDatabase, entryId: string) {
+  await db.runAsync('INSERT INTO recent_lookups (entry_id) VALUES (?)', entryId);
+}
+
+export async function getRecentLookups(db: SQLiteDatabase): Promise<Array<{ entryId: string; lookedUpAt: string }>> {
+  return db.getAllAsync<{ entry_id: string; looked_up_at: string }>(
+    `SELECT DISTINCT entry_id, MAX(looked_up_at) as looked_up_at
+     FROM recent_lookups
+     GROUP BY entry_id
+     ORDER BY looked_up_at DESC
+     LIMIT 5`
+  ).then((rows) =>
+    rows.map((r) => ({ entryId: r.entry_id, lookedUpAt: r.looked_up_at }))
+  );
 }
