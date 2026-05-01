@@ -6,8 +6,8 @@ import {
   useBottomSheetScrollableCreator,
 } from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
-import { forwardRef, useMemo } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { forwardRef, useMemo, useState } from 'react';
+import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 
 import { palette } from '@/src/components/primitives';
@@ -47,6 +47,17 @@ export const BibleSheet = forwardRef<BottomSheetModal, Props>(function BibleShee
   const animatedIndex = useSharedValue(0);
   const snapPoints = useMemo(() => ['62%', '84%'], []);
   const ScrollComponent = useBottomSheetScrollableCreator();
+  const [sheetSearch, setSheetSearch] = useState('');
+  const [isSheetSearchOpen, setIsSheetSearchOpen] = useState(false);
+
+  const filteredVerses = useMemo(() => {
+    if (!sheetSearch.trim()) return verses;
+    const q = sheetSearch.toLowerCase();
+    return verses.filter(
+      (v) => v.text.toLowerCase().includes(q) || String(v.verse).includes(q)
+    );
+  }, [verses, sheetSearch]);
+
   const dismissSheet = () => {
     if (ref && typeof ref !== 'function') {
       ref.current?.dismiss();
@@ -74,7 +85,7 @@ export const BibleSheet = forwardRef<BottomSheetModal, Props>(function BibleShee
           <Text style={styles.headerSubtitle}>{translationName}</Text>
         </View>
         <View style={styles.headerActions}>
-          <Pressable style={styles.headerAction}>
+          <Pressable onPress={() => { setIsSheetSearchOpen((v) => !v); setSheetSearch(''); }} style={styles.headerAction}>
             <Ionicons color={palette.text} name="search-outline" size={18} />
           </Pressable>
           <Pressable onPress={dismissSheet} style={styles.headerAction}>
@@ -83,8 +94,26 @@ export const BibleSheet = forwardRef<BottomSheetModal, Props>(function BibleShee
         </View>
       </BottomSheetView>
 
+      {isSheetSearchOpen ? (
+        <View style={styles.searchRow}>
+          <TextInput
+            autoFocus
+            onChangeText={setSheetSearch}
+            placeholder="Search verses..."
+            placeholderTextColor={palette.textSoft}
+            style={styles.searchInput}
+            value={sheetSearch}
+          />
+          {sheetSearch.trim() ? (
+            <Pressable onPress={() => setSheetSearch('')}>
+              <Ionicons color={palette.textMuted} name="close-outline" size={16} />
+            </Pressable>
+          ) : null}
+        </View>
+      ) : null}
+
       <FlashList
-        data={verses}
+        data={filteredVerses}
         keyExtractor={(item) => item.reference}
         renderItem={({ item }) => <VerseRow item={item} onInsertVerse={onInsertVerse} />}
         renderScrollComponent={ScrollComponent}
@@ -177,5 +206,20 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: 0.82,
+  },
+  searchRow: {
+    alignItems: 'center',
+    backgroundColor: palette.backgroundAlt,
+    borderBottomColor: palette.border,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    flexDirection: 'row',
+    gap: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+  },
+  searchInput: {
+    color: palette.text,
+    flex: 1,
+    fontSize: 14,
   },
 });
