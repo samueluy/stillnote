@@ -12,6 +12,7 @@ import {
 } from 'react';
 import {
   Alert,
+  Animated,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -59,6 +60,26 @@ export default function EditorScreen() {
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const richTextRef = useRef<RichEditor>(null);
+  const headerOpacity = useRef(new Animated.Value(1)).current;
+  const [isDistractionFree, setIsDistractionFree] = useState(false);
+
+  const enterDistractionFree = useCallback(() => {
+    setIsDistractionFree(true);
+    Animated.timing(headerOpacity, {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+  }, [headerOpacity]);
+
+  const exitDistractionFree = useCallback(() => {
+    setIsDistractionFree(false);
+    Animated.timing(headerOpacity, {
+      toValue: 1,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+  }, [headerOpacity]);
 
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
@@ -234,9 +255,21 @@ export default function EditorScreen() {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       style={styles.container}>
-      <View style={styles.header}>
-        <Pressable onPress={() => router.back()} style={styles.headerButton}>
-          <Ionicons color={palette.textMuted} name="chevron-back-outline" size={20} />
+      <Animated.View style={[styles.header, { opacity: headerOpacity }]}>
+        <Pressable
+          onPress={() => {
+            if (isDistractionFree) {
+              exitDistractionFree();
+            } else {
+              router.back();
+            }
+          }}
+          style={styles.headerButton}>
+          <Ionicons
+            color={isDistractionFree ? palette.blue : palette.textMuted}
+            name={isDistractionFree ? 'eye-outline' : 'chevron-back-outline'}
+            size={20}
+          />
         </Pressable>
         <Text style={styles.headerTitle}>Stillnote</Text>
         <View style={styles.headerActions}>
@@ -275,15 +308,19 @@ export default function EditorScreen() {
             <Ionicons color={palette.blue} name="book-outline" size={20} />
           </Pressable>
         </View>
-      </View>
+      </Animated.View>
 
       <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-        <Text style={styles.breadcrumb}>
-          Threads <Text style={styles.breadcrumbAccent}>›</Text> {threadName}
-        </Text>
+        <Animated.View style={{ opacity: headerOpacity }}>
+          <Text style={styles.breadcrumb}>
+            Threads <Text style={styles.breadcrumbAccent}>›</Text> {threadName}
+          </Text>
+        </Animated.View>
 
         <TextInput
+          onBlur={exitDistractionFree}
           onChangeText={setTitle}
+          onFocus={enterDistractionFree}
           placeholder="Untitled note"
           placeholderTextColor="#8C847A"
           style={styles.titleInput}
@@ -361,6 +398,8 @@ export default function EditorScreen() {
           initialContentHTML={body}
           initialHeight={400}
           onChange={(html) => setBody(html)}
+          onFocus={enterDistractionFree}
+          onBlur={exitDistractionFree}
           placeholder="Write what you are learning in the Word..."
           editorStyle={{
             backgroundColor: palette.backgroundAlt,
