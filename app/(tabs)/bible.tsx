@@ -1,12 +1,13 @@
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useMemo, useState } from 'react';
-import { Alert, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { ConcordanceModal } from '@/src/components/concordance-modal';
 import { Card, Screen, SectionTitle, TopBar, palette } from '@/src/components/primitives';
 import { getConcordanceEntry } from '@/src/data/concordance';
-import { getBibleChapter } from '@/src/lib/database';
+import { getBibleChapter, createNoteFromTemplate, getWorkspaceSnapshot } from '@/src/lib/database';
+import { useAppState } from '@/src/providers/app-provider';
 import type { BibleVerse } from '@/src/types/domain';
 import { BIBLE_BOOKS } from '@/src/data/bible-books';
 import { Ionicons } from '@expo/vector-icons';
@@ -14,9 +15,11 @@ import { Ionicons } from '@expo/vector-icons';
 function VerseParagraph({
   verse,
   onOpenConcordance,
+  isAnnotated,
 }: {
   verse: BibleVerse;
   onOpenConcordance: (entryId: string) => void;
+  isAnnotated?: boolean;
 }) {
   if (verse.reference === 'John 1:1') {
     return (
@@ -45,8 +48,8 @@ function VerseParagraph({
   }
 
   return (
-    <Text onLongPress={() => onOpenConcordance('entry-logos')} style={styles.verseText}>
-      <Text style={styles.verseNumber}>{verse.verse} </Text>
+    <Text onLongPress={() => onOpenConcordance('entry-logos')} style={[styles.verseText, isAnnotated && styles.verseTextAnnotated]}>
+      <Text style={[styles.verseNumber, isAnnotated && styles.verseNumberAnnotated]}>{verse.verse} </Text>
       {verse.text}
     </Text>
   );
@@ -54,6 +57,8 @@ function VerseParagraph({
 
 export default function BibleScreen() {
   const db = useSQLiteContext();
+  const router = useRouter();
+  const { activeSpaceId } = useAppState();
   const params = useLocalSearchParams<{ reference?: string }>();
   const [book, setBook] = useState('John');
   const [chapter, setChapter] = useState(1);
@@ -61,6 +66,9 @@ export default function BibleScreen() {
   const [visibleEntryId, setVisibleEntryId] = useState('entry-arche');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isBookPickerOpen, setIsBookPickerOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isAnnotated, setIsAnnotated] = useState(false);
+  const [verseSearchQuery, setVerseSearchQuery] = useState('');
 
   useEffect(() => {
     if (params.reference) {
@@ -122,23 +130,69 @@ export default function BibleScreen() {
                 <Text style={styles.readerSubtitle}>English Standard-style study layout, KJV text</Text>
               </View>
               <View style={styles.readerTools}>
-                <View style={styles.toolBubble}>
+                <Pressable
+                  onPress={async () => {
+                    const snapshot = await getWorkspaceSnapshot(db, activeSpaceId);
+                    if (snapshot.templates.length && snapshot.threads.length) {
+                      const thread = snapshot.threads[0];
+                      const template =
+                        snapshot.templates.find((t) => t.threadHint === thread.id) ?? snapshot.templates[0];
+                      const noteId = await createNoteFromTemplate(db, {
+                        templateId: template.id,
+                        spaceId: activeSpaceId,
+                        threadId: thread.id,
+                        title: `${book} ${chapter} Notes`,
+                      });
+                      router.push(`/editor/${noteId}`);
+                    }
+                  }}
+                  style={({ pressed }) => [styles.toolBubble, pressed && styles.pressed]}>
                   <Text style={styles.toolIcon}>✎</Text>
-                </View>
-                <View style={styles.toolBubble}>
+                </Pressable>
+                <Pressable
+                  onPress={() => setIsSearchOpen((v) => !v)}
+                  style={({ pressed }) => [styles.toolBubble, pressed && styles.pressed]}>
                   <Text style={styles.toolIcon}>⌕</Text>
-                </View>
-                <View style={styles.toolBubble}>
+                </Pressable>
+                <Pressable
+                  onPress={() => setIsAnnotated((v) => !v)}
+                  style={({ pressed }) => [styles.toolBubble, pressed && styles.pressed]}>
                   <Text style={styles.toolIcon}>◎</Text>
-                </View>
+                </Pressable>
               </View>
             </View>
 
+            {isSearchOpen ? (
+              <View style={styles.verseSearchBar}>
+                <TextInput
+                  onChangeText={setVerseSearchQuery}
+                  placeholder="Search within chapter..."
+                  placeholderTextColor={palette.textSoft}
+                  style={styles.verseSearchInput}
+                  value={verseSearchQuery}
+                />
+                {verseSearchQuery.trim() ? (
+                  <Pressable onPress={() => setVerseSearchQuery('')}>
+                    <Ionicons color={palette.textMuted} name="close-outline" size={16} />
+                  </Pressable>
+                ) : null}
+              </View>
+            ) : null}
+
             <View style={styles.readerBody}>
-              {verses.slice(0, 5).map((verse) => (
-                <VerseParagraph
-                  key={verse.reference}
-                  onOpenConcordance={(entryId) => {
+              {verses
+                .filter((v) =>
+                  verseSearchQuery.trim()
+                    ? v.text.toLowerCase().includes(verseSearchQuery.toLowerCase()) ||
+                      String(v.verse).includes(verseSearchQuery)
+                    : true
+                )
+                .slice(0, 5)
+                .map((verse) => (
+                  <VerseParagraph
+                    key={verse.reference}
+                    isAnnotated={isAnnotated}
+                    onOpenConcordance={(entryId) => {
                     setVisibleEntryId(entryId);
                     setIsModalVisible(true);
                   }}
@@ -292,6 +346,30 @@ const styles = StyleSheet.create({
   },
   readerBody: {
     gap: 18,
+  },
+  verseSearchBar: {
+    alignItems: 'center',
+    backgroundColor: palette.background,
+    borderColor: palette.border,
+    borderRadius: 12,
+    borderWidth: 1,
+    flexDirection: 'row',
+    gap: 8,
+    marginTop: 16,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+  },
+  verseSearchInput: {
+    color: palette.text,
+    flex: 1,
+    fontSize: 14,
+  },
+  verseTextAnnotated: {
+    borderBottomColor: palette.borderStrong,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  verseNumberAnnotated: {
+    color: palette.blue,
   },
   verseText: {
     color: '#44403C',
