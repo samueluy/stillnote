@@ -1,8 +1,8 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
-import { useCallback, useDeferredValue, useEffect, useState } from 'react';
-import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useCallback, useDeferredValue, useEffect, useRef, useState } from 'react';
+import { Alert, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import {
   Card,
@@ -41,6 +41,8 @@ export default function WorkspaceScreen() {
   const [collectionTitle, setCollectionTitle] = useState('');
   const [collectionNotes, setCollectionNotes] = useState<Note[]>([]);
   const [isCollectionOpen, setIsCollectionOpen] = useState(false);
+
+  const scrollRef = useRef<ScrollView>(null);
 
   const deferredQuery = useDeferredValue(query);
 
@@ -105,8 +107,14 @@ export default function WorkspaceScreen() {
 
   return (
     <Screen>
-      <TopBar title="Stillnote" />
-      <PageScroll>
+      <TopBar
+        title="Stillnote"
+        onLeftPress={() =>
+          Alert.alert('Stillnote', 'Private study companion.\nYour notes stay on your device.')
+        }
+        onRightPress={() => scrollRef.current?.scrollTo({ y: 0, animated: true })}
+      />
+      <PageScroll ref={scrollRef}>
         <View style={styles.spaceRow}>
           {snapshot?.spaces.map((space) => (
             <Pill

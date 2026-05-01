@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
-import type { ComponentProps } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
+import { forwardRef } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -31,16 +32,20 @@ export function Screen({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function PageScroll({ children }: { children: React.ReactNode }) {
+export const PageScroll = forwardRef<ScrollView, { children: ReactNode }>(function PageScroll(
+  { children },
+  ref
+) {
   return (
     <ScrollView
+      ref={ref}
       contentContainerStyle={styles.pageContent}
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}>
       {children}
     </ScrollView>
   );
-}
+});
 
 export function TopBar({
   title,

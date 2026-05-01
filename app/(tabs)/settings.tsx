@@ -1,11 +1,21 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 
 import { Card, PageScroll, Screen, SectionTitle, TopBar, palette } from '@/src/components/primitives';
 
 export default function SettingsScreen() {
   return (
     <Screen>
-      <TopBar leftIcon="settings-outline" rightIcon="shield-checkmark-outline" title="Settings" />
+      <TopBar
+        leftIcon="settings-outline"
+        rightIcon="shield-checkmark-outline"
+        title="Settings"
+        onLeftPress={() =>
+          Alert.alert('Stillnote', 'Private study companion.\nYour notes stay on your device.')
+        }
+        onRightPress={() =>
+          Alert.alert('Privacy & Security', 'All your notes, tags, and Bible data are stored locally on this device using SQLite. Nothing is sent to any server.\n\nFeatures like biometric vault lock and encrypted export are coming in a future release.')
+        }
+      />
       <PageScroll>
         <View style={styles.section}>
           <SectionTitle title="Local-first by design" />

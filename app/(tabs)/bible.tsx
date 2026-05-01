@@ -1,13 +1,15 @@
 import { useLocalSearchParams } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useMemo, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { ConcordanceModal } from '@/src/components/concordance-modal';
 import { Card, Screen, SectionTitle, TopBar, palette } from '@/src/components/primitives';
 import { getConcordanceEntry } from '@/src/data/concordance';
 import { getBibleChapter } from '@/src/lib/database';
 import type { BibleVerse } from '@/src/types/domain';
+import { BIBLE_BOOKS } from '@/src/data/bible-books';
+import { Ionicons } from '@expo/vector-icons';
 
 function VerseParagraph({
   verse,
@@ -58,6 +60,7 @@ export default function BibleScreen() {
   const [verses, setVerses] = useState<BibleVerse[]>([]);
   const [visibleEntryId, setVisibleEntryId] = useState('entry-arche');
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isBookPickerOpen, setIsBookPickerOpen] = useState(false);
 
   useEffect(() => {
     if (params.reference) {
@@ -85,7 +88,15 @@ export default function BibleScreen() {
 
   return (
     <Screen>
-      <TopBar leftIcon="menu-outline" rightIcon="person-outline" title="Selah Study" />
+      <TopBar
+        leftIcon="menu-outline"
+        rightIcon="person-outline"
+        title="Selah Study"
+        onLeftPress={() => setIsBookPickerOpen(true)}
+        onRightPress={() =>
+          Alert.alert('Stillnote', 'Private study companion.\nYour notes stay on your device.')
+        }
+      />
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <Card>
           <View style={styles.readerCard}>
@@ -168,6 +179,39 @@ export default function BibleScreen() {
       </ScrollView>
 
       <ConcordanceModal entry={entry} onClose={() => setIsModalVisible(false)} visible={isModalVisible} />
+
+      <Modal animationType="slide" onRequestClose={() => setIsBookPickerOpen(false)} transparent visible={isBookPickerOpen}>
+        <View style={styles.modalScrim}>
+          <View style={styles.modalPanel}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Select Book</Text>
+              <Pressable onPress={() => setIsBookPickerOpen(false)}>
+                <Ionicons color={palette.textMuted} name="close-outline" size={22} />
+              </Pressable>
+            </View>
+            <ScrollView contentContainerStyle={styles.modalList}>
+              {BIBLE_BOOKS.map((bookName) => (
+                <Pressable
+                  key={bookName}
+                  onPress={() => {
+                    setBook(bookName);
+                    setChapter(1);
+                    setIsBookPickerOpen(false);
+                  }}
+                  style={({ pressed }) => [
+                    styles.bookItem,
+                    bookName === book && styles.bookItemActive,
+                    pressed && styles.pressed,
+                  ]}>
+                  <Text style={[styles.bookItemText, bookName === book && styles.bookItemTextActive]}>
+                    {bookName}
+                  </Text>
+                </Pressable>
+              ))}
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
     </Screen>
   );
 }
@@ -335,5 +379,51 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: 0.82,
+  },
+  modalScrim: {
+    backgroundColor: palette.scrim,
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
+  modalPanel: {
+    backgroundColor: palette.background,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    maxHeight: '80%',
+  },
+  modalHeader: {
+    alignItems: 'center',
+    borderBottomColor: palette.border,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 24,
+    paddingVertical: 18,
+  },
+  modalTitle: {
+    color: palette.text,
+    fontSize: 18,
+    fontWeight: '700',
+  },
+  modalList: {
+    padding: 12,
+    paddingBottom: 40,
+  },
+  bookItem: {
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+  },
+  bookItemActive: {
+    backgroundColor: palette.blueSoft,
+  },
+  bookItemText: {
+    color: palette.text,
+    fontSize: 15,
+    fontWeight: '500',
+  },
+  bookItemTextActive: {
+    color: palette.blue,
+    fontWeight: '700',
   },
 });
