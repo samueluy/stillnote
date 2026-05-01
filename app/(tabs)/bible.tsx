@@ -86,6 +86,20 @@ export default function BibleScreen() {
 
   const entry = useMemo(() => getConcordanceEntry(visibleEntryId), [visibleEntryId]);
 
+  const navigateToReference = (ref: string) => {
+    for (const bookName of BIBLE_BOOKS) {
+      if (ref.startsWith(bookName + ' ')) {
+        const rest = ref.slice(bookName.length + 1);
+        const chapterMatch = rest.match(/^(\d+)/);
+        if (chapterMatch) {
+          setBook(bookName);
+          setChapter(Number(chapterMatch[1]));
+          return;
+        }
+      }
+    }
+  };
+
   return (
     <Screen>
       <TopBar
@@ -169,7 +183,10 @@ export default function BibleScreen() {
           <SectionTitle title="Suggested Verses" />
           <View style={styles.suggestionStack}>
             {['Matthew 6:25-34', 'Psalm 23:1-4', 'Philippians 4:6-7'].map((reference) => (
-              <Pressable key={reference} style={({ pressed }) => [styles.suggestionCard, pressed && styles.pressed]}>
+              <Pressable
+                key={reference}
+                onPress={() => navigateToReference(reference)}
+                style={({ pressed }) => [styles.suggestionCard, pressed && styles.pressed]}>
                 <Text style={styles.suggestionRef}>{reference}</Text>
                 <Text style={styles.suggestionBody}>Locally surfaced for anxiety, care, and peace during transition.</Text>
               </Pressable>
