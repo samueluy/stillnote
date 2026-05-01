@@ -22,6 +22,7 @@ import {
 } from '@/src/components/primitives';
 import {
   createNoteFromTemplate,
+  createTag,
   createThread,
   getNotesByCollection,
   getWorkspaceSnapshot,
@@ -277,12 +278,14 @@ export default function WorkspaceScreen() {
               <View style={styles.sectionGap}>
                 <SectionTitle title="Daily Verse Prompt" />
                 <Pressable
-                  onPress={() =>
-                    router.push({
-                      pathname: '/(tabs)/bible',
-                      params: { reference: snapshot.dailyVerse.reference },
-                    })
-                  }
+                  onPress={() => {
+                    if (snapshot?.dailyVerse) {
+                      router.push({
+                        pathname: '/(tabs)/bible',
+                        params: { reference: snapshot.dailyVerse.reference },
+                      });
+                    }
+                  }}
                   style={({ pressed }) => [styles.promptCard, pressed && styles.pressed]}>
                   <Text style={styles.promptReference}>{snapshot.dailyVerse.reference}</Text>
                   <Text style={styles.promptText}>{snapshot.dailyVerse.text}</Text>
@@ -291,12 +294,30 @@ export default function WorkspaceScreen() {
             ) : null}
 
             <View style={styles.sectionGap}>
-              <SectionTitle title="Automated Tags" actionIcon="ellipsis-horizontal" />
+              <SectionTitle
+                title="Automated Tags"
+                actionIcon="ellipsis-horizontal"
+                onActionPress={() =>
+                  Alert.alert('Tags', 'Tags are auto-extracted from #hashtags typed in your notes. Type # followed by a word in any note body to create a tag.')
+                }
+              />
               <View style={styles.tagsWrap}>
                 {snapshot.tags.map((tag) => (
                   <TagChip key={tag.id} label={`#${tag.name}`} />
                 ))}
-                <TagChip label="Tag" outlined />
+                <TagChip
+                  label="Tag"
+                  outlined
+                  onPress={() => {
+                    Alert.prompt
+                      ? Alert.prompt('Create Tag', 'Enter a tag name:', (name) => {
+                          if (name?.trim()) {
+                            createTag(db, name.trim()).then(loadSnapshot);
+                          }
+                        })
+                      : Alert.alert('Create Tag', 'Tag creation from notes uses #tag syntax. Type #YourTag in any note to auto-create it.');
+                  }}
+                />
               </View>
             </View>
 

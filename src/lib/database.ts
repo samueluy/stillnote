@@ -982,3 +982,8 @@ export async function getNotesByCollection(
 
   return rows.map(mapNote);
 }
+
+export async function createTag(db: SQLiteDatabase, name: string) {
+  const id = `tag-${name}`;
+  await db.runAsync('INSERT OR IGNORE INTO tags (id, name) VALUES (?, ?)', id, name);
+}

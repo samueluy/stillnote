@@ -150,7 +150,13 @@ export default function BibleScreen() {
         </Card>
 
         <View style={styles.section}>
-          <SectionTitle title="Margin Notes" actionIcon="ellipsis-horizontal" />
+          <SectionTitle
+            title="Margin Notes"
+            actionIcon="ellipsis-horizontal"
+            onActionPress={() =>
+              Alert.alert('Margin Notes', 'Margin notes let you annotate specific verses. Long-press any verse to add a note or view concordance data.')
+            }
+          />
           <View style={styles.marginCard}>
             <View style={styles.marginNote}>
               <Text style={styles.marginEyebrow}>v.1 Logos Connection</Text>
