@@ -150,3 +150,11 @@ expo-env.d.ts
 
 # Misc
 .DS_Store
+
+# generated native folders
+/ios
+/android
+
+# AI skill installations
+.opencode/
+design-system/

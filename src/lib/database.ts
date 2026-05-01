@@ -3,7 +3,7 @@ import type { SQLiteDatabase } from 'expo-sqlite';
 import kjvVerses from '@/assets/data/kjv-verses.json';
 import { TEMPLATE_PRESETS } from '@/src/data/template-presets';
 import { detectVerseReferences } from '@/src/lib/verse-references';
-import { buildEditorSpans, stripMarkdown } from '@/src/lib/editor';
+import { buildEditorSpans, stripHtml, stripMarkdown } from '@/src/lib/editor';
 import type {
   BibleVerse,
   MediaAttachment,
@@ -802,10 +802,11 @@ export async function saveNoteDraft(
   }
 ) {
   const updatedAt = new Date().toISOString();
-  const plainText = stripMarkdown(args.markdownBody);
+  const isHtml = args.markdownBody.trim().startsWith('<');
+  const plainText = isHtml ? stripHtml(args.markdownBody) : stripMarkdown(args.markdownBody);
   const editorSpans = buildEditorSpans(args.markdownBody);
-  const tags = normalizeTags(args.markdownBody);
-  const references = detectVerseReferences(args.markdownBody);
+  const tags = normalizeTags(plainText);
+  const references = detectVerseReferences(plainText);
 
   await db.runAsync(
     `UPDATE notes

@@ -12,6 +12,8 @@ import {
 } from 'react';
 import {
   Alert,
+  KeyboardAvoidingView,
+  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -19,16 +21,16 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import { RichEditor, RichToolbar, actions } from 'react-native-pell-rich-editor';
 
 import { BibleSheet } from '@/src/components/bible-sheet';
 import {
   AttachmentPreview,
   SearchField,
   TagChip,
-  ToolbarButton,
   palette,
 } from '@/src/components/primitives';
-import { applyFormat, type FormatAction, type Selection } from '@/src/lib/editor';
+import { stripHtml } from '@/src/lib/editor';
 import {
   buildInsertedVerseText,
   getBibleChapter,
@@ -52,6 +54,7 @@ export default function EditorScreen() {
   const router = useRouter();
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
+  const richTextRef = useRef<RichEditor>(null);
 
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
@@ -59,7 +62,6 @@ export default function EditorScreen() {
   const [threadId, setThreadId] = useState<string | null>(null);
   const [threadName, setThreadName] = useState('Thread');
   const [templateId, setTemplateId] = useState<string | null>(null);
-  const [selection, setSelection] = useState<Selection>({ start: 0, end: 0 });
   const [attachments, setAttachments] = useState<AttachmentDraft[]>([]);
   const [isReady, setIsReady] = useState(false);
   const [chapterBook, setChapterBook] = useState('Genesis');
@@ -68,9 +70,6 @@ export default function EditorScreen() {
   const [lastSavedAt, setLastSavedAt] = useState<string | null>(null);
   const [verseSearch, setVerseSearch] = useState('');
   const [referenceVerses, setReferenceVerses] = useState<BibleVerse[]>([]);
-
-  const titleInputRef = useRef<TextInput>(null);
-  const bodyInputRef = useRef<TextInput>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -97,7 +96,8 @@ export default function EditorScreen() {
     };
   }, [db, noteId]);
 
-  const references = useMemo(() => detectVerseReferences(body), [body]);
+  const plainText = useMemo(() => stripHtml(body), [body]);
+  const references = useMemo(() => detectVerseReferences(plainText), [plainText]);
 
   useEffect(() => {
     let cancelled = false;
@@ -162,31 +162,10 @@ export default function EditorScreen() {
       }).then(() => {
         setLastSavedAt(new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }));
       });
-    }, 250);
+    }, 400);
 
     return () => clearTimeout(timeout);
   }, [attachments, body, db, isReady, noteId, spaceId, templateId, threadId, title]);
-
-  const handleFormat = useCallback(
-    (action: FormatAction) => {
-      const result = applyFormat(body, selection, action);
-      setBody(result.nextText);
-      setSelection(result.nextSelection);
-      requestAnimationFrame(() => bodyInputRef.current?.focus());
-    },
-    [body, selection]
-  );
-
-  const insertTextAtSelection = useCallback(
-    (textToInsert: string) => {
-      const nextBody = `${body.slice(0, selection.start)}${textToInsert}${body.slice(selection.end)}`;
-      const nextCursor = selection.start + textToInsert.length;
-      setBody(nextBody);
-      setSelection({ start: nextCursor, end: nextCursor });
-      requestAnimationFrame(() => bodyInputRef.current?.focus());
-    },
-    [body, selection]
-  );
 
   const addAttachmentFromAsset = useCallback(async (asset: ImagePicker.ImagePickerAsset) => {
     const persisted = await persistImageAsset(asset);
@@ -219,24 +198,6 @@ export default function EditorScreen() {
     }
   }, [addAttachmentFromAsset]);
 
-  const openCamera = useCallback(async () => {
-    const permission = await ImagePicker.requestCameraPermissionsAsync();
-    if (!permission.granted) {
-      Alert.alert('Permission required', 'Camera access is needed to capture note attachments.');
-      return;
-    }
-
-    const result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ['images'],
-      quality: 0.9,
-      allowsEditing: true,
-    });
-
-    if (!result.canceled && result.assets[0]) {
-      await addAttachmentFromAsset(result.assets[0]);
-    }
-  }, [addAttachmentFromAsset]);
-
   const insertReferenceFromSearch = useCallback(async () => {
     const verse = await getVerseByReference(db, verseSearch.trim());
     if (!verse) {
@@ -244,9 +205,16 @@ export default function EditorScreen() {
       return;
     }
 
-    insertTextAtSelection(`${verse.reference} — ${verse.text}\n`);
+    const text = buildInsertedVerseText([verse]);
+    richTextRef.current?.insertHTML(`<div><em>${text.replace(/\n/g, '<br>')}</em></div><div><br></div>`);
     setVerseSearch('');
-  }, [db, insertTextAtSelection, verseSearch]);
+  }, [db, verseSearch]);
+
+  const insertVerseIntoBody = useCallback((verse: BibleVerse) => {
+    const text = buildInsertedVerseText([verse]);
+    richTextRef.current?.insertHTML(`<div><em>${text.replace(/\n/g, '<br>')}</em></div><div><br></div>`);
+    bottomSheetRef.current?.dismiss();
+  }, []);
 
   if (!isReady) {
     return (
@@ -257,7 +225,9 @@ export default function EditorScreen() {
   }
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      style={styles.container}>
       <View style={styles.header}>
         <Pressable onPress={() => router.back()} style={styles.headerButton}>
           <Ionicons color={palette.textMuted} name="chevron-back-outline" size={20} />
@@ -277,40 +247,48 @@ export default function EditorScreen() {
           onChangeText={setTitle}
           placeholder="Untitled note"
           placeholderTextColor="#8C847A"
-          ref={titleInputRef}
           style={styles.titleInput}
           value={title}
         />
 
-        <View style={styles.toolbarRow}>
-          <ToolbarButton icon="text-outline" label="Bold" onPress={() => handleFormat('bold')} />
-          <ToolbarButton icon="text-outline" label="Italic" onPress={() => handleFormat('italic')} />
-          <ToolbarButton icon="remove-outline" label="Underline" onPress={() => handleFormat('underline')} />
-        </View>
-
-        <View style={styles.toolbarRow}>
-          <ToolbarButton
-            icon="list-outline"
-            label="Bullets"
-            onPress={() => handleFormat('bulleted-list')}
-          />
-          <ToolbarButton
-            icon="list-circle-outline"
-            label="Numbers"
-            onPress={() => handleFormat('numbered-list')}
-          />
-          <ToolbarButton
-            icon="chatbox-ellipses-outline"
-            label="Quote"
-            onPress={() => handleFormat('blockquote')}
-          />
-        </View>
-
-        <View style={styles.toolbarRow}>
-          <ToolbarButton icon="attach-outline" label="Photo" onPress={openImageLibrary} />
-          <ToolbarButton icon="camera-outline" label="Capture" onPress={openCamera} />
-          <ToolbarButton icon="book-outline" label="Bible" onPress={() => bottomSheetRef.current?.present()} />
-        </View>
+        <RichToolbar
+          editor={richTextRef}
+          actions={[
+            actions.setBold,
+            actions.setItalic,
+            actions.setUnderline,
+            actions.insertBulletsList,
+            actions.insertOrderedList,
+            actions.setParagraph,
+            'insertImage',
+          ]}
+          iconMap={{
+            [actions.setBold]: ({ tintColor }: { tintColor: string }) => (
+              <Text style={[styles.toolIcon, { color: tintColor }]}>B</Text>
+            ),
+            [actions.setItalic]: ({ tintColor }: { tintColor: string }) => (
+              <Text style={[styles.toolIcon, { color: tintColor, fontStyle: 'italic' }]}>I</Text>
+            ),
+            [actions.setUnderline]: ({ tintColor }: { tintColor: string }) => (
+              <Text style={[styles.toolIcon, { color: tintColor, textDecorationLine: 'underline' }]}>U</Text>
+            ),
+            [actions.insertBulletsList]: ({ tintColor }: { tintColor: string }) => (
+              <Ionicons color={tintColor} name="list-outline" size={16} />
+            ),
+            [actions.insertOrderedList]: ({ tintColor }: { tintColor: string }) => (
+              <Ionicons color={tintColor} name="list-circle-outline" size={16} />
+            ),
+            [actions.setParagraph]: ({ tintColor }: { tintColor: string }) => (
+              <Ionicons color={tintColor} name="chatbox-ellipses-outline" size={16} />
+            ),
+            insertImage: ({ tintColor }: { tintColor: string }) => (
+              <Ionicons color={tintColor} name="image-outline" size={16} />
+            ),
+          }}
+          insertImage={openImageLibrary}
+          selectedButtonStyle={{ backgroundColor: palette.blueSoft }}
+          style={styles.richToolbar}
+        />
 
         <View style={styles.verseSearchCard}>
           <SearchField
@@ -339,18 +317,20 @@ export default function EditorScreen() {
           </View>
         ) : null}
 
-        <TextInput
-          multiline
-          onChangeText={setBody}
-          onSelectionChange={(event) => setSelection(event.nativeEvent.selection)}
+        <RichEditor
+          ref={richTextRef}
+          initialContentHTML={body}
+          initialHeight={400}
+          onChange={(html) => setBody(html)}
           placeholder="Write what you are learning in the Word..."
-          placeholderTextColor="#A8A29E"
-          ref={bodyInputRef}
-          scrollEnabled={false}
-          selection={selection}
-          style={styles.bodyInput}
-          textAlignVertical="top"
-          value={body}
+          editorStyle={{
+            backgroundColor: palette.backgroundAlt,
+            color: '#414754',
+            placeholderColor: '#A8A29E',
+            contentCSSText: 'font-size: 17px; line-height: 1.75; font-family: -apple-system, system-ui, sans-serif;',
+            initialCSSText: 'body { padding: 0; margin: 0; }',
+          }}
+          style={styles.editor}
         />
 
         {attachments.length ? (
@@ -378,28 +358,18 @@ export default function EditorScreen() {
       <BibleSheet
         book={chapterBook}
         chapter={chapterNumber}
-        onInsertVerse={(verse) => {
-          insertTextAtSelection(`${buildInsertedVerseText([verse])}\n`);
-          bottomSheetRef.current?.dismiss();
-        }}
+        onInsertVerse={insertVerseIntoBody}
         ref={bottomSheetRef}
         translationName="King James Version"
         verses={chapterVerses}
       />
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   attachmentStack: {
     gap: 10,
-  },
-  bodyInput: {
-    color: '#414754',
-    fontSize: 18,
-    lineHeight: 32,
-    minHeight: 380,
-    paddingBottom: 40,
   },
   breadcrumb: {
     color: '#727785',
@@ -418,10 +388,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    gap: 18,
+    gap: 16,
     paddingBottom: 56,
-    paddingHorizontal: 24,
-    paddingTop: 22,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+  },
+  editor: {
+    minHeight: 400,
   },
   header: {
     alignItems: 'center',
@@ -470,10 +443,17 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     gap: 10,
   },
+  richToolbar: {
+    backgroundColor: palette.backgroundAlt,
+    borderColor: palette.border,
+    borderRadius: 14,
+    borderWidth: 1,
+    height: 44,
+  },
   statusRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 6,
+    marginTop: 4,
   },
   statusText: {
     color: '#8C847A',
@@ -486,10 +466,9 @@ const styles = StyleSheet.create({
     lineHeight: 38,
     paddingVertical: 0,
   },
-  toolbarRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 10,
+  toolIcon: {
+    fontSize: 15,
+    fontWeight: '700',
   },
   verseSearchCard: {
     gap: 10,

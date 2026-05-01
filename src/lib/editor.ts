@@ -112,13 +112,32 @@ export function stripMarkdown(markdown: string) {
     .trim();
 }
 
-export function buildEditorSpans(markdown: string) {
+export function stripHtml(html: string) {
+  return html
+    .replace(/<[^>]*>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&ldquo;/g, '"')
+    .replace(/&rdquo;/g, '"')
+    .replace(/&lsquo;/g, "'")
+    .replace(/&rsquo;/g, "'")
+    .replace(/&mdash;/g, '—')
+    .replace(/&ndash;/g, '–')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+export function buildEditorSpans(body: string) {
   return JSON.stringify({
-    boldCount: (markdown.match(/\*\*/g) ?? []).length / 2,
-    italicCount: (markdown.match(/(^|[^*])\*([^*]|$)/g) ?? []).length,
-    underlineCount: (markdown.match(/<u>/g) ?? []).length,
-    blockquoteCount: (markdown.match(/^>\s?/gm) ?? []).length,
-    bulletCount: (markdown.match(/^-+\s?/gm) ?? []).length,
-    numberedCount: (markdown.match(/^\d+\.\s?/gm) ?? []).length,
+    boldCount: (body.match(/\*\*/g) ?? []).length / 2,
+    italicCount: (body.match(/(^|[^*])\*([^*]|$)/g) ?? []).length,
+    underlineCount: (body.match(/<u>/g) ?? []).length,
+    blockquoteCount: (body.match(/^>\s?/gm) ?? []).length,
+    bulletCount: (body.match(/^-+\s?/gm) ?? []).length,
+    numberedCount: (body.match(/^\d+\.\s?/gm) ?? []).length,
   });
 }
