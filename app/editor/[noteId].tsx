@@ -34,6 +34,7 @@ import {
 import { stripHtml } from '@/src/lib/editor';
 import {
   buildInsertedVerseText,
+  createNoteFromTemplate,
   deleteNote,
   getBibleChapter,
   getNoteById,
@@ -41,6 +42,7 @@ import {
   getVersesForReferences,
   saveNoteDraft,
   toggleNoteFavorite,
+  createThread,
 } from '@/src/lib/database';
 import { persistImageAsset } from '@/src/lib/media';
 import { detectVerseReferences } from '@/src/lib/verse-references';
@@ -243,6 +245,39 @@ export default function EditorScreen() {
     bottomSheetRef.current?.dismiss();
   }, []);
 
+  const extractToNewNote = useCallback(async () => {
+    const currentBody = body;
+    if (!stripHtml(currentBody).trim()) {
+      Alert.alert('Nothing to extract', 'Write some content first.');
+      return;
+    }
+    Alert.alert('Extract to Note', 'Create a new note from this content?', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Extract',
+        onPress: async () => {
+          const thread = await createThread(db, { spaceId });
+          const noteId = await createNoteFromTemplate(db, {
+            templateId: templateId ?? '',
+            spaceId,
+            threadId: thread.id,
+            title: title ? `Branch: ${title}` : 'Extracted Note',
+          });
+          await saveNoteDraft(db, {
+            id: noteId,
+            title: title ? `Branch: ${title}` : 'Extracted Note',
+            markdownBody: currentBody,
+            templateId,
+            spaceId,
+            threadId: thread.id,
+          });
+          bumpRefreshToken();
+          Alert.alert('Note created', 'The new note has been created from this content.');
+        },
+      },
+    ]);
+  }, [body, db, spaceId, templateId, title, bumpRefreshToken]);
+
   if (!isReady) {
     return (
       <View style={[styles.container, styles.centered]}>
@@ -365,6 +400,11 @@ export default function EditorScreen() {
           selectedButtonStyle={{ backgroundColor: palette.blueSoft }}
           style={styles.richToolbar}
         />
+
+        <Pressable onPress={extractToNewNote} style={({ pressed }) => [styles.extractButton, pressed && styles.pressed]}>
+          <Ionicons color={palette.blue} name="git-branch-outline" size={16} />
+          <Text style={styles.extractButtonText}>Extract to New Note</Text>
+        </Pressable>
 
         <View style={styles.verseSearchCard}>
           <SearchField
@@ -531,6 +571,21 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     borderWidth: 1,
     height: 44,
+  },
+  extractButton: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: palette.blueSoft,
+    borderRadius: 12,
+    flexDirection: 'row',
+    gap: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+  },
+  extractButtonText: {
+    color: palette.blue,
+    fontSize: 13,
+    fontWeight: '600',
   },
   statusRow: {
     flexDirection: 'row',
