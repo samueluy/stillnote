@@ -960,3 +960,25 @@ export async function getVersesForReferences(db: SQLiteDatabase, references: str
 export function buildInsertedVerseText(verses: BibleVerse[]) {
   return verses.map((verse) => `${verse.reference} — ${verse.text}`).join('\n');
 }
+
+export async function getNotesByCollection(
+  db: SQLiteDatabase,
+  spaceId: string,
+  collection: 'all' | 'favorites' | 'recent'
+): Promise<Note[]> {
+  let where = 'WHERE space_id = ?';
+  const params: string[] = [spaceId];
+
+  if (collection === 'favorites') {
+    where += ' AND is_favorite = 1';
+  } else if (collection === 'recent') {
+    where += " AND updated_at >= datetime('now', '-7 day')";
+  }
+
+  const rows = await db.getAllAsync<NoteRow>(
+    `SELECT * FROM notes ${where} ORDER BY updated_at DESC LIMIT 50`,
+    ...params
+  );
+
+  return rows.map(mapNote);
+}

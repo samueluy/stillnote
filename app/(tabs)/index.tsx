@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useDeferredValue, useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import {
   Card,
@@ -23,11 +23,12 @@ import {
 import {
   createNoteFromTemplate,
   createThread,
+  getNotesByCollection,
   getWorkspaceSnapshot,
   searchEverything,
 } from '@/src/lib/database';
 import { useAppState } from '@/src/providers/app-provider';
-import type { SearchResult, WorkspaceSnapshot } from '@/src/types/domain';
+import type { Note, SearchResult, WorkspaceSnapshot } from '@/src/types/domain';
 
 export default function WorkspaceScreen() {
   const db = useSQLiteContext();
@@ -37,6 +38,9 @@ export default function WorkspaceScreen() {
   const [snapshot, setSnapshot] = useState<WorkspaceSnapshot | null>(null);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
+  const [collectionTitle, setCollectionTitle] = useState('');
+  const [collectionNotes, setCollectionNotes] = useState<Note[]>([]);
+  const [isCollectionOpen, setIsCollectionOpen] = useState(false);
 
   const deferredQuery = useDeferredValue(query);
 
@@ -91,6 +95,13 @@ export default function WorkspaceScreen() {
     });
     router.push(`/editor/${noteId}`);
   }, [activeSpaceId, db, router, snapshot]);
+
+  const openCollection = useCallback(async (collection: 'all' | 'favorites' | 'recent', title: string) => {
+    const notes = await getNotesByCollection(db, activeSpaceId, collection);
+    setCollectionTitle(title);
+    setCollectionNotes(notes);
+    setIsCollectionOpen(true);
+  }, [activeSpaceId, db]);
 
   return (
     <Screen>
@@ -160,18 +171,21 @@ export default function WorkspaceScreen() {
                 count={snapshot.collectionCounts.allNotes}
                 icon="document-text-outline"
                 label="All Notes"
+                onPress={() => openCollection('all', 'All Notes')}
               />
               <View style={styles.divider} />
               <SmartCollectionRow
                 count={snapshot.collectionCounts.favorites}
                 icon="heart-outline"
                 label="Favorites"
+                onPress={() => openCollection('favorites', 'Favorites')}
               />
               <View style={styles.divider} />
               <SmartCollectionRow
                 count={snapshot.collectionCounts.recent}
                 icon="time-outline"
                 label="Recent"
+                onPress={() => openCollection('recent', 'Recent')}
               />
             </Card>
 
@@ -291,6 +305,42 @@ export default function WorkspaceScreen() {
         ) : null}
       </PageScroll>
       <FloatingActionButton icon="add-outline" onPress={createQuickNote} />
+
+      <Modal animationType="slide" onRequestClose={() => setIsCollectionOpen(false)} transparent visible={isCollectionOpen}>
+        <View style={styles.modalScrim}>
+          <View style={styles.modalPanel}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>{collectionTitle}</Text>
+              <Pressable onPress={() => setIsCollectionOpen(false)}>
+                <Ionicons color={palette.textMuted} name="close-outline" size={22} />
+              </Pressable>
+            </View>
+            <ScrollView contentContainerStyle={styles.modalList}>
+              {collectionNotes.length ? (
+                collectionNotes.map((note) => (
+                  <Pressable
+                    key={note.id}
+                    onPress={() => {
+                      setIsCollectionOpen(false);
+                      router.push(`/editor/${note.id}`);
+                    }}
+                    style={({ pressed }) => [styles.modalNoteCard, pressed && styles.pressed]}>
+                    <Text style={styles.modalNoteTitle}>{note.title}</Text>
+                    <Text numberOfLines={2} style={styles.modalNoteText}>
+                      {note.plainText || 'Empty note'}
+                    </Text>
+                  </Pressable>
+                ))
+              ) : (
+                <EmptyState
+                  subtitle="No notes found in this collection."
+                  title="Nothing here yet"
+                />
+              )}
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
     </Screen>
   );
 }
@@ -415,5 +465,52 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: 0.82,
+  },
+  modalScrim: {
+    backgroundColor: palette.scrim,
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
+  modalPanel: {
+    backgroundColor: palette.background,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    maxHeight: '80%',
+    minHeight: '40%',
+  },
+  modalHeader: {
+    alignItems: 'center',
+    borderBottomColor: palette.border,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 24,
+    paddingVertical: 18,
+  },
+  modalTitle: {
+    color: palette.text,
+    fontSize: 18,
+    fontWeight: '700',
+  },
+  modalList: {
+    gap: 4,
+    padding: 16,
+    paddingBottom: 40,
+  },
+  modalNoteCard: {
+    backgroundColor: palette.surface,
+    borderRadius: 16,
+    gap: 6,
+    padding: 16,
+  },
+  modalNoteTitle: {
+    color: palette.text,
+    fontSize: 15,
+    fontWeight: '700',
+  },
+  modalNoteText: {
+    color: palette.textMuted,
+    fontSize: 13,
+    lineHeight: 18,
   },
 });
