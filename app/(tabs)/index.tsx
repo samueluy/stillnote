@@ -276,10 +276,17 @@ export default function WorkspaceScreen() {
             {snapshot.dailyVerse ? (
               <View style={styles.sectionGap}>
                 <SectionTitle title="Daily Verse Prompt" />
-                <View style={styles.promptCard}>
+                <Pressable
+                  onPress={() =>
+                    router.push({
+                      pathname: '/(tabs)/bible',
+                      params: { reference: snapshot.dailyVerse.reference },
+                    })
+                  }
+                  style={({ pressed }) => [styles.promptCard, pressed && styles.pressed]}>
                   <Text style={styles.promptReference}>{snapshot.dailyVerse.reference}</Text>
                   <Text style={styles.promptText}>{snapshot.dailyVerse.text}</Text>
-                </View>
+                </Pressable>
               </View>
             ) : null}
 
