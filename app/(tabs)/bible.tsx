@@ -48,7 +48,11 @@ function VerseParagraph({
   }
 
   return (
-    <Text onLongPress={() => onOpenConcordance('entry-logos')} style={[styles.verseText, isAnnotated && styles.verseTextAnnotated]}>
+    <Text
+      onLongPress={() =>
+        Alert.alert('Strong\'s Concordance', 'No Strong\'s entry is available for this verse offline. The concordance preview currently covers select words in John 1.')
+      }
+      style={[styles.verseText, isAnnotated && styles.verseTextAnnotated]}>
       <Text style={[styles.verseNumber, isAnnotated && styles.verseNumberAnnotated]}>{verse.verse} </Text>
       {verse.text}
     </Text>
