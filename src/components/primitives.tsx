@@ -392,10 +392,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   pageContent: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 24,
     paddingBottom: 136,
-    paddingTop: 16,
-    gap: 24,
+    paddingTop: 20,
+    gap: 28,
   },
   topBar: {
     alignItems: 'center',
@@ -423,9 +423,7 @@ const styles = StyleSheet.create({
   },
   sectionCaps: {
     fontFamily: 'DMSans_500Medium',
-    fontSize: 11,
-    letterSpacing: 1.5,
-    textTransform: 'uppercase',
+    fontSize: 13,
   },
   searchField: {
     alignItems: 'center',

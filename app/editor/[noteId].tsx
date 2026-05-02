@@ -288,7 +288,7 @@ const styles = StyleSheet.create({
   headerBtn: { alignItems: 'center', height: 34, justifyContent: 'center', width: 34 },
   headerTitle: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 18 },
   headerActions: { flexDirection: 'row', gap: 4 },
-  content: { gap: 16, paddingBottom: 56, paddingHorizontal: 20, paddingTop: 20 },
+  content: { gap: 20, paddingBottom: 56, paddingHorizontal: 24, paddingTop: 24 },
   breadcrumb: { fontFamily: 'DMSans_400Regular', fontSize: 11, letterSpacing: 0.5 },
   titleInput: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 28, lineHeight: 36, paddingVertical: 0 },
   titleUnderline: { height: 2, marginTop: -6, width: 0 },

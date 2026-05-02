@@ -177,7 +177,7 @@ export default function BibleScreen() {
 }
 
 const styles = StyleSheet.create({
-  content: { gap: 24, paddingBottom: 132, paddingHorizontal: 20, paddingTop: 20 },
+  content: { gap: 28, paddingBottom: 132, paddingHorizontal: 24, paddingTop: 24 },
   readerCard: { padding: 20 },
   readerHeader: { alignItems: 'flex-start', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24, gap: 12 },
   readerTitle: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 22 },
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
   annotated: { borderBottomWidth: 2 },
   verseSearchBar: { alignItems: 'center', borderRadius: 12, borderWidth: 1, flexDirection: 'row', gap: 8, marginTop: 16, paddingHorizontal: 12, paddingVertical: 8 },
   verseSearchInput: { flex: 1, fontFamily: 'DMSans_400Regular', fontSize: 14 },
-  section: { gap: 12 },
+  section: { gap: 16 },
   marginCard: { borderRadius: 16, borderWidth: 1, gap: 18, padding: 18 },
   marginNote: { borderLeftWidth: 2, gap: 6, paddingLeft: 14 },
   marginEyebrow: { fontFamily: 'DMSans_400Regular', fontSize: 11 },

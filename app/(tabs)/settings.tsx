@@ -45,7 +45,7 @@ export default function SettingsScreen() {
 }
 
 const styles = StyleSheet.create({
-  section: { gap: 12 },
+  section: { gap: 20 },
   cardBody: { gap: 10, padding: 18 },
   cardTitle: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 16 },
   cardText: { fontFamily: 'DMSans_400Regular', fontSize: 14, lineHeight: 21 },
