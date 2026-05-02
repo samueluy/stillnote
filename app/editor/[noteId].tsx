@@ -260,7 +260,7 @@ function EditorToolbar({ editor, keyboardHeight, onBiblePress, colors, isDark }:
   const toolbarStyle = useAnimatedStyle(() => ({ bottom: withTiming(keyboardHeight.value + 8, { duration: 150 }) }));
   return (
     <Animated.View style={[styles.toolbar, toolbarStyle]}>
-      <View style={[styles.toolbarInner, { backgroundColor: isDark ? 'rgba(26,23,18,0.92)' : 'rgba(255,255,255,0.88)', borderColor: 'transparent' }]}>
+      <View style={[styles.toolbarInner, { backgroundColor: isDark ? 'rgba(26,23,18,0.92)' : 'rgba(255,255,255,0.82)' }]}>
         <AnimatedPressable haptic="light" onPress={() => (editor as any).toggleBold?.()} style={styles.toolBtn}>
           <Text style={[styles.toolText, { color: colors.textSecondary, fontWeight: '700' }]}>B</Text>
         </AnimatedPressable>
@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
   titleUnderline: { height: 2, marginTop: -6, width: 0 },
   editor: { flex: 1, minHeight: 400 },
   toolbar: { left: 20, position: 'absolute', right: 20, zIndex: 100 },
-  toolbarInner: { alignItems: 'center', borderRadius: 100, borderWidth: 1, flexDirection: 'row', gap: 2, paddingHorizontal: 10, paddingVertical: 8, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.08, shadowRadius: 12, elevation: 4 },
+  toolbarInner: { alignItems: 'center', borderRadius: 100, flexDirection: 'row', gap: 2, paddingHorizontal: 10, paddingVertical: 8, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 12, elevation: 4 },
   toolBtn: { alignItems: 'center', borderRadius: 100, height: 36, justifyContent: 'center', width: 38 },
   toolText: { fontFamily: 'DMSans_500Medium', fontSize: 16 },
   toolDivider: { height: 18, width: 1 },
