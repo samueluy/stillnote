@@ -31,10 +31,10 @@ import { BibleSheet } from '@/src/components/bible-sheet';
 import {
   AttachmentPreview,
   SearchField,
-  TagChip,
   palette,
 } from '@/src/components/primitives';
 import { AnimatedPressable } from '@/src/components/animated-pressable';
+import { AnimatedChip, AnimatedChipRow } from '@/src/components/animated-chip';
 import { EditorToolbar } from '@/src/components/editor-toolbar';
 import { markdownToHtml, stripHtml } from '@/src/lib/editor';
 import {
@@ -152,6 +152,10 @@ export default function EditorScreen() {
 
   const plainText = useMemo(() => stripHtml(body), [body]);
   const references = useMemo(() => detectVerseReferences(plainText), [plainText]);
+  const hashtags = useMemo(() => {
+    const matches = plainText.matchAll(/(?:^|\s)#([\p{L}\p{N}_-]+)/gu);
+    return new Set(Array.from(matches, (m) => m[1].toLowerCase()));
+  }, [plainText]);
 
   useEffect(() => {
     let cancelled = false;
@@ -386,10 +390,13 @@ export default function EditorScreen() {
         </View>
 
         {referenceVerses.length ? (
-          <View style={styles.referenceChipRow}>
+          <AnimatedChipRow>
             {referenceVerses.map((verse) => (
-              <TagChip
+              <AnimatedChip
                 key={verse.reference}
+                accent={palette.gold}
+                bg={palette.goldSoft}
+                icon="book-outline"
                 label={verse.reference}
                 onPress={() => {
                   setChapterBook(verse.book);
@@ -398,7 +405,21 @@ export default function EditorScreen() {
                 }}
               />
             ))}
-          </View>
+          </AnimatedChipRow>
+        ) : null}
+
+        {hashtags.size ? (
+          <AnimatedChipRow>
+            {Array.from(hashtags).map((tag) => (
+              <AnimatedChip
+                key={tag}
+                accent="#7C3AED"
+                bg="#F5F3FF"
+                icon="pricetag-outline"
+                label={`#${tag}`}
+              />
+            ))}
+          </AnimatedChipRow>
         ) : null}
 
         <RichText

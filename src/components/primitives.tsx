@@ -20,6 +20,7 @@ export const palette = {
   borderStrong: '#D6D3D1',
   blue: '#1A73E8',
   blueSoft: '#EAF3FF',
+  gold: '#B5924C',
   goldSoft: '#F2E0C3',
   tag: '#EFE6E2',
   success: '#747A57',
