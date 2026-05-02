@@ -2,6 +2,11 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useMemo, useState } from 'react';
 import { Alert, Modal, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 
 import { ConcordanceModal } from '@/src/components/concordance-modal';
 import { AnimatedPressable } from '@/src/components/animated-pressable';
@@ -76,6 +81,14 @@ export default function BibleScreen() {
   const [verseSearchQuery, setVerseSearchQuery] = useState('');
   const [recentLookups, setRecentLookups] = useState<{ entryId: string; lookedUpAt: string }[]>([]);
 
+  const chapterOpacity = useSharedValue(1);
+  const chapterStyle = useAnimatedStyle(() => ({ opacity: chapterOpacity.value }));
+
+  useEffect(() => {
+    chapterOpacity.value = 0;
+    chapterOpacity.value = withTiming(1, { duration: 300 });
+  }, [book, chapter, chapterOpacity]);
+
   useEffect(() => {
     if (params.reference) {
       const match = params.reference.match(/^(.*)\s+(\d+):(\d+)$/);
@@ -130,8 +143,9 @@ export default function BibleScreen() {
         }
       />
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <Card>
-          <View style={styles.readerCard}>
+        <Animated.View style={chapterStyle}>
+          <Card>
+            <View style={styles.readerCard}>
             <View style={styles.readerHeader}>
               <View>
                 <Text style={styles.readerTitle}>
@@ -213,6 +227,7 @@ export default function BibleScreen() {
             </View>
           </View>
         </Card>
+        </Animated.View>
 
         <View style={styles.section}>
           <SectionTitle
