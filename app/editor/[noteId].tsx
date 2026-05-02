@@ -11,7 +11,6 @@ import {
 } from 'react';
 import {
   Alert,
-  Animated,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -20,7 +19,13 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { RichText, Toolbar, useEditorBridge } from '@10play/tentap-editor';
+import { RichText, useEditorBridge } from '@10play/tentap-editor';
+import Animated, {
+  useAnimatedKeyboard,
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+} from 'react-native-reanimated';
 
 import { BibleSheet } from '@/src/components/bible-sheet';
 import {
@@ -30,6 +35,7 @@ import {
   palette,
 } from '@/src/components/primitives';
 import { AnimatedPressable } from '@/src/components/animated-pressable';
+import { EditorToolbar } from '@/src/components/editor-toolbar';
 import { markdownToHtml, stripHtml } from '@/src/lib/editor';
 import {
   buildInsertedVerseText,
@@ -59,26 +65,22 @@ export default function EditorScreen() {
   const { bumpRefreshToken } = useAppState();
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
-  const headerOpacity = useRef(new Animated.Value(1)).current;
+  const headerOpacity = useSharedValue(1);
   const bodyRef = useRef('');
   const [isDistractionFree, setIsDistractionFree] = useState(false);
 
+  const headerOpacityStyle = useAnimatedStyle(() => ({
+    opacity: headerOpacity.value,
+  }));
+
   const enterDistractionFree = useCallback(() => {
     setIsDistractionFree(true);
-    Animated.timing(headerOpacity, {
-      toValue: 0,
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
+    headerOpacity.value = withTiming(0, { duration: 300 });
   }, [headerOpacity]);
 
   const exitDistractionFree = useCallback(() => {
     setIsDistractionFree(false);
-    Animated.timing(headerOpacity, {
-      toValue: 1,
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
+    headerOpacity.value = withTiming(1, { duration: 300 });
   }, [headerOpacity]);
 
   const [title, setTitle] = useState('');
@@ -114,6 +116,8 @@ export default function EditorScreen() {
       }
     },
   });
+
+  const { height: keyboardHeight } = useAnimatedKeyboard();
 
   useEffect(() => {
     let cancelled = false;
@@ -294,7 +298,7 @@ export default function EditorScreen() {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       style={styles.container}>
-      <Animated.View style={[styles.header, { opacity: headerOpacity }]}>
+      <Animated.View style={[styles.header, headerOpacityStyle]}>
         <AnimatedPressable
           onPress={() => {
             if (isDistractionFree) {
@@ -350,7 +354,7 @@ export default function EditorScreen() {
       </Animated.View>
 
       <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-        <Animated.View style={{ opacity: headerOpacity }}>
+        <Animated.View style={headerOpacityStyle}>
           <Text style={styles.breadcrumb}>
             Threads <Text style={styles.breadcrumbAccent}>›</Text> {threadName}
           </Text>
@@ -364,8 +368,6 @@ export default function EditorScreen() {
           style={styles.titleInput}
           value={title}
         />
-
-        <Toolbar editor={editor} />
 
         <AnimatedPressable onPress={extractToNewNote} style={({ pressed }) => [styles.extractButton, pressed && styles.pressed]}>
           <Ionicons color={palette.blue} name="git-branch-outline" size={16} />
@@ -433,6 +435,11 @@ export default function EditorScreen() {
         ref={bottomSheetRef}
         translationName="King James Version"
         verses={chapterVerses}
+      />
+      <EditorToolbar
+        editor={editor}
+        keyboardHeight={keyboardHeight}
+        onBiblePress={() => bottomSheetRef.current?.present()}
       />
     </KeyboardAvoidingView>
   );
