@@ -1,8 +1,14 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
-import { useCallback, useDeferredValue, useEffect, useRef, useState } from 'react';
-import { Alert, Modal, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
+import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
+import {
+  BottomSheetBackdrop,
+  BottomSheetModal,
+  BottomSheetScrollView,
+} from '@gorhom/bottom-sheet';
+import { BlurView } from 'expo-blur';
 
 import {
   Card,
@@ -42,7 +48,8 @@ export default function WorkspaceScreen() {
   const [results, setResults] = useState<SearchResult[]>([]);
   const [collectionTitle, setCollectionTitle] = useState('');
   const [collectionNotes, setCollectionNotes] = useState<Note[]>([]);
-  const [isCollectionOpen, setIsCollectionOpen] = useState(false);
+  const collectionSheetRef = useRef<BottomSheetModal>(null);
+  const collectionSnapPoints = useMemo(() => ['45%', '90%'], []);
 
   const scrollRef = useRef<ScrollView>(null);
 
@@ -104,7 +111,7 @@ export default function WorkspaceScreen() {
     const notes = await getNotesByCollection(db, activeSpaceId, collection);
     setCollectionTitle(title);
     setCollectionNotes(notes);
-    setIsCollectionOpen(true);
+    collectionSheetRef.current?.present();
   }, [activeSpaceId, db]);
 
   return (
@@ -345,41 +352,38 @@ export default function WorkspaceScreen() {
       </PageScroll>
       <FloatingActionButton icon="add-outline" onPress={createQuickNote} />
 
-      <Modal animationType="slide" onRequestClose={() => setIsCollectionOpen(false)} transparent visible={isCollectionOpen}>
-        <View style={styles.modalScrim}>
-          <View style={styles.modalPanel}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>{collectionTitle}</Text>
-              <AnimatedPressable onPress={() => setIsCollectionOpen(false)}>
-                <Ionicons color={palette.textMuted} name="close-outline" size={22} />
-              </AnimatedPressable>
-            </View>
-            <ScrollView contentContainerStyle={styles.modalList}>
-              {collectionNotes.length ? (
-                collectionNotes.map((note) => (
-                  <AnimatedPressable
-                    key={note.id}
-                    onPress={() => {
-                      setIsCollectionOpen(false);
-                      router.push(`/editor/${note.id}`);
-                    }}
-                    style={({ pressed }) => [styles.modalNoteCard, pressed && styles.pressed]}>
-                    <Text style={styles.modalNoteTitle}>{note.title}</Text>
-                    <Text numberOfLines={2} style={styles.modalNoteText}>
-                      {note.plainText || 'Empty note'}
-                    </Text>
-                  </AnimatedPressable>
-                ))
-              ) : (
-                <EmptyState
-                  subtitle="No notes found in this collection."
-                  title="Nothing here yet"
-                />
-              )}
-            </ScrollView>
+      <BottomSheetModal
+        ref={collectionSheetRef}
+        backdropComponent={(props) => (
+          <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} opacity={0.35} />
+        )}
+        handleIndicatorStyle={styles.sheetHandle}
+        snapPoints={collectionSnapPoints}>
+        <BottomSheetScrollView contentContainerStyle={styles.sheetContent}>
+          <View style={styles.sheetHeader}>
+            <Text style={styles.sheetTitle}>{collectionTitle}</Text>
           </View>
-        </View>
-      </Modal>
+          {collectionNotes.length ? (
+            collectionNotes.map((note) => (
+              <AnimatedPressable
+                key={note.id}
+                haptic="light"
+                onPress={() => {
+                  collectionSheetRef.current?.dismiss();
+                  router.push(`/editor/${note.id}`);
+                }}
+                style={({ pressed }) => [styles.sheetNote, pressed && styles.pressed]}>
+                <Text style={styles.sheetNoteTitle}>{note.title}</Text>
+                <Text numberOfLines={2} style={styles.sheetNoteText}>
+                  {note.plainText || 'Empty note'}
+                </Text>
+              </AnimatedPressable>
+            ))
+          ) : (
+            <EmptyState subtitle="No notes found in this collection." title="Nothing here yet" />
+          )}
+        </BottomSheetScrollView>
+      </BottomSheetModal>
     </Screen>
   );
 }
@@ -502,54 +506,51 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 18,
   },
-  pressed: {
-    opacity: 0.82,
+  sheetHandle: {
+    backgroundColor: palette.borderStrong,
+    height: 5,
+    width: 40,
   },
-  modalScrim: {
-    backgroundColor: palette.scrim,
-    flex: 1,
-    justifyContent: 'flex-end',
+  sheetContent: {
+    paddingHorizontal: 16,
+    paddingBottom: 40,
+    gap: 8,
   },
-  modalPanel: {
-    backgroundColor: palette.background,
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    maxHeight: '80%',
-    minHeight: '40%',
+  sheetHeader: {
+    paddingBottom: 12,
+    paddingHorizontal: 4,
+    paddingTop: 4,
   },
-  modalHeader: {
-    alignItems: 'center',
-    borderBottomColor: palette.border,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 24,
-    paddingVertical: 18,
-  },
-  modalTitle: {
+  sheetTitle: {
     color: palette.text,
     fontSize: 18,
     fontWeight: '700',
   },
-  modalList: {
-    gap: 4,
-    padding: 16,
-    paddingBottom: 40,
-  },
-  modalNoteCard: {
+  sheetNote: {
     backgroundColor: palette.surface,
-    borderRadius: 16,
+    borderColor: palette.border,
+    borderRadius: 14,
+    borderWidth: 1,
     gap: 6,
-    padding: 16,
+    padding: 14,
   },
-  modalNoteTitle: {
+  sheetNoteTitle: {
     color: palette.text,
     fontSize: 15,
     fontWeight: '700',
   },
-  modalNoteText: {
+  sheetNoteText: {
     color: palette.textMuted,
     fontSize: 13,
     lineHeight: 18,
   },
+  modalScrim: { display: 'none' },
+  modalPanel: { display: 'none' },
+  modalHeader: { display: 'none' },
+  modalTitle: { display: 'none' },
+  modalList: { display: 'none' },
+  modalNoteCard: { display: 'none' },
+  modalNoteTitle: { display: 'none' },
+  modalNoteText: { display: 'none' },
+  pressed: { opacity: 0.75 },
 });
