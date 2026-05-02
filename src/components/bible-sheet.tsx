@@ -1,11 +1,14 @@
 import { Ionicons } from '@expo/vector-icons';
 import {
   BottomSheetBackdrop,
+  type BottomSheetBackdropProps,
   BottomSheetModal,
   BottomSheetView,
+  useBottomSheetSpringConfigs,
   useBottomSheetScrollableCreator,
 } from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
+import { BlurView } from 'expo-blur';
 import { forwardRef, useMemo, useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
@@ -35,13 +38,21 @@ function VerseRow({
       <Text style={[styles.verseNumber, { color: colors.gold }]}>{item.verse}</Text>
       <Text style={[styles.verseText, { color: colors.textPrimary }]}>{item.text}</Text>
       <AnimatedPressable
-        haptic="light"
+        haptic="medium"
         onPress={() => onInsertVerse(item)}
-        style={[styles.insertButton, { backgroundColor: colors.accent }]}>
-        <Ionicons color="#FFFFFF" name="add-circle" size={12} />
-        <Text style={styles.insertButtonText}>Insert</Text>
+        style={({ pressed }) => [styles.insertButton, { borderColor: colors.accent }, pressed && styles.pressed]}>
+        <Ionicons color={colors.accent} name="add-outline" size={12} />
+        <Text style={[styles.insertButtonText, { color: colors.accent }]}>Insert</Text>
       </AnimatedPressable>
     </View>
+  );
+}
+
+function BlurBackdrop(props: BottomSheetBackdropProps) {
+  return (
+    <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} opacity={0.4}>
+      <BlurView intensity={15} tint="dark" style={StyleSheet.absoluteFill} />
+    </BottomSheetBackdrop>
   );
 }
 
@@ -50,8 +61,9 @@ export const BibleSheet = forwardRef<BottomSheetModal, Props>(function BibleShee
   ref
 ) {
   const animatedIndex = useSharedValue(0);
-  const snapPoints = useMemo(() => ['38%', '58%'], []);
+  const snapPoints = useMemo(() => ['35%', '70%'], []);
   const ScrollComponent = useBottomSheetScrollableCreator();
+  const animationConfigs = useBottomSheetSpringConfigs({ damping: 50, stiffness: 400 });
   const [sheetSearch, setSheetSearch] = useState('');
   const [isSheetSearchOpen, setIsSheetSearchOpen] = useState(false);
   const { colors } = useTheme();
@@ -74,32 +86,29 @@ export const BibleSheet = forwardRef<BottomSheetModal, Props>(function BibleShee
     <BottomSheetModal
       ref={ref}
       animatedIndex={animatedIndex}
-      backdropComponent={(props) => (
-        <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} opacity={0.18} />
-      )}
+      animationConfigs={animationConfigs}
+      backdropComponent={BlurBackdrop}
       enableDynamicSizing={false}
       handleIndicatorStyle={[styles.handle, { backgroundColor: colors.textTertiary }]}
       snapPoints={snapPoints}>
-      <BottomSheetView style={[styles.header, { borderBottomColor: colors.border }]}>
+      <BottomSheetView style={[styles.header]}>
         <View>
-          <View style={styles.headerRow}>
-            <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>
-              {book} {chapter}
-            </Text>
-            <Ionicons color={colors.textSecondary} name="chevron-down-outline" size={14} />
-          </View>
+          <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>
+            {book} {chapter}
+          </Text>
           <Text style={[styles.headerSubtitle, { color: colors.textTertiary }]}>
             {translationName}
           </Text>
         </View>
         <View style={styles.headerActions}>
           <AnimatedPressable
+            haptic="light"
             onPress={() => { setIsSheetSearchOpen((v) => !v); setSheetSearch(''); }}
             style={styles.headerAction}>
             <Ionicons color={colors.textSecondary} name="search-outline" size={18} />
           </AnimatedPressable>
           <AnimatedPressable onPress={dismissSheet} style={styles.headerAction}>
-            <Ionicons color={colors.textSecondary} name="close-outline" size={20} />
+            <Ionicons color={colors.textSecondary} name="close-outline" size={18} />
           </AnimatedPressable>
         </View>
       </BottomSheetView>
@@ -141,16 +150,11 @@ const styles = StyleSheet.create({
   },
   header: {
     alignItems: 'center',
-    borderBottomWidth: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingBottom: 14,
+    paddingBottom: 12,
     paddingHorizontal: 20,
-  },
-  headerRow: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    gap: 6,
+    paddingTop: 4,
   },
   headerTitle: {
     fontFamily: 'LibreBaskerville_700Bold',
@@ -161,13 +165,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 2,
   },
-  headerActions: { flexDirection: 'row', gap: 6 },
+  headerActions: { flexDirection: 'row', gap: 4 },
   headerAction: {
     alignItems: 'center',
     borderRadius: 100,
-    height: 36,
+    height: 34,
     justifyContent: 'center',
-    width: 36,
+    width: 34,
   },
   searchRow: {
     alignItems: 'center',
@@ -186,35 +190,36 @@ const styles = StyleSheet.create({
   verseRow: {
     alignItems: 'flex-start',
     flexDirection: 'row',
-    gap: 12,
-    paddingHorizontal: 6,
-    paddingVertical: 10,
+    gap: 10,
+    paddingHorizontal: 8,
+    paddingVertical: 8,
   },
   verseNumber: {
     fontFamily: 'DMSans_500Medium',
     fontSize: 12,
     fontWeight: '700',
-    marginTop: 2,
-    width: 16,
+    marginTop: 3,
+    width: 18,
   },
   verseText: {
     flex: 1,
     fontFamily: 'LibreBaskerville_400Regular',
-    fontSize: 14,
-    lineHeight: 22,
+    fontSize: 15,
+    lineHeight: 24,
   },
   insertButton: {
     alignItems: 'center',
     alignSelf: 'flex-start',
     borderRadius: 100,
+    borderWidth: 1,
     flexDirection: 'row',
     gap: 5,
-    paddingHorizontal: 11,
-    paddingVertical: 7,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
   },
   insertButtonText: {
-    color: '#FFFFFF',
     fontFamily: 'DMSans_500Medium',
     fontSize: 11,
   },
+  pressed: { opacity: 0.75 },
 });
