@@ -279,21 +279,6 @@ export function TextButton({
   );
 }
 
-export function FloatingActionButton({
-  icon,
-  onPress,
-}: {
-  icon: IoniconName;
-  onPress?: () => void;
-}) {
-  const { colors } = useTheme();
-  return (
-    <AnimatedPressable onPress={onPress} style={[styles.fab, { backgroundColor: colors.accent }]}>
-      <Ionicons color="#FFFFFF" name={icon} size={22} />
-    </AnimatedPressable>
-  );
-}
-
 export function Pill({
   label,
   active,
@@ -501,21 +486,6 @@ const styles = StyleSheet.create({
   textButtonLabel: {
     fontFamily: 'DMSans_500Medium',
     fontSize: 15,
-  },
-  fab: {
-    alignItems: 'center',
-    borderRadius: 16,
-    bottom: 108,
-    elevation: 4,
-    height: 52,
-    justifyContent: 'center',
-    position: 'absolute',
-    right: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 12,
-    width: 52,
   },
   pill: {
     borderRadius: 100,
