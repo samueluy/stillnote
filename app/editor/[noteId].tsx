@@ -20,6 +20,7 @@ import {
   View,
 } from 'react-native';
 import { RichText, useEditorBridge } from '@10play/tentap-editor';
+import { BlurView } from 'expo-blur';
 import Animated, {
   useAnimatedKeyboard,
   useSharedValue,
@@ -97,6 +98,12 @@ export default function EditorScreen() {
   const [chapterVerses, setChapterVerses] = useState<BibleVerse[]>([]);
   const [saveState, setSaveState] = useState<'idle' | 'saving' | 'saved'>('idle');
   const saveDotOpacity = useSharedValue(0);
+  const titleUnderlineWidth = useSharedValue(0);
+  const [titleFocused, setTitleFocused] = useState(false);
+
+  const titleUnderlineStyle = useAnimatedStyle(() => ({
+    width: `${titleUnderlineWidth.value * 100}%`,
+  }));
   const [verseSearch, setVerseSearch] = useState('');
   const [referenceVerses, setReferenceVerses] = useState<BibleVerse[]>([]);
   const [initialContent, setInitialContent] = useState('');
@@ -379,13 +386,16 @@ export default function EditorScreen() {
         </Animated.View>
 
         <TextInput
+          onBlur={() => { exitDistractionFree(); setTitleFocused(false); titleUnderlineWidth.value = withTiming(0, { duration: 400 }); }}
           onChangeText={setTitle}
-          onFocus={enterDistractionFree}
+          onFocus={() => { enterDistractionFree(); setTitleFocused(true); titleUnderlineWidth.value = withTiming(1, { duration: 400 }); }}
           placeholder="Untitled note"
           placeholderTextColor="#8C847A"
+          selectionColor={palette.blue}
           style={styles.titleInput}
           value={title}
         />
+        <Animated.View style={[styles.titleUnderline, titleUnderlineStyle, titleFocused ? styles.titleUnderlineVisible : null]} />
 
         <AnimatedPressable onPress={extractToNewNote} style={({ pressed }) => [styles.extractButton, pressed && styles.pressed]}>
           <Ionicons color={palette.blue} name="git-branch-outline" size={16} />
@@ -462,8 +472,20 @@ export default function EditorScreen() {
               {saveState === 'saving' ? 'Saving…' : saveState === 'saved' ? 'Saved' : 'Autosave active'}
             </Text>
           </View>
-          <Text style={styles.statusText}>{attachments.length} attachments</Text>
+          <View style={styles.metaRow}>
+            <Text style={styles.statusText}>{plainText.split(/\s+/).filter(Boolean).length} words</Text>
+            <Text style={styles.statusText}>·</Text>
+            <Text style={styles.statusText}>{Math.max(1, Math.ceil(plainText.split(/\s+/).filter(Boolean).length / 200))} min read</Text>
+            <Text style={styles.statusText}>·</Text>
+            <Text style={styles.statusText}>{hashtags.size} tags</Text>
+          </View>
         </View>
+
+        <BlurView intensity={20} tint="light" style={styles.metadataBar}>
+          <Text style={styles.metadataText}>
+            {plainText.length ? `${plainText.split(/\s+/).filter(Boolean).length} words · ${Math.max(1, Math.ceil(plainText.split(/\s+/).filter(Boolean).length / 200))} min read · ${hashtags.size} tags` : 'Start writing…'}
+          </Text>
+        </BlurView>
       </ScrollView>
 
       <BibleSheet
@@ -610,6 +632,30 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     lineHeight: 38,
     paddingVertical: 0,
+  },
+  titleUnderline: {
+    backgroundColor: palette.blue,
+    height: 2,
+    marginTop: -4,
+    width: 0,
+  },
+  titleUnderlineVisible: {
+    backgroundColor: palette.blue,
+  },
+  metaRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 6,
+  },
+  metadataBar: {
+    borderTopColor: palette.border,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  metadataText: {
+    color: palette.textMuted,
+    fontSize: 12,
   },
   verseSearchCard: {
     gap: 10,
