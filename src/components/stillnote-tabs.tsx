@@ -7,8 +7,9 @@ import { useTheme } from '@/src/theme/useTheme';
 
 const TAB_META: Record<string, { label: string; icon: keyof typeof Ionicons.glyphMap; activeIcon: keyof typeof Ionicons.glyphMap }> = {
   index: { label: 'Journal', icon: 'book-outline', activeIcon: 'book' },
-  bible: { label: 'Bible', icon: 'book-outline', activeIcon: 'book' },
-  settings: { label: 'You', icon: 'person-outline', activeIcon: 'person' },
+  threads: { label: 'Threads', icon: 'layers-outline', activeIcon: 'layers' },
+  bible: { label: 'Study', icon: 'compass-outline', activeIcon: 'compass' },
+  search: { label: 'Search', icon: 'search-outline', activeIcon: 'search' },
 };
 
 export function StillnoteTabBar({ state, descriptors, navigation }: BottomTabBarProps) {

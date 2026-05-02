@@ -11,24 +11,10 @@ export default function TabLayout() {
         headerShown: false,
         tabBarHideOnKeyboard: true,
       }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Workspace',
-        }}
-      />
-      <Tabs.Screen
-        name="bible"
-        options={{
-          title: 'Bible',
-        }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          title: 'Settings',
-        }}
-      />
+      <Tabs.Screen name="index" options={{ title: 'Journal' }} />
+      <Tabs.Screen name="threads" options={{ title: 'Threads' }} />
+      <Tabs.Screen name="bible" options={{ title: 'Study' }} />
+      <Tabs.Screen name="search" options={{ title: 'Search' }} />
     </Tabs>
   );
 }
