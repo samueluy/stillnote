@@ -3,6 +3,13 @@ import { useFocusEffect, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withSequence,
+  withTiming,
+} from 'react-native-reanimated';
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
@@ -50,6 +57,26 @@ export default function WorkspaceScreen() {
   const [collectionNotes, setCollectionNotes] = useState<Note[]>([]);
   const collectionSheetRef = useRef<BottomSheetModal>(null);
   const collectionSnapPoints = useMemo(() => ['45%', '90%'], []);
+
+  const fabPulse = useSharedValue(1);
+  const fabPulseStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: fabPulse.value }],
+  }));
+
+  useEffect(() => {
+    if (snapshot && snapshot.threads.length === 0) {
+      fabPulse.value = withRepeat(
+        withSequence(
+          withTiming(1.05, { duration: 600 }),
+          withTiming(1, { duration: 600 })
+        ),
+        -1,
+        true
+      );
+    } else {
+      fabPulse.value = withTiming(1);
+    }
+  }, [snapshot, fabPulse]);
 
   const scrollRef = useRef<ScrollView>(null);
 
@@ -350,7 +377,9 @@ export default function WorkspaceScreen() {
           </>
         ) : null}
       </PageScroll>
-      <FloatingActionButton icon="add-outline" onPress={createQuickNote} />
+      <Animated.View style={fabPulseStyle}>
+        <FloatingActionButton icon="add-outline" onPress={createQuickNote} />
+      </Animated.View>
 
       <BottomSheetModal
         ref={collectionSheetRef}
