@@ -2,7 +2,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
-import * as ImagePicker from 'expo-image-picker';
 import {
   useCallback,
   useEffect,
@@ -22,7 +21,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { RichEditor, RichToolbar, actions } from 'react-native-pell-rich-editor';
+import { RichText, Toolbar, useEditorBridge } from '@10play/tentap-editor';
 
 import { BibleSheet } from '@/src/components/bible-sheet';
 import {
@@ -44,7 +43,6 @@ import {
   toggleNoteFavorite,
   createThread,
 } from '@/src/lib/database';
-import { persistImageAsset } from '@/src/lib/media';
 import { detectVerseReferences } from '@/src/lib/verse-references';
 import type { BibleVerse, MediaAttachment } from '@/src/types/domain';
 import { useAppState } from '@/src/providers/app-provider';
@@ -61,8 +59,8 @@ export default function EditorScreen() {
   const { bumpRefreshToken } = useAppState();
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
-  const richTextRef = useRef<RichEditor>(null);
   const headerOpacity = useRef(new Animated.Value(1)).current;
+  const bodyRef = useRef('');
   const [isDistractionFree, setIsDistractionFree] = useState(false);
 
   const enterDistractionFree = useCallback(() => {
@@ -98,6 +96,24 @@ export default function EditorScreen() {
   const [lastSavedAt, setLastSavedAt] = useState<string | null>(null);
   const [verseSearch, setVerseSearch] = useState('');
   const [referenceVerses, setReferenceVerses] = useState<BibleVerse[]>([]);
+  const [initialContent, setInitialContent] = useState('');
+
+  const editor = useEditorBridge({
+    autofocus: true,
+    avoidIosKeyboard: true,
+    initialContent,
+    onChange: async () => {
+      try {
+        const html = await (editor as any).getHTML();
+        if (html) {
+          bodyRef.current = html;
+          setBody(html);
+        }
+      } catch {
+        // getHTML may fail during init
+      }
+    },
+  });
 
   useEffect(() => {
     let cancelled = false;
@@ -109,13 +125,14 @@ export default function EditorScreen() {
       }
 
       setTitle(payload.note.title);
-      setBody(payload.note.markdownBody);
+      setInitialContent(payload.note.markdownBody || '');
       setSpaceId(payload.note.spaceId);
       setThreadId(payload.note.primaryThreadId);
       setThreadName(payload.thread?.name ?? 'Study Note');
       setTemplateId(payload.note.templateId);
       setAttachments(payload.attachments as AttachmentDraft[]);
       setIsFavorite(payload.note.isFavorite);
+      bodyRef.current = payload.note.markdownBody || '';
       setIsReady(true);
     }
 
@@ -183,7 +200,7 @@ export default function EditorScreen() {
       saveNoteDraft(db, {
         id: noteId,
         title: title.trim() || 'Untitled Note',
-        markdownBody: body,
+        markdownBody: bodyRef.current,
         templateId,
         spaceId,
         threadId,
@@ -194,38 +211,19 @@ export default function EditorScreen() {
     }, 400);
 
     return () => clearTimeout(timeout);
-  }, [attachments, body, db, isReady, noteId, spaceId, templateId, threadId, title]);
+  }, [attachments, db, isReady, noteId, spaceId, templateId, threadId, title]);
 
-  const addAttachmentFromAsset = useCallback(async (asset: ImagePicker.ImagePickerAsset) => {
-    const persisted = await persistImageAsset(asset);
-    setAttachments((current) => [
-      ...current,
-      {
-        id: `media-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-        createdAt: new Date().toISOString(),
-        type: 'image',
-        ...persisted,
-      },
-    ]);
-  }, []);
-
-  const openImageLibrary = useCallback(async () => {
-    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (!permission.granted) {
-      Alert.alert('Permission required', 'Photo access is needed to attach images to notes.');
-      return;
+  const insertVerseHtml = useCallback(async (verseHtml: string) => {
+    try {
+      const current = await (editor as any).getHTML();
+      (editor as any).setContent(current + verseHtml);
+    } catch {
+      // fallback: inject via webview
+      editor.webviewRef.current?.injectJavaScript(
+        `document.execCommand('insertHTML', false, ${JSON.stringify(verseHtml)}); true;`
+      );
     }
-
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images'],
-      quality: 0.9,
-      allowsEditing: true,
-    });
-
-    if (!result.canceled && result.assets[0]) {
-      await addAttachmentFromAsset(result.assets[0]);
-    }
-  }, [addAttachmentFromAsset]);
+  }, [editor]);
 
   const insertReferenceFromSearch = useCallback(async () => {
     const verse = await getVerseByReference(db, verseSearch.trim());
@@ -235,18 +233,20 @@ export default function EditorScreen() {
     }
 
     const text = buildInsertedVerseText([verse]);
-    richTextRef.current?.insertHTML(`<div><em>${text.replace(/\n/g, '<br>')}</em></div><div><br></div>`);
+    const verseHtml = `<p><em>${text.replace(/\n/g, '<br>')}</em></p><p></p>`;
+    await insertVerseHtml(verseHtml);
     setVerseSearch('');
-  }, [db, verseSearch]);
+  }, [db, verseSearch, insertVerseHtml]);
 
   const insertVerseIntoBody = useCallback((verse: BibleVerse) => {
     const text = buildInsertedVerseText([verse]);
-    richTextRef.current?.insertHTML(`<div><em>${text.replace(/\n/g, '<br>')}</em></div><div><br></div>`);
+    const verseHtml = `<p><em>${text.replace(/\n/g, '<br>')}</em></p><p></p>`;
+    insertVerseHtml(verseHtml);
     bottomSheetRef.current?.dismiss();
-  }, []);
+  }, [insertVerseHtml]);
 
   const extractToNewNote = useCallback(async () => {
-    const currentBody = body;
+    const currentBody = bodyRef.current;
     if (!stripHtml(currentBody).trim()) {
       Alert.alert('Nothing to extract', 'Write some content first.');
       return;
@@ -276,7 +276,7 @@ export default function EditorScreen() {
         },
       },
     ]);
-  }, [body, db, spaceId, templateId, title, bumpRefreshToken]);
+  }, [db, spaceId, templateId, title, bumpRefreshToken]);
 
   if (!isReady) {
     return (
@@ -353,7 +353,6 @@ export default function EditorScreen() {
         </Animated.View>
 
         <TextInput
-          onBlur={exitDistractionFree}
           onChangeText={setTitle}
           onFocus={enterDistractionFree}
           placeholder="Untitled note"
@@ -362,44 +361,7 @@ export default function EditorScreen() {
           value={title}
         />
 
-        <RichToolbar
-          editor={richTextRef}
-          actions={[
-            actions.setBold,
-            actions.setItalic,
-            actions.setUnderline,
-            actions.insertBulletsList,
-            actions.insertOrderedList,
-            actions.setParagraph,
-            'insertImage',
-          ]}
-          iconMap={{
-            [actions.setBold]: ({ tintColor }: { tintColor: string }) => (
-              <Text style={[styles.toolIcon, { color: tintColor }]}>B</Text>
-            ),
-            [actions.setItalic]: ({ tintColor }: { tintColor: string }) => (
-              <Text style={[styles.toolIcon, { color: tintColor, fontStyle: 'italic' }]}>I</Text>
-            ),
-            [actions.setUnderline]: ({ tintColor }: { tintColor: string }) => (
-              <Text style={[styles.toolIcon, { color: tintColor, textDecorationLine: 'underline' }]}>U</Text>
-            ),
-            [actions.insertBulletsList]: ({ tintColor }: { tintColor: string }) => (
-              <Ionicons color={tintColor} name="list-outline" size={16} />
-            ),
-            [actions.insertOrderedList]: ({ tintColor }: { tintColor: string }) => (
-              <Ionicons color={tintColor} name="list-circle-outline" size={16} />
-            ),
-            [actions.setParagraph]: ({ tintColor }: { tintColor: string }) => (
-              <Ionicons color={tintColor} name="chatbox-ellipses-outline" size={16} />
-            ),
-            insertImage: ({ tintColor }: { tintColor: string }) => (
-              <Ionicons color={tintColor} name="image-outline" size={16} />
-            ),
-          }}
-          insertImage={openImageLibrary}
-          selectedButtonStyle={{ backgroundColor: palette.blueSoft }}
-          style={styles.richToolbar}
-        />
+        <Toolbar editor={editor} />
 
         <Pressable onPress={extractToNewNote} style={({ pressed }) => [styles.extractButton, pressed && styles.pressed]}>
           <Ionicons color={palette.blue} name="git-branch-outline" size={16} />
@@ -433,21 +395,8 @@ export default function EditorScreen() {
           </View>
         ) : null}
 
-        <RichEditor
-          ref={richTextRef}
-          initialContentHTML={body}
-          initialHeight={400}
-          onChange={(html) => setBody(html)}
-          onFocus={enterDistractionFree}
-          onBlur={exitDistractionFree}
-          placeholder="Write what you are learning in the Word..."
-          editorStyle={{
-            backgroundColor: palette.backgroundAlt,
-            color: '#414754',
-            placeholderColor: '#A8A29E',
-            contentCSSText: 'font-size: 17px; line-height: 1.75; font-family: -apple-system, system-ui, sans-serif;',
-            initialCSSText: 'body { padding: 0; margin: 0; }',
-          }}
+        <RichText
+          editor={editor}
           style={styles.editor}
         />
 
@@ -512,6 +461,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   editor: {
+    flex: 1,
     minHeight: 400,
   },
   header: {
@@ -565,13 +515,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     gap: 10,
   },
-  richToolbar: {
-    backgroundColor: palette.backgroundAlt,
-    borderColor: palette.border,
-    borderRadius: 14,
-    borderWidth: 1,
-    height: 44,
-  },
   extractButton: {
     alignItems: 'center',
     alignSelf: 'center',
@@ -602,10 +545,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     lineHeight: 38,
     paddingVertical: 0,
-  },
-  toolIcon: {
-    fontSize: 15,
-    fontWeight: '700',
   },
   verseSearchCard: {
     gap: 10,
