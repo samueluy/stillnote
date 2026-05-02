@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
-import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Modal, StyleSheet, Text, View } from 'react-native';
 
+import { AnimatedPressable } from '@/src/components/animated-pressable';
 import { palette } from '@/src/components/primitives';
 import type { ConcordanceEntry } from '@/src/types/domain';
 
@@ -24,9 +25,9 @@ export function ConcordanceModal({
                 {entry.strongsId}. {entry.transliteration}
               </Text>
             </View>
-            <Pressable onPress={onClose}>
+            <AnimatedPressable onPress={onClose}>
               <Ionicons color="#FFFFFF" name="close-outline" size={20} />
-            </Pressable>
+            </AnimatedPressable>
           </View>
 
           <View style={styles.content}>

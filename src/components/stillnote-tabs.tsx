@@ -1,7 +1,8 @@
 import { Ionicons } from '@expo/vector-icons';
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
+import { AnimatedPressable } from '@/src/components/animated-pressable';
 import { palette } from '@/src/components/primitives';
 
 const TAB_META: Record<string, { label: string; icon: keyof typeof Ionicons.glyphMap }> = {
@@ -18,7 +19,7 @@ export function StillnoteTabBar({ state, descriptors, navigation }: BottomTabBar
         const meta = TAB_META[route.name] ?? { label: route.name, icon: 'ellipse-outline' };
 
         return (
-          <Pressable
+          <AnimatedPressable
             accessibilityRole="button"
             key={route.key}
             onPress={() => navigation.navigate(route.name)}
@@ -29,7 +30,7 @@ export function StillnoteTabBar({ state, descriptors, navigation }: BottomTabBar
               size={18}
             />
             <Text style={[styles.label, focused && styles.labelActive]}>{meta.label}</Text>
-          </Pressable>
+          </AnimatedPressable>
         );
       })}
     </View>

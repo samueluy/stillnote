@@ -14,7 +14,6 @@ import {
   Animated,
   KeyboardAvoidingView,
   Platform,
-  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -30,6 +29,7 @@ import {
   TagChip,
   palette,
 } from '@/src/components/primitives';
+import { AnimatedPressable } from '@/src/components/animated-pressable';
 import { markdownToHtml, stripHtml } from '@/src/lib/editor';
 import {
   buildInsertedVerseText,
@@ -295,7 +295,7 @@ export default function EditorScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       style={styles.container}>
       <Animated.View style={[styles.header, { opacity: headerOpacity }]}>
-        <Pressable
+        <AnimatedPressable
           onPress={() => {
             if (isDistractionFree) {
               exitDistractionFree();
@@ -309,10 +309,10 @@ export default function EditorScreen() {
             name={isDistractionFree ? 'eye-outline' : 'chevron-back-outline'}
             size={20}
           />
-        </Pressable>
+        </AnimatedPressable>
         <Text style={styles.headerTitle}>Stillnote</Text>
         <View style={styles.headerActions}>
-          <Pressable
+          <AnimatedPressable
             onPress={async () => {
               await toggleNoteFavorite(db, noteId);
               setIsFavorite((v) => !v);
@@ -324,8 +324,8 @@ export default function EditorScreen() {
               name={isFavorite ? 'heart' : 'heart-outline'}
               size={20}
             />
-          </Pressable>
-          <Pressable
+          </AnimatedPressable>
+          <AnimatedPressable
             onPress={() => {
               Alert.alert('Delete Note', 'Are you sure you want to delete this note? This action cannot be undone.', [
                 { text: 'Cancel', style: 'cancel' },
@@ -342,10 +342,10 @@ export default function EditorScreen() {
             }}
             style={styles.headerButton}>
             <Ionicons color={palette.textMuted} name="trash-outline" size={20} />
-          </Pressable>
-          <Pressable onPress={() => bottomSheetRef.current?.present()} style={styles.headerButton}>
+          </AnimatedPressable>
+          <AnimatedPressable onPress={() => bottomSheetRef.current?.present()} style={styles.headerButton}>
             <Ionicons color={palette.blue} name="book-outline" size={20} />
-          </Pressable>
+          </AnimatedPressable>
         </View>
       </Animated.View>
 
@@ -367,10 +367,10 @@ export default function EditorScreen() {
 
         <Toolbar editor={editor} />
 
-        <Pressable onPress={extractToNewNote} style={({ pressed }) => [styles.extractButton, pressed && styles.pressed]}>
+        <AnimatedPressable onPress={extractToNewNote} style={({ pressed }) => [styles.extractButton, pressed && styles.pressed]}>
           <Ionicons color={palette.blue} name="git-branch-outline" size={16} />
           <Text style={styles.extractButtonText}>Extract to New Note</Text>
-        </Pressable>
+        </AnimatedPressable>
 
         <View style={styles.verseSearchCard}>
           <SearchField
@@ -378,9 +378,9 @@ export default function EditorScreen() {
             placeholder="Insert a verse like Genesis 1:1"
             value={verseSearch}
           />
-          <Pressable onPress={insertReferenceFromSearch} style={({ pressed }) => [styles.insertReferenceButton, pressed && styles.pressed]}>
+          <AnimatedPressable onPress={insertReferenceFromSearch} style={({ pressed }) => [styles.insertReferenceButton, pressed && styles.pressed]}>
             <Text style={styles.insertReferenceText}>Insert Verse</Text>
-          </Pressable>
+          </AnimatedPressable>
         </View>
 
         {referenceVerses.length ? (

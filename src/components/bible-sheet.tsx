@@ -7,9 +7,10 @@ import {
 } from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
 import { forwardRef, useMemo, useState } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 
+import { AnimatedPressable } from '@/src/components/animated-pressable';
 import { palette } from '@/src/components/primitives';
 import type { BibleVerse } from '@/src/types/domain';
 
@@ -32,10 +33,10 @@ function VerseRow({
     <View style={styles.verseRow}>
       <Text style={styles.verseNumber}>{item.verse}</Text>
       <Text style={styles.verseText}>{item.text}</Text>
-      <Pressable onPress={() => onInsertVerse(item)} style={({ pressed }) => [styles.insertButton, pressed && styles.pressed]}>
+      <AnimatedPressable onPress={() => onInsertVerse(item)} style={({ pressed }) => [styles.insertButton, pressed && styles.pressed]}>
         <Ionicons color="#FFFFFF" name="add-outline" size={12} />
         <Text style={styles.insertButtonText}>Insert</Text>
-      </Pressable>
+      </AnimatedPressable>
     </View>
   );
 }
@@ -85,12 +86,12 @@ export const BibleSheet = forwardRef<BottomSheetModal, Props>(function BibleShee
           <Text style={styles.headerSubtitle}>{translationName}</Text>
         </View>
         <View style={styles.headerActions}>
-          <Pressable onPress={() => { setIsSheetSearchOpen((v) => !v); setSheetSearch(''); }} style={styles.headerAction}>
+          <AnimatedPressable onPress={() => { setIsSheetSearchOpen((v) => !v); setSheetSearch(''); }} style={styles.headerAction}>
             <Ionicons color={palette.text} name="search-outline" size={18} />
-          </Pressable>
-          <Pressable onPress={dismissSheet} style={styles.headerAction}>
+          </AnimatedPressable>
+          <AnimatedPressable onPress={dismissSheet} style={styles.headerAction}>
             <Ionicons color={palette.text} name="close-outline" size={20} />
-          </Pressable>
+          </AnimatedPressable>
         </View>
       </BottomSheetView>
 
@@ -105,9 +106,9 @@ export const BibleSheet = forwardRef<BottomSheetModal, Props>(function BibleShee
             value={sheetSearch}
           />
           {sheetSearch.trim() ? (
-            <Pressable onPress={() => setSheetSearch('')}>
+            <AnimatedPressable onPress={() => setSheetSearch('')}>
               <Ionicons color={palette.textMuted} name="close-outline" size={16} />
-            </Pressable>
+            </AnimatedPressable>
           ) : null}
         </View>
       ) : null}

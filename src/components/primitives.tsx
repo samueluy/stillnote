@@ -1,8 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
 import type { ComponentProps, ReactNode } from 'react';
 import { forwardRef } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { AnimatedPressable } from '@/src/components/animated-pressable';
 
 type IoniconName = ComponentProps<typeof Ionicons>['name'];
 
@@ -79,7 +81,7 @@ export function CircleButton({
   muted?: boolean;
 }) {
   return (
-    <Pressable
+    <AnimatedPressable
       accessibilityRole="button"
       onPress={onPress}
       style={({ pressed }) => [
@@ -88,7 +90,7 @@ export function CircleButton({
         pressed && styles.pressed,
       ]}>
       <Ionicons color={muted ? palette.success : palette.blue} name={icon} size={18} />
-    </Pressable>
+    </AnimatedPressable>
   );
 }
 
@@ -148,14 +150,14 @@ export function SmartCollectionRow({
   onPress?: () => void;
 }) {
   return (
-    <Pressable onPress={onPress} style={({ pressed }) => [styles.row, pressed && styles.pressed]}>
+    <AnimatedPressable onPress={onPress} style={({ pressed }) => [styles.row, pressed && styles.pressed]}>
       <View style={styles.rowIconWrap}>
         <Ionicons color={palette.blue} name={icon} size={18} />
       </View>
       <Text style={styles.rowLabel}>{label}</Text>
       {typeof count === 'number' ? <Text style={styles.rowCount}>{count}</Text> : null}
       <Ionicons color="#B7BCC9" name="chevron-forward-outline" size={16} />
-    </Pressable>
+    </AnimatedPressable>
   );
 }
 
@@ -173,14 +175,14 @@ export function ThreadRow({
   onPress?: () => void;
 }) {
   return (
-    <Pressable onPress={onPress} style={({ pressed }) => [styles.row, pressed && styles.pressed]}>
+    <AnimatedPressable onPress={onPress} style={({ pressed }) => [styles.row, pressed && styles.pressed]}>
       <View style={[styles.threadIconWrap, { backgroundColor: accent }]}>
         <Ionicons color={palette.text} name={icon} size={16} />
       </View>
       <Text style={styles.rowLabel}>{name}</Text>
       <Text style={styles.rowCount}>{count}</Text>
       <Ionicons color="#B7BCC9" name="chevron-forward-outline" size={16} />
-    </Pressable>
+    </AnimatedPressable>
   );
 }
 
@@ -194,7 +196,7 @@ export function TagChip({
   onPress?: () => void;
 }) {
   return (
-    <Pressable
+    <AnimatedPressable
       onPress={onPress}
       style={({ pressed }) => [
         styles.tagChip,
@@ -203,7 +205,7 @@ export function TagChip({
       ]}>
       {outlined ? <Ionicons color={palette.textMuted} name="add-outline" size={12} /> : null}
       <Text style={[styles.tagText, outlined && styles.tagOutlinedText]}>{label}</Text>
-    </Pressable>
+    </AnimatedPressable>
   );
 }
 
@@ -217,10 +219,10 @@ export function TextButton({
   onPress?: () => void;
 }) {
   return (
-    <Pressable onPress={onPress} style={({ pressed }) => [styles.textButton, pressed && styles.pressed]}>
+    <AnimatedPressable onPress={onPress} style={({ pressed }) => [styles.textButton, pressed && styles.pressed]}>
       {icon ? <Ionicons color={palette.blue} name={icon} size={16} /> : null}
       <Text style={styles.textButtonLabel}>{label}</Text>
-    </Pressable>
+    </AnimatedPressable>
   );
 }
 
@@ -232,9 +234,9 @@ export function FloatingActionButton({
   onPress?: () => void;
 }) {
   return (
-    <Pressable onPress={onPress} style={({ pressed }) => [styles.fab, pressed && styles.pressed]}>
+    <AnimatedPressable onPress={onPress} style={({ pressed }) => [styles.fab, pressed && styles.pressed]}>
       <Ionicons color="#FFFFFF" name={icon} size={22} />
-    </Pressable>
+    </AnimatedPressable>
   );
 }
 
@@ -248,9 +250,9 @@ export function Pill({
   onPress?: () => void;
 }) {
   return (
-    <Pressable onPress={onPress} style={({ pressed }) => [styles.pill, active && styles.pillActive, pressed && styles.pressed]}>
+    <AnimatedPressable onPress={onPress} style={({ pressed }) => [styles.pill, active && styles.pillActive, pressed && styles.pressed]}>
       <Text style={[styles.pillText, active && styles.pillTextActive]}>{label}</Text>
-    </Pressable>
+    </AnimatedPressable>
   );
 }
 
@@ -264,10 +266,10 @@ export function ToolbarButton({
   onPress?: () => void;
 }) {
   return (
-    <Pressable onPress={onPress} style={({ pressed }) => [styles.toolbarButton, pressed && styles.pressed]}>
+    <AnimatedPressable onPress={onPress} style={({ pressed }) => [styles.toolbarButton, pressed && styles.pressed]}>
       <Ionicons color={palette.text} name={icon} size={16} />
       <Text style={styles.toolbarText}>{label}</Text>
-    </Pressable>
+    </AnimatedPressable>
   );
 }
 
@@ -284,9 +286,9 @@ export function AttachmentPreview({
         <Ionicons color={palette.blue} name="image-outline" size={18} />
         <Text style={styles.attachmentTitle}>Attachment {index + 1}</Text>
       </View>
-      <Pressable onPress={onRemove}>
+      <AnimatedPressable onPress={onRemove}>
         <Ionicons color={palette.textMuted} name="close-outline" size={18} />
-      </Pressable>
+      </AnimatedPressable>
     </View>
   );
 }

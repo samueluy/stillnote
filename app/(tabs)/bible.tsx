@@ -1,9 +1,10 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useMemo, useState } from 'react';
-import { Alert, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, Modal, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { ConcordanceModal } from '@/src/components/concordance-modal';
+import { AnimatedPressable } from '@/src/components/animated-pressable';
 import { Card, Screen, SectionTitle, TopBar, palette } from '@/src/components/primitives';
 import { getConcordanceEntry } from '@/src/data/concordance';
 import { getBibleChapter, createNoteFromTemplate, getWorkspaceSnapshot, trackLookup, getRecentLookups } from '@/src/lib/database';
@@ -139,7 +140,7 @@ export default function BibleScreen() {
                 <Text style={styles.readerSubtitle}>English Standard-style study layout, KJV text</Text>
               </View>
               <View style={styles.readerTools}>
-                <Pressable
+                <AnimatedPressable
                   onPress={async () => {
                     const snapshot = await getWorkspaceSnapshot(db, activeSpaceId);
                     if (snapshot.templates.length && snapshot.threads.length) {
@@ -157,17 +158,17 @@ export default function BibleScreen() {
                   }}
                   style={({ pressed }) => [styles.toolBubble, pressed && styles.pressed]}>
                   <Text style={styles.toolIcon}>✎</Text>
-                </Pressable>
-                <Pressable
+                </AnimatedPressable>
+                <AnimatedPressable
                   onPress={() => setIsSearchOpen((v) => !v)}
                   style={({ pressed }) => [styles.toolBubble, pressed && styles.pressed]}>
                   <Text style={styles.toolIcon}>⌕</Text>
-                </Pressable>
-                <Pressable
+                </AnimatedPressable>
+                <AnimatedPressable
                   onPress={() => setIsAnnotated((v) => !v)}
                   style={({ pressed }) => [styles.toolBubble, pressed && styles.pressed]}>
                   <Text style={styles.toolIcon}>◎</Text>
-                </Pressable>
+                </AnimatedPressable>
               </View>
             </View>
 
@@ -181,9 +182,9 @@ export default function BibleScreen() {
                   value={verseSearchQuery}
                 />
                 {verseSearchQuery.trim() ? (
-                  <Pressable onPress={() => setVerseSearchQuery('')}>
+                  <AnimatedPressable onPress={() => setVerseSearchQuery('')}>
                     <Ionicons color={palette.textMuted} name="close-outline" size={16} />
-                  </Pressable>
+                  </AnimatedPressable>
                 ) : null}
               </View>
             ) : null}
@@ -249,7 +250,7 @@ export default function BibleScreen() {
                   {recentLookups.map((lookup) => {
                     const entry = getConcordanceEntry(lookup.entryId);
                     return (
-                      <Pressable
+                      <AnimatedPressable
                         key={lookup.entryId}
                         onPress={() => {
                           setVisibleEntryId(lookup.entryId);
@@ -260,7 +261,7 @@ export default function BibleScreen() {
                         <Text style={styles.lookupChipText}>
                           {entry?.transliteration ?? lookup.entryId}
                         </Text>
-                      </Pressable>
+                      </AnimatedPressable>
                     );
                   })}
                 </View>
@@ -275,13 +276,13 @@ export default function BibleScreen() {
           <SectionTitle title="Suggested Verses" />
           <View style={styles.suggestionStack}>
             {['Matthew 6:25-34', 'Psalm 23:1-4', 'Philippians 4:6-7'].map((reference) => (
-              <Pressable
+              <AnimatedPressable
                 key={reference}
                 onPress={() => navigateToReference(reference)}
                 style={({ pressed }) => [styles.suggestionCard, pressed && styles.pressed]}>
                 <Text style={styles.suggestionRef}>{reference}</Text>
                 <Text style={styles.suggestionBody}>Locally surfaced for anxiety, care, and peace during transition.</Text>
-              </Pressable>
+              </AnimatedPressable>
             ))}
           </View>
         </View>
@@ -294,13 +295,13 @@ export default function BibleScreen() {
           <View style={styles.modalPanel}>
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>Select Book</Text>
-              <Pressable onPress={() => setIsBookPickerOpen(false)}>
+              <AnimatedPressable onPress={() => setIsBookPickerOpen(false)}>
                 <Ionicons color={palette.textMuted} name="close-outline" size={22} />
-              </Pressable>
+              </AnimatedPressable>
             </View>
             <ScrollView contentContainerStyle={styles.modalList}>
               {BIBLE_BOOKS.map((bookName) => (
-                <Pressable
+                <AnimatedPressable
                   key={bookName}
                   onPress={() => {
                     setBook(bookName);
@@ -315,7 +316,7 @@ export default function BibleScreen() {
                   <Text style={[styles.bookItemText, bookName === book && styles.bookItemTextActive]}>
                     {bookName}
                   </Text>
-                </Pressable>
+                </AnimatedPressable>
               ))}
             </ScrollView>
           </View>

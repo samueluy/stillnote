@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useDeferredValue, useEffect, useRef, useState } from 'react';
-import { Alert, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Modal, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import {
   Card,
@@ -20,6 +20,7 @@ import {
   TopBar,
   palette,
 } from '@/src/components/primitives';
+import { AnimatedPressable } from '@/src/components/animated-pressable';
 import {
   createNoteFromTemplate,
   createTag,
@@ -138,7 +139,7 @@ export default function WorkspaceScreen() {
             <SectionTitle title="Search Results" />
             {results.length ? (
               results.map((result) => (
-                <Pressable
+                <AnimatedPressable
                   key={`${result.type}-${result.id}`}
                   onPress={() =>
                     result.type === 'note'
@@ -162,7 +163,7 @@ export default function WorkspaceScreen() {
                       {result.body}
                     </Text>
                   </View>
-                </Pressable>
+                </AnimatedPressable>
               ))
             ) : (
               <EmptyState
@@ -248,7 +249,7 @@ export default function WorkspaceScreen() {
               <SectionTitle title="Study Frameworks" />
               <View style={styles.templateStack}>
                 {snapshot.templates.map((template) => (
-                  <Pressable
+                  <AnimatedPressable
                     key={template.id}
                     onPress={async () => {
                       const thread =
@@ -269,7 +270,7 @@ export default function WorkspaceScreen() {
                       <Text style={styles.templateTitle}>{template.name}</Text>
                       <Text style={styles.templateText}>{template.description}</Text>
                     </View>
-                  </Pressable>
+                  </AnimatedPressable>
                 ))}
               </View>
             </View>
@@ -277,7 +278,7 @@ export default function WorkspaceScreen() {
             {snapshot.dailyVerse ? (
               <View style={styles.sectionGap}>
                 <SectionTitle title="Daily Verse Prompt" />
-                <Pressable
+                <AnimatedPressable
                   onPress={() => {
                     if (snapshot?.dailyVerse) {
                       router.push({
@@ -289,7 +290,7 @@ export default function WorkspaceScreen() {
                   style={({ pressed }) => [styles.promptCard, pressed && styles.pressed]}>
                   <Text style={styles.promptReference}>{snapshot.dailyVerse.reference}</Text>
                   <Text style={styles.promptText}>{snapshot.dailyVerse.text}</Text>
-                </Pressable>
+                </AnimatedPressable>
               </View>
             ) : null}
 
@@ -327,7 +328,7 @@ export default function WorkspaceScreen() {
               <SectionTitle title="Recent Notes" />
               <View style={styles.templateStack}>
                 {snapshot.recentNotes.map((note) => (
-                  <Pressable
+                  <AnimatedPressable
                     key={note.id}
                     onPress={() => router.push(`/editor/${note.id}`)}
                     style={({ pressed }) => [styles.noteCard, pressed && styles.pressed]}>
@@ -335,7 +336,7 @@ export default function WorkspaceScreen() {
                     <Text numberOfLines={3} style={styles.noteCardText}>
                       {note.plainText}
                     </Text>
-                  </Pressable>
+                  </AnimatedPressable>
                 ))}
               </View>
             </View>
@@ -349,14 +350,14 @@ export default function WorkspaceScreen() {
           <View style={styles.modalPanel}>
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>{collectionTitle}</Text>
-              <Pressable onPress={() => setIsCollectionOpen(false)}>
+              <AnimatedPressable onPress={() => setIsCollectionOpen(false)}>
                 <Ionicons color={palette.textMuted} name="close-outline" size={22} />
-              </Pressable>
+              </AnimatedPressable>
             </View>
             <ScrollView contentContainerStyle={styles.modalList}>
               {collectionNotes.length ? (
                 collectionNotes.map((note) => (
-                  <Pressable
+                  <AnimatedPressable
                     key={note.id}
                     onPress={() => {
                       setIsCollectionOpen(false);
@@ -367,7 +368,7 @@ export default function WorkspaceScreen() {
                     <Text numberOfLines={2} style={styles.modalNoteText}>
                       {note.plainText || 'Empty note'}
                     </Text>
-                  </Pressable>
+                  </AnimatedPressable>
                 ))
               ) : (
                 <EmptyState
