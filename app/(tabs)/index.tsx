@@ -4,19 +4,25 @@ import { useFocusEffect, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withSequence, withTiming } from 'react-native-reanimated';
 
 import { AnimatedPressable } from '@/src/components/animated-pressable';
-import { Card, EmptyState, FloatingActionButton, PageScroll, Pill, Screen, SearchField, SectionTitle, SmartCollectionRow, TagChip, TextButton, ThreadRow, TopBar } from '@/src/components/primitives';
-import { createNoteFromTemplate, createTag, createThread, getNotesByCollection, getWorkspaceSnapshot, searchEverything } from '@/src/lib/database';
+import { EmptyState, Screen, SearchField, TopBar } from '@/src/components/primitives';
+import { createNoteFromTemplate, getNotesByCollection, getWorkspaceSnapshot, searchEverything } from '@/src/lib/database';
 import { useAppState } from '@/src/providers/app-provider';
 import { useTheme } from '@/src/theme/useTheme';
 import type { Note, SearchResult, WorkspaceSnapshot } from '@/src/types/domain';
 
+function getGreeting() {
+  const h = new Date().getHours();
+  if (h < 12) return 'Good morning';
+  if (h < 17) return 'Good afternoon';
+  return 'Good evening';
+}
+
 export default function WorkspaceScreen() {
   const db = useSQLiteContext();
   const router = useRouter();
-  const { activeSpaceId, setActiveSpaceId, refreshToken } = useAppState();
+  const { activeSpaceId, refreshToken } = useAppState();
   const { colors } = useTheme();
 
   const [snapshot, setSnapshot] = useState<WorkspaceSnapshot | null>(null);
@@ -29,17 +35,6 @@ export default function WorkspaceScreen() {
   const scrollRef = useRef<ScrollView>(null);
   const deferredQuery = useDeferredValue(query);
 
-  const fabPulse = useSharedValue(1);
-  const fabPulseStyle = useAnimatedStyle(() => ({ transform: [{ scale: fabPulse.value }] }));
-
-  useEffect(() => {
-    if (snapshot && snapshot.threads.length === 0) {
-      fabPulse.value = withRepeat(withSequence(withTiming(1.05, { duration: 600 }), withTiming(1, { duration: 600 })), -1, true);
-    } else {
-      fabPulse.value = withTiming(1);
-    }
-  }, [snapshot, fabPulse]);
-
   const loadSnapshot = useCallback(async () => {
     setSnapshot(await getWorkspaceSnapshot(db, activeSpaceId));
   }, [activeSpaceId, db]);
@@ -51,12 +46,20 @@ export default function WorkspaceScreen() {
     let cancelled = false;
     async function runSearch() {
       if (!deferredQuery.trim()) { setResults([]); return; }
-      const nextResults = await searchEverything(db, activeSpaceId, deferredQuery);
-      if (!cancelled) setResults(nextResults);
+      const r = await searchEverything(db, activeSpaceId, deferredQuery);
+      if (!cancelled) setResults(r);
     }
     runSearch();
     return () => { cancelled = true; };
   }, [activeSpaceId, db, deferredQuery]);
+
+  const createQuickNote = useCallback(async () => {
+    if (!snapshot?.templates.length || !snapshot.threads.length) return;
+    const t = snapshot.threads[0];
+    const tpl = snapshot.templates.find((x) => x.threadHint === t.id) ?? snapshot.templates[0];
+    const id = await createNoteFromTemplate(db, { templateId: tpl.id, spaceId: activeSpaceId, threadId: t.id, title: t.name === 'Personal Journal' ? 'Fresh Reflection' : `New ${t.name} Note` });
+    router.push(`/editor/${id}`);
+  }, [activeSpaceId, db, router, snapshot]);
 
   const openCollection = useCallback(async (collection: 'all' | 'favorites' | 'recent', title: string) => {
     const notes = await getNotesByCollection(db, activeSpaceId, collection);
@@ -65,131 +68,92 @@ export default function WorkspaceScreen() {
     collectionSheetRef.current?.present();
   }, [activeSpaceId, db]);
 
+  const allNotes = snapshot?.recentNotes ?? [];
+
   return (
     <Screen>
-      <TopBar title="Stillnote" onRightPress={() => scrollRef.current?.scrollTo({ y: 0, animated: true })} />
-      <PageScroll ref={scrollRef}>
-        <View style={styles.spaceRow}>
-          {snapshot?.spaces.map((space) => (
-            <Pill key={space.id} active={space.id === activeSpaceId} label={space.name} onPress={() => setActiveSpaceId(space.id)} />
-          ))}
+      <TopBar title="Journal" />
+      <PageScroll innerRef={scrollRef}>
+        <View style={styles.greeting}>
+          <Text style={[styles.greetingText, { color: colors.textPrimary }]}>{getGreeting()}</Text>
+          <Text style={[styles.dateText, { color: colors.textTertiary }]}>
+            {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+          </Text>
+        </View>
+
+        <AnimatedPressable haptic="medium" onPress={createQuickNote} style={({ pressed }) => [styles.ctaCard, { backgroundColor: colors.bgCard, borderColor: colors.border }, pressed && styles.pressed]}>
+          <View style={[styles.ctaIcon, { backgroundColor: colors.accentSoft }]}>
+            <Ionicons color={colors.accent} name="add-outline" size={20} />
+          </View>
+          <Text style={[styles.ctaText, { color: colors.textPrimary }]}>Start writing…</Text>
+          <Ionicons color={colors.borderStrong} name="chevron-forward-outline" size={16} />
+        </AnimatedPressable>
+
+        <View style={styles.quickActions}>
+          <AnimatedPressable haptic="light" onPress={() => router.push('/(tabs)/bible')} style={[styles.quickBtn, { backgroundColor: colors.goldSoft }]}>
+            <Ionicons color={colors.gold} name="book-outline" size={18} />
+            <Text style={[styles.quickLabel, { color: colors.gold }]}>Bible</Text>
+          </AnimatedPressable>
+          <AnimatedPressable haptic="light" onPress={() => scrollRef.current?.scrollTo({ y: 0, animated: true })} style={[styles.quickBtn, { backgroundColor: colors.border }]}>
+            <Ionicons color={colors.textSecondary} name="search-outline" size={18} />
+            <Text style={[styles.quickLabel, { color: colors.textSecondary }]}>Find</Text>
+          </AnimatedPressable>
+          <AnimatedPressable haptic="light" onPress={() => openCollection('all', 'All Notes')} style={[styles.quickBtn, { backgroundColor: colors.accentSoft }]}>
+            <Ionicons color={colors.accent} name="document-text-outline" size={18} />
+            <Text style={[styles.quickLabel, { color: colors.accent }]}>Notes</Text>
+          </AnimatedPressable>
         </View>
 
         <SearchField onChangeText={setQuery} placeholder="Search notes, tags, or scripture" value={query} />
 
         {deferredQuery.trim() ? (
-          <Card>
-            <SectionTitle title="SEARCH RESULTS" />
+          <View style={styles.section}>
+            <Text style={[styles.sectionTitle, { color: colors.textTertiary }]}>Results</Text>
             {results.length ? results.map((r) => (
-              <AnimatedPressable key={`${r.type}-${r.id}`} onPress={() => r.type === 'note' ? router.push(`/editor/${r.id}`) : router.push({ pathname: '/(tabs)/bible', params: { reference: r.title } })} style={({ pressed }) => [styles.searchResult, pressed && styles.pressed]}>
-                <View style={[styles.searchIcon, { backgroundColor: colors.accentSoft }]}>
+              <AnimatedPressable key={`${r.type}-${r.id}`} onPress={() => r.type === 'note' ? router.push(`/editor/${r.id}`) : router.push({ pathname: '/(tabs)/bible', params: { reference: r.title } })} style={({ pressed }) => [styles.resultCard, { backgroundColor: colors.bgCard, borderColor: colors.border }, pressed && styles.pressed]}>
+                <View style={[styles.resultIcon, { backgroundColor: colors.accentSoft }]}>
                   <Ionicons color={colors.accent} name={r.type === 'note' ? 'document-text-outline' : 'book-outline'} size={16} />
                 </View>
                 <View style={{ flex: 1 }}>
-                  <Text style={[styles.searchTitle, { color: colors.textPrimary }]}>{r.title}</Text>
-                  <Text numberOfLines={2} style={[styles.searchText, { color: colors.textSecondary }]}>{r.body}</Text>
+                  <Text style={[styles.resultTitle, { color: colors.textPrimary }]}>{r.title}</Text>
+                  <Text numberOfLines={2} style={[styles.resultText, { color: colors.textSecondary }]}>{r.body}</Text>
                 </View>
               </AnimatedPressable>
-            )) : <EmptyState title="Nothing surfaced yet" subtitle="Try a thread name, a theme, or a verse like John 1:1." />}
-          </Card>
+            )) : <EmptyState title="Nothing surfaced" subtitle="Try a different search term." />}
+          </View>
         ) : null}
 
         {!deferredQuery.trim() && snapshot ? (
           <>
-            <Card>
-              <SmartCollectionRow count={snapshot.collectionCounts.allNotes} icon="document-text-outline" label="All Notes" onPress={() => openCollection('all', 'All Notes')} />
-              <View style={[styles.divider, { backgroundColor: colors.border }]} />
-              <SmartCollectionRow count={snapshot.collectionCounts.favorites} icon="heart-outline" label="Favorites" onPress={() => openCollection('favorites', 'Favorites')} />
-              <View style={[styles.divider, { backgroundColor: colors.border }]} />
-              <SmartCollectionRow count={snapshot.collectionCounts.recent} icon="time-outline" label="Recent" onPress={() => openCollection('recent', 'Recent')} />
-            </Card>
-
-            <View style={styles.sectionGap}>
-              <SectionTitle title="My Threads" />
-              <Card>
-                {snapshot.threads.map((thread, i) => (
-                  <View key={thread.id}>
-                    <ThreadRow accent={thread.accent} count={thread.noteCount} icon={thread.icon as any} name={thread.name} onPress={async () => {
-                      const tpl = snapshot.templates.find((t) => t.threadHint === thread.id) ?? snapshot.templates[0];
-                      const id = await createNoteFromTemplate(db, { templateId: tpl.id, spaceId: activeSpaceId, threadId: thread.id });
-                      router.push(`/editor/${id}`);
-                    }} />
-                    {i < snapshot.threads.length - 1 ? <View style={[styles.threadDiv, { backgroundColor: colors.border }]} /> : null}
+            <View style={styles.section}>
+              <Text style={[styles.sectionTitle, { color: colors.textTertiary }]}>Entries</Text>
+              {allNotes.length ? allNotes.map((note) => (
+                <AnimatedPressable key={note.id} haptic="light" onPress={() => router.push(`/editor/${note.id}`)} style={({ pressed }) => [styles.noteCard, { backgroundColor: colors.bgCard, borderColor: colors.border }, pressed && styles.pressed]}>
+                  <View style={styles.noteHeader}>
+                    <Text style={[styles.noteTitle, { color: colors.textPrimary }]}>{note.title || 'Untitled'}</Text>
+                    <Text style={[styles.noteTime, { color: colors.textTertiary }]}>
+                      {new Date(note.updatedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                    </Text>
                   </View>
-                ))}
-              </Card>
-              <TextButton icon="add-outline" label="New Thread" onPress={async () => {
-                const thread = await createThread(db, { spaceId: activeSpaceId });
-                const tpl = snapshot.templates.find((t) => t.threadHint === thread.id) ?? snapshot.templates[0];
-                const id = await createNoteFromTemplate(db, { templateId: tpl.id, spaceId: activeSpaceId, threadId: thread.id, title: `${thread.name} Note` });
-                await loadSnapshot();
-                router.push(`/editor/${id}`);
-              }} />
-            </View>
-
-            <View style={styles.sectionGap}>
-              <SectionTitle title="Study Frameworks" />
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.frameworkScroll}>
-                {snapshot.templates.map((tpl, index) => (
-                  <AnimatedPressable key={tpl.id} onPress={async () => {
-                    const thread = snapshot.threads.find((t) => t.id === tpl.threadHint) ?? snapshot.threads[0];
-                    const id = await createNoteFromTemplate(db, { templateId: tpl.id, spaceId: activeSpaceId, threadId: thread.id });
-                    router.push(`/editor/${id}`);
-                  }} style={({ pressed }) => [styles.frameworkCard, { backgroundColor: colors.bgElevated, borderColor: colors.border }, pressed && styles.pressed]}>
-                    <View style={[styles.frameworkStrip, { backgroundColor: index === 0 ? colors.coral : index === 1 ? colors.accent : colors.gold }]} />
-                    <View style={[styles.frameworkIcon, { backgroundColor: colors.accentSoft }]}>
-                      <Ionicons color={colors.accent} name={tpl.icon as any} size={18} />
-                    </View>
-                    <Text style={[styles.frameworkName, { color: colors.textPrimary }]}>{tpl.name}</Text>
-                    <Text style={[styles.frameworkDesc, { color: colors.textSecondary }]} numberOfLines={2}>{tpl.description}</Text>
-                  </AnimatedPressable>
-                ))}
-              </ScrollView>
+                  <Text numberOfLines={2} style={[styles.notePreview, { color: colors.textSecondary }]}>{note.plainText || 'Empty note'}</Text>
+                </AnimatedPressable>
+              )) : (
+                <EmptyState title="Your journal is waiting" subtitle="Tap 'Start writing' above to create your first entry." />
+              )}
             </View>
 
             {snapshot.dailyVerse ? (
-              <View style={styles.sectionGap}>
-                <SectionTitle title="Daily Verse" />
-                <AnimatedPressable onPress={() => { if (snapshot?.dailyVerse) router.push({ pathname: '/(tabs)/bible', params: { reference: snapshot.dailyVerse.reference } }); }} style={({ pressed }) => [styles.promptCard, { backgroundColor: colors.goldSoft, borderColor: colors.gold + '20' }, pressed && styles.pressed]}>
-                  <Text style={[styles.promptRef, { color: colors.gold }]}>{snapshot.dailyVerse.reference}</Text>
-                  <Text style={[styles.promptText, { color: colors.textPrimary }]}>{snapshot.dailyVerse.text}</Text>
+              <View style={styles.section}>
+                <Text style={[styles.sectionTitle, { color: colors.textTertiary }]}>Daily Verse</Text>
+                <AnimatedPressable onPress={() => router.push({ pathname: '/(tabs)/bible', params: { reference: snapshot.dailyVerse!.reference } })} style={({ pressed }) => [styles.verseCard, { backgroundColor: colors.goldSoft, borderColor: colors.gold + '20' }, pressed && styles.pressed]}>
+                  <Text style={[styles.verseRef, { color: colors.gold }]}>{snapshot.dailyVerse.reference}</Text>
+                  <Text style={[styles.verseText, { color: colors.textPrimary }]}>{snapshot.dailyVerse.text}</Text>
                 </AnimatedPressable>
               </View>
             ) : null}
-
-            <View style={styles.sectionGap}>
-              <SectionTitle title="Tags" />
-              <View style={styles.tagsWrap}>
-                {snapshot.tags.map((tag) => (<TagChip key={tag.id} label={`#${tag.name}`} />))}
-                <TagChip label="Tag" outlined onPress={() => {
-                  if (Alert.prompt) { Alert.prompt('Create Tag', 'Enter a tag name:', (name) => { if (name?.trim()) createTag(db, name.trim()).then(loadSnapshot); }); }
-                  else { Alert.alert('Create Tag', 'Use #hashtag syntax in any note to auto-create it.'); }
-                }} />
-              </View>
-            </View>
-
-            <View style={styles.sectionGap}>
-              <SectionTitle title="Recent Notes" />
-              <View style={styles.templateStack}>
-                {snapshot.recentNotes.map((note) => (
-                  <AnimatedPressable key={note.id} onPress={() => router.push(`/editor/${note.id}`)} style={({ pressed }) => [styles.noteCard, { backgroundColor: colors.bgCard, borderColor: colors.border }, pressed && styles.pressed]}>
-                    <Text style={[styles.noteTitle, { color: colors.textPrimary }]}>{note.title}</Text>
-                    <Text numberOfLines={3} style={[styles.noteText, { color: colors.textSecondary }]}>{note.plainText}</Text>
-                  </AnimatedPressable>
-                ))}
-              </View>
-            </View>
           </>
         ) : null}
       </PageScroll>
-      <Animated.View style={fabPulseStyle}>
-        <FloatingActionButton icon="add-outline" onPress={() => {
-          if (!snapshot?.templates.length || !snapshot.threads.length) return;
-          const t = snapshot.threads[0];
-          const tpl = snapshot.templates.find((x) => x.threadHint === t.id) ?? snapshot.templates[0];
-          createNoteFromTemplate(db, { templateId: tpl.id, spaceId: activeSpaceId, threadId: t.id, title: t.name === 'Personal Journal' ? 'Fresh Reflection' : `New ${t.name} Note` }).then((id) => router.push(`/editor/${id}`));
-        }} />
-      </Animated.View>
 
       <BottomSheetModal ref={collectionSheetRef} backdropComponent={(p) => <BottomSheetBackdrop {...p} appearsOnIndex={0} disappearsOnIndex={-1} opacity={0.35} />} handleIndicatorStyle={[styles.sheetHandle, { backgroundColor: colors.textTertiary }]} snapPoints={collectionSnapPoints}>
         <BottomSheetScrollView contentContainerStyle={styles.sheetContent}>
@@ -206,31 +170,42 @@ export default function WorkspaceScreen() {
   );
 }
 
+function PageScroll({ children, innerRef }: { children: React.ReactNode; innerRef?: React.RefObject<ScrollView | null> }) {
+  const { colors } = useTheme();
+  return (
+    <ScrollView ref={innerRef} contentContainerStyle={[styles.scrollContent, { backgroundColor: colors.bg }]} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
+      {children}
+    </ScrollView>
+  );
+}
+
 const styles = StyleSheet.create({
-  spaceRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  divider: { height: StyleSheet.hairlineWidth, marginLeft: 60 },
-  threadDiv: { height: StyleSheet.hairlineWidth, marginLeft: 68 },
-  sectionGap: { gap: 12 },
-  templateStack: { gap: 16 },
-  frameworkScroll: { gap: 16, paddingRight: 24 },
-  frameworkCard: { borderRadius: 16, borderWidth: 1, width: 150, overflow: 'hidden', gap: 10, paddingHorizontal: 14, paddingVertical: 16 },
-  frameworkStrip: { height: 4, marginTop: -16, marginHorizontal: -14, width: '100%' },
-  frameworkIcon: { alignItems: 'center', borderRadius: 10, height: 38, justifyContent: 'center', width: 38 },
-  frameworkName: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 14, lineHeight: 20 },
-  frameworkDesc: { fontFamily: 'DMSans_400Regular', fontSize: 12, lineHeight: 16 },
-  promptCard: { borderRadius: 16, borderWidth: 1, gap: 8, padding: 16 },
-  promptRef: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 14 },
-  promptText: { fontFamily: 'DMSans_400Regular', fontSize: 15, lineHeight: 24 },
-  tagsWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  scrollContent: { paddingHorizontal: 24, paddingBottom: 120, paddingTop: 4, gap: 28 },
+  greeting: { gap: 4, paddingTop: 8 },
+  greetingText: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 24, lineHeight: 32 },
+  dateText: { fontFamily: 'DMSans_400Regular', fontSize: 14 },
+  ctaCard: { alignItems: 'center', borderRadius: 16, borderWidth: 1, flexDirection: 'row', gap: 14, paddingHorizontal: 20, paddingVertical: 18 },
+  ctaIcon: { alignItems: 'center', borderRadius: 12, height: 38, justifyContent: 'center', width: 38 },
+  ctaText: { flex: 1, fontFamily: 'DMSans_500Medium', fontSize: 16 },
+  quickActions: { flexDirection: 'row', gap: 12 },
+  quickBtn: { alignItems: 'center', borderRadius: 16, flex: 1, gap: 8, paddingVertical: 20 },
+  quickLabel: { fontFamily: 'DMSans_500Medium', fontSize: 12 },
+  section: { gap: 14 },
+  sectionTitle: { fontFamily: 'DMSans_500Medium', fontSize: 13 },
+  resultCard: { borderRadius: 14, borderWidth: 1, flexDirection: 'row', gap: 12, padding: 14 },
+  resultIcon: { alignItems: 'center', borderRadius: 10, height: 32, justifyContent: 'center', width: 32 },
+  resultTitle: { fontFamily: 'DMSans_500Medium', fontSize: 14 },
+  resultText: { fontFamily: 'DMSans_400Regular', fontSize: 13, lineHeight: 18 },
   noteCard: { borderRadius: 16, borderWidth: 1, gap: 8, padding: 20 },
-  noteTitle: { fontFamily: 'DMSans_500Medium', fontSize: 15 },
-  noteText: { fontFamily: 'DMSans_400Regular', fontSize: 13, lineHeight: 18 },
-  searchResult: { flexDirection: 'row', gap: 12, paddingHorizontal: 16, paddingVertical: 14 },
-  searchIcon: { alignItems: 'center', borderRadius: 10, height: 32, justifyContent: 'center', width: 32 },
-  searchTitle: { fontFamily: 'DMSans_500Medium', fontSize: 14 },
-  searchText: { fontFamily: 'DMSans_400Regular', fontSize: 13, lineHeight: 18 },
-  sheetHandle: { height: 4, width: 36, borderRadius: 100 },
-  sheetContent: { paddingHorizontal: 16, paddingBottom: 40, gap: 8 },
+  noteHeader: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' },
+  noteTitle: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 16 },
+  noteTime: { fontFamily: 'DMSans_400Regular', fontSize: 12 },
+  notePreview: { fontFamily: 'DMSans_400Regular', fontSize: 14, lineHeight: 20 },
+  verseCard: { borderRadius: 16, borderWidth: 1, gap: 8, padding: 18 },
+  verseRef: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 14 },
+  verseText: { fontFamily: 'DMSans_400Regular', fontSize: 15, lineHeight: 24 },
+  sheetHandle: { borderRadius: 100, height: 4, width: 36 },
+  sheetContent: { gap: 8, paddingBottom: 40, paddingHorizontal: 16 },
   sheetTitle: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 18, paddingBottom: 12, paddingTop: 4 },
   sheetNote: { borderRadius: 14, borderWidth: 1, gap: 6, padding: 14 },
   sheetNoteTitle: { fontFamily: 'DMSans_500Medium', fontSize: 15 },
