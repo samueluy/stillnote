@@ -50,7 +50,7 @@ export const BibleSheet = forwardRef<BottomSheetModal, Props>(function BibleShee
   ref
 ) {
   const animatedIndex = useSharedValue(0);
-  const snapPoints = useMemo(() => ['62%', '84%'], []);
+  const snapPoints = useMemo(() => ['38%', '58%'], []);
   const ScrollComponent = useBottomSheetScrollableCreator();
   const [sheetSearch, setSheetSearch] = useState('');
   const [isSheetSearchOpen, setIsSheetSearchOpen] = useState(false);
@@ -186,22 +186,22 @@ const styles = StyleSheet.create({
   verseRow: {
     alignItems: 'flex-start',
     flexDirection: 'row',
-    gap: 14,
-    paddingHorizontal: 8,
-    paddingVertical: 12,
+    gap: 12,
+    paddingHorizontal: 6,
+    paddingVertical: 10,
   },
   verseNumber: {
     fontFamily: 'DMSans_500Medium',
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: '700',
     marginTop: 2,
-    width: 18,
+    width: 16,
   },
   verseText: {
     flex: 1,
     fontFamily: 'LibreBaskerville_400Regular',
-    fontSize: 15,
-    lineHeight: 24,
+    fontSize: 14,
+    lineHeight: 22,
   },
   insertButton: {
     alignItems: 'center',
