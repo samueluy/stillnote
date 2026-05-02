@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import type { ComponentProps, ReactNode } from 'react';
 import { forwardRef } from 'react';
-import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TextInput, View, useColorScheme } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AnimatedPressable } from '@/src/components/animated-pressable';
@@ -27,9 +27,30 @@ export const palette = {
   scrim: 'rgba(30,27,24,0.38)',
 };
 
+export const darkPalette = {
+  background: '#0F0F0F',
+  backgroundAlt: '#161616',
+  surface: '#1C1C1E',
+  surfaceMuted: '#2C2C2E',
+  text: '#F2F2F7',
+  textMuted: '#8E8E93',
+  textSoft: '#636366',
+  border: '#2C2C2E',
+  borderStrong: '#3A3A3C',
+  blue: '#4A9EFF',
+  blueSoft: '#1C3A5C',
+  gold: '#C9A84C',
+  goldSoft: '#3D3520',
+  tag: '#2C2C2E',
+  success: '#8BA876',
+  scrim: 'rgba(0,0,0,0.6)',
+};
+
 export function Screen({ children }: { children: React.ReactNode }) {
+  const isDark = useColorScheme() === 'dark';
+  const bg = isDark ? darkPalette.background : palette.background;
   return (
-    <SafeAreaView style={styles.safeArea} edges={['top']}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: bg }]} edges={['top']}>
       {children}
     </SafeAreaView>
   );
@@ -312,7 +333,6 @@ export function EmptyState({
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: palette.background,
   },
   pageContent: {
     paddingHorizontal: 24,

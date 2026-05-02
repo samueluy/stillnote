@@ -17,6 +17,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  useColorScheme,
   View,
 } from 'react-native';
 import { RichText, useEditorBridge } from '@10play/tentap-editor';
@@ -32,6 +33,7 @@ import { BibleSheet } from '@/src/components/bible-sheet';
 import {
   AttachmentPreview,
   SearchField,
+  darkPalette,
   palette,
 } from '@/src/components/primitives';
 import { AnimatedPressable } from '@/src/components/animated-pressable';
@@ -64,6 +66,9 @@ export default function EditorScreen() {
   const db = useSQLiteContext();
   const router = useRouter();
   const { bumpRefreshToken } = useAppState();
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === 'dark';
+  const p = isDark ? darkPalette : palette;
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const headerOpacity = useSharedValue(1);
@@ -322,7 +327,7 @@ export default function EditorScreen() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      style={styles.container}>
+      style={[styles.container, { backgroundColor: p.backgroundAlt }]}>
       <Animated.View style={[styles.header, headerOpacityStyle]}>
         <AnimatedPressable
           onPress={() => {
@@ -522,7 +527,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   container: {
-    backgroundColor: palette.backgroundAlt,
     flex: 1,
   },
   content: {

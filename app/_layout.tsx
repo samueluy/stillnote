@@ -3,6 +3,7 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SQLiteProvider } from 'expo-sqlite';
 import { useEffect } from 'react';
+import { useColorScheme } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -30,6 +31,8 @@ function LaunchWrapper({ children }: { children: React.ReactNode }) {
 }
 
 export default function RootLayout() {
+  const colorScheme = useColorScheme();
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SQLiteProvider databaseName="stillnote.db" onInit={migrateDbIfNeeded}>
@@ -40,7 +43,7 @@ export default function RootLayout() {
                 <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                 <Stack.Screen name="editor/[noteId]" options={{ animation: 'slide_from_right', gestureEnabled: true, fullScreenGestureEnabled: true }} />
               </Stack>
-              <StatusBar style="dark" />
+              <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
             </LaunchWrapper>
           </BottomSheetModalProvider>
         </AppProvider>
