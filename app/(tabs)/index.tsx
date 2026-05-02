@@ -130,13 +130,13 @@ export default function WorkspaceScreen() {
             <View style={styles.sectionGap}>
               <SectionTitle title="Study Frameworks" />
               <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.frameworkScroll}>
-                {snapshot.templates.map((tpl) => (
+                {snapshot.templates.map((tpl, index) => (
                   <AnimatedPressable key={tpl.id} onPress={async () => {
                     const thread = snapshot.threads.find((t) => t.id === tpl.threadHint) ?? snapshot.threads[0];
                     const id = await createNoteFromTemplate(db, { templateId: tpl.id, spaceId: activeSpaceId, threadId: thread.id });
                     router.push(`/editor/${id}`);
                   }} style={({ pressed }) => [styles.frameworkCard, { backgroundColor: colors.bgElevated, borderColor: colors.border }, pressed && styles.pressed]}>
-                    <View style={[styles.frameworkStrip, { backgroundColor: colors.accent }]} />
+                    <View style={[styles.frameworkStrip, { backgroundColor: index === 0 ? colors.coral : index === 1 ? colors.accent : colors.gold }]} />
                     <View style={[styles.frameworkIcon, { backgroundColor: colors.accentSoft }]}>
                       <Ionicons color={colors.accent} name={tpl.icon as any} size={18} />
                     </View>

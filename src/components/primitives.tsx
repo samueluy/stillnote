@@ -191,7 +191,7 @@ export function SmartCollectionRow({
   return (
     <AnimatedPressable onPress={onPress} style={styles.row}>
       <View style={[styles.rowIconWrap, { backgroundColor: colors.accentSoft }]}>
-        <Ionicons color={colors.accent} name={icon} size={18} />
+        <Ionicons color={colors.textSecondary} name={icon} size={18} />
       </View>
       <Text style={[styles.rowLabel, { color: colors.textPrimary }]}>{label}</Text>
       {typeof count === 'number' ? (

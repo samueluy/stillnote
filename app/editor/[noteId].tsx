@@ -205,7 +205,7 @@ export default function EditorScreen() {
             <Ionicons color={isFavorite ? '#E74C3C' : colors.textSecondary} name={isFavorite ? 'heart' : 'heart-outline'} size={20} />
           </AnimatedPressable>
           <AnimatedPressable haptic="heavy" onPress={() => Alert.alert('Delete Note', 'This cannot be undone.', [{ text: 'Cancel', style: 'cancel' }, { text: 'Delete', style: 'destructive', onPress: async () => { await deleteNote(db, noteId); bumpRefreshToken(); router.back(); } }])} style={styles.headerBtn}>
-            <Ionicons color={colors.textSecondary} name="trash-outline" size={20} />
+            <Ionicons color={colors.coral} name="trash-outline" size={20} />
           </AnimatedPressable>
           <AnimatedPressable onPress={() => bottomSheetRef.current?.present()} style={styles.headerBtn}>
             <Ionicons color={colors.accent} name="book-outline" size={20} />
@@ -223,9 +223,9 @@ export default function EditorScreen() {
 
         <EditorToolbar editor={editor} keyboardHeight={keyboardHeight} onBiblePress={() => bottomSheetRef.current?.present()} colors={colors} isDark={isDark} />
 
-        <AnimatedPressable onPress={extractToNewNote} style={({ pressed }) => [styles.extractBtn, { backgroundColor: colors.accentSoft }, pressed && styles.pressed]}>
-          <Ionicons color={colors.accent} name="git-branch-outline" size={14} />
-          <Text style={[styles.extractText, { color: colors.accent }]}>Extract to Note</Text>
+        <AnimatedPressable onPress={extractToNewNote} style={({ pressed }) => [styles.extractBtn, { backgroundColor: colors.coralSoft }, pressed && styles.pressed]}>
+          <Ionicons color={colors.coral} name="git-branch-outline" size={14} />
+          <Text style={[styles.extractText, { color: colors.coral }]}>Extract to Note</Text>
         </AnimatedPressable>
 
         <View style={styles.verseSearchCard}>
@@ -244,7 +244,7 @@ export default function EditorScreen() {
 
         <View style={styles.statusRow}>
           <View style={styles.saveIndicator}>
-            <Animated.View style={[styles.saveDot, saveDotStyle, { backgroundColor: saveState === 'saved' ? colors.accent : colors.textTertiary }]} />
+            <Animated.View style={[styles.saveDot, saveDotStyle, { backgroundColor: saveState === 'saved' ? colors.accent : saveState === 'saving' ? colors.coral : colors.textTertiary }]} />
             <Text style={[styles.statusText, { color: colors.textTertiary }]}>{saveState === 'saving' ? 'Saving…' : saveState === 'saved' ? 'Saved' : ''}</Text>
           </View>
           <Text style={[styles.statusText, { color: colors.textTertiary }]}>{wordCount} words · {Math.max(1, Math.ceil(wordCount / 200))} min · {hashtags.size} tags</Text>
