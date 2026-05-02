@@ -3,7 +3,7 @@ import { BottomSheetBackdrop, BottomSheetModal, BottomSheetScrollView } from '@g
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
-import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Modal, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { AnimatedPressable } from '@/src/components/animated-pressable';
 import { EmptyState, Screen, SearchField, TopBar } from '@/src/components/primitives';
@@ -22,7 +22,7 @@ function getGreeting() {
 export default function WorkspaceScreen() {
   const db = useSQLiteContext();
   const router = useRouter();
-  const { activeSpaceId, refreshToken } = useAppState();
+  const { activeSpaceId, setActiveSpaceId, refreshToken } = useAppState();
   const { colors } = useTheme();
 
   const [snapshot, setSnapshot] = useState<WorkspaceSnapshot | null>(null);
@@ -53,6 +53,8 @@ export default function WorkspaceScreen() {
     return () => { cancelled = true; };
   }, [activeSpaceId, db, deferredQuery]);
 
+  const [isSpacePickerOpen, setIsSpacePickerOpen] = useState(false);
+
   const createQuickNote = useCallback(async () => {
     if (!snapshot?.templates.length || !snapshot.threads.length) return;
     const t = snapshot.threads[0];
@@ -72,7 +74,11 @@ export default function WorkspaceScreen() {
 
   return (
     <Screen>
-      <TopBar title="Journal" />
+      <TopBar
+        title={snapshot?.spaces.find((s) => s.id === activeSpaceId)?.name ?? 'Journal'}
+        rightIcon="settings-outline"
+        onRightPress={() => setIsSpacePickerOpen(true)}
+      />
       <PageScroll innerRef={scrollRef}>
         <View style={styles.greeting}>
           <Text style={[styles.greetingText, { color: colors.textPrimary }]}>{getGreeting()}</Text>
@@ -166,6 +172,34 @@ export default function WorkspaceScreen() {
           )) : <EmptyState title="Nothing here yet" subtitle="No notes found in this collection." />}
         </BottomSheetScrollView>
       </BottomSheetModal>
+
+      <Modal animationType="slide" visible={isSpacePickerOpen} transparent onRequestClose={() => setIsSpacePickerOpen(false)}>
+        <View style={[styles.spaceScrim, { backgroundColor: colors.scrim }]}>
+          <View style={[styles.spacePanel, { backgroundColor: colors.bgElevated }]}>
+            <View style={[styles.spaceHeader, { borderBottomColor: colors.border }]}>
+              <Text style={[styles.spaceTitle, { color: colors.textPrimary }]}>Spaces & Settings</Text>
+              <AnimatedPressable onPress={() => setIsSpacePickerOpen(false)}>
+                <Ionicons color={colors.textSecondary} name="close-outline" size={22} />
+              </AnimatedPressable>
+            </View>
+            <ScrollView contentContainerStyle={styles.spaceList}>
+              <Text style={[styles.spaceSectionTitle, { color: colors.textTertiary }]}>Your Spaces</Text>
+              {snapshot?.spaces.map((space) => (
+                <AnimatedPressable key={space.id} haptic="light" onPress={() => { setActiveSpaceId(space.id); setIsSpacePickerOpen(false); }} style={[styles.spaceRow, { backgroundColor: space.id === activeSpaceId ? colors.accentSoft : 'transparent' }]}>
+                  <View style={[styles.spaceDot, { backgroundColor: space.id === activeSpaceId ? colors.accent : colors.borderStrong }]} />
+                  <Text style={[styles.spaceName, { color: space.id === activeSpaceId ? colors.accent : colors.textPrimary }]}>{space.name}</Text>
+                  {space.id === activeSpaceId ? <Ionicons color={colors.accent} name="checkmark-outline" size={16} /> : null}
+                </AnimatedPressable>
+              ))}
+              <View style={[styles.spaceDiv, { backgroundColor: colors.border }]} />
+              <Text style={[styles.spaceSectionTitle, { color: colors.textTertiary }]}>About</Text>
+              <View style={styles.aboutBlock}>
+                <Text style={[styles.aboutText, { color: colors.textSecondary }]}>Your notes, tags, Bible content, and concordance lookups stay on your device — persisted in SQLite.</Text>
+              </View>
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
     </Screen>
   );
 }
@@ -211,4 +245,16 @@ const styles = StyleSheet.create({
   sheetNoteTitle: { fontFamily: 'DMSans_500Medium', fontSize: 15 },
   sheetNoteText: { fontFamily: 'DMSans_400Regular', fontSize: 13, lineHeight: 18 },
   pressed: { opacity: 0.85 },
+  spaceScrim: { flex: 1, justifyContent: 'flex-end' },
+  spacePanel: { borderTopLeftRadius: 20, borderTopRightRadius: 20, maxHeight: '80%' },
+  spaceHeader: { alignItems: 'center', borderBottomWidth: StyleSheet.hairlineWidth, flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 18 },
+  spaceTitle: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 18 },
+  spaceList: { gap: 4, padding: 16, paddingBottom: 40 },
+  spaceSectionTitle: { fontFamily: 'DMSans_500Medium', fontSize: 13, marginBottom: 4 },
+  spaceRow: { alignItems: 'center', borderRadius: 12, flexDirection: 'row', gap: 12, paddingHorizontal: 16, paddingVertical: 14 },
+  spaceDot: { borderRadius: 100, height: 8, width: 8 },
+  spaceName: { flex: 1, fontFamily: 'DMSans_500Medium', fontSize: 15 },
+  spaceDiv: { height: StyleSheet.hairlineWidth, marginVertical: 12 },
+  aboutBlock: { padding: 4 },
+  aboutText: { fontFamily: 'DMSans_400Regular', fontSize: 14, lineHeight: 21 },
 });
