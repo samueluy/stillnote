@@ -30,7 +30,7 @@ import {
   TagChip,
   palette,
 } from '@/src/components/primitives';
-import { stripHtml } from '@/src/lib/editor';
+import { markdownToHtml, stripHtml } from '@/src/lib/editor';
 import {
   buildInsertedVerseText,
   createNoteFromTemplate,
@@ -124,8 +124,12 @@ export default function EditorScreen() {
         return;
       }
 
+      const rawBody = payload.note.markdownBody || '';
+      const isHtml = rawBody.trim().startsWith('<');
+      const htmlBody = isHtml ? rawBody : markdownToHtml(rawBody);
+
       setTitle(payload.note.title);
-      setInitialContent(payload.note.markdownBody || '');
+      setInitialContent(htmlBody);
       setSpaceId(payload.note.spaceId);
       setThreadId(payload.note.primaryThreadId);
       setThreadName(payload.thread?.name ?? 'Study Note');

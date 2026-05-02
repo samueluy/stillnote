@@ -16,7 +16,7 @@ export default function RootLayout() {
           <BottomSheetModalProvider>
             <Stack screenOptions={{ headerShown: false }}>
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              <Stack.Screen name="editor/[noteId]" options={{ animation: 'slide_from_right' }} />
+              <Stack.Screen name="editor/[noteId]" options={{ animation: 'slide_from_right', gestureEnabled: true, fullScreenGestureEnabled: true }} />
             </Stack>
             <StatusBar style="dark" />
           </BottomSheetModalProvider>

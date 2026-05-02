@@ -141,3 +141,23 @@ export function buildEditorSpans(body: string) {
     numberedCount: (body.match(/^\d+\.\s?/gm) ?? []).length,
   });
 }
+
+export function markdownToHtml(md: string): string {
+  let html = md;
+  html = html.replace(/^######\s+(.*)$/gm, '<h6>$1</h6>');
+  html = html.replace(/^#####\s+(.*)$/gm, '<h5>$1</h5>');
+  html = html.replace(/^####\s+(.*)$/gm, '<h4>$1</h4>');
+  html = html.replace(/^###\s+(.*)$/gm, '<h3>$1</h3>');
+  html = html.replace(/^##\s+(.*)$/gm, '<h2>$1</h2>');
+  html = html.replace(/^#\s+(.*)$/gm, '<h1>$1</h1>');
+  html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
+  html = html.replace(/^>\s?(.*)$/gm, '<blockquote>$1</blockquote>');
+  html = html.replace(/^- (.*)$/gm, '<li>$1</li>');
+  html = html.replace(/(<li>.*<\/li>\n?)+/g, (match) => `<ul>${match.replace(/\n$/, '')}</ul>`);
+  html = html.replace(/^(?!<[houbl]).*$/gm, (match) => {
+    const trimmed = match.trim();
+    return trimmed ? `<p>${trimmed}</p>` : '<p></p>';
+  });
+  return html.replace(/\n{2,}/g, '').trim();
+}
