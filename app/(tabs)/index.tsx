@@ -1,54 +1,23 @@
 import { Ionicons } from '@expo/vector-icons';
+import { BottomSheetBackdrop, BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withRepeat,
-  withSequence,
-  withTiming,
-} from 'react-native-reanimated';
-import {
-  BottomSheetBackdrop,
-  BottomSheetModal,
-  BottomSheetScrollView,
-} from '@gorhom/bottom-sheet';
-import { BlurView } from 'expo-blur';
+import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withSequence, withTiming } from 'react-native-reanimated';
 
-import {
-  Card,
-  EmptyState,
-  FloatingActionButton,
-  PageScroll,
-  Pill,
-  Screen,
-  SearchField,
-  SectionTitle,
-  SmartCollectionRow,
-  TagChip,
-  TextButton,
-  ThreadRow,
-  TopBar,
-  palette,
-} from '@/src/components/primitives';
 import { AnimatedPressable } from '@/src/components/animated-pressable';
-import {
-  createNoteFromTemplate,
-  createTag,
-  createThread,
-  getNotesByCollection,
-  getWorkspaceSnapshot,
-  searchEverything,
-} from '@/src/lib/database';
+import { Card, EmptyState, FloatingActionButton, PageScroll, Pill, Screen, SearchField, SectionTitle, SmartCollectionRow, TagChip, TextButton, ThreadRow, TopBar } from '@/src/components/primitives';
+import { createNoteFromTemplate, createTag, createThread, getNotesByCollection, getWorkspaceSnapshot, searchEverything } from '@/src/lib/database';
 import { useAppState } from '@/src/providers/app-provider';
+import { useTheme } from '@/src/theme/useTheme';
 import type { Note, SearchResult, WorkspaceSnapshot } from '@/src/types/domain';
 
 export default function WorkspaceScreen() {
   const db = useSQLiteContext();
   const router = useRouter();
   const { activeSpaceId, setActiveSpaceId, refreshToken } = useAppState();
+  const { colors } = useTheme();
 
   const [snapshot, setSnapshot] = useState<WorkspaceSnapshot | null>(null);
   const [query, setQuery] = useState('');
@@ -56,83 +25,38 @@ export default function WorkspaceScreen() {
   const [collectionTitle, setCollectionTitle] = useState('');
   const [collectionNotes, setCollectionNotes] = useState<Note[]>([]);
   const collectionSheetRef = useRef<BottomSheetModal>(null);
-  const collectionSnapPoints = useMemo(() => ['45%', '90%'], []);
+  const collectionSnapPoints = useMemo(() => ['50%', '92%'], []);
+  const scrollRef = useRef<ScrollView>(null);
+  const deferredQuery = useDeferredValue(query);
 
   const fabPulse = useSharedValue(1);
-  const fabPulseStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: fabPulse.value }],
-  }));
+  const fabPulseStyle = useAnimatedStyle(() => ({ transform: [{ scale: fabPulse.value }] }));
 
   useEffect(() => {
     if (snapshot && snapshot.threads.length === 0) {
-      fabPulse.value = withRepeat(
-        withSequence(
-          withTiming(1.05, { duration: 600 }),
-          withTiming(1, { duration: 600 })
-        ),
-        -1,
-        true
-      );
+      fabPulse.value = withRepeat(withSequence(withTiming(1.05, { duration: 600 }), withTiming(1, { duration: 600 })), -1, true);
     } else {
       fabPulse.value = withTiming(1);
     }
   }, [snapshot, fabPulse]);
 
-  const scrollRef = useRef<ScrollView>(null);
-
-  const deferredQuery = useDeferredValue(query);
-
   const loadSnapshot = useCallback(async () => {
     setSnapshot(await getWorkspaceSnapshot(db, activeSpaceId));
   }, [activeSpaceId, db]);
 
-  useFocusEffect(
-    useCallback(() => {
-      loadSnapshot();
-    }, [loadSnapshot])
-  );
-
-  useEffect(() => {
-    loadSnapshot();
-  }, [loadSnapshot, refreshToken]);
+  useFocusEffect(useCallback(() => { loadSnapshot(); }, [loadSnapshot]));
+  useEffect(() => { loadSnapshot(); }, [loadSnapshot, refreshToken]);
 
   useEffect(() => {
     let cancelled = false;
-
     async function runSearch() {
-      if (!deferredQuery.trim()) {
-        setResults([]);
-        return;
-      }
-
+      if (!deferredQuery.trim()) { setResults([]); return; }
       const nextResults = await searchEverything(db, activeSpaceId, deferredQuery);
-      if (!cancelled) {
-        setResults(nextResults);
-      }
+      if (!cancelled) setResults(nextResults);
     }
-
     runSearch();
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, [activeSpaceId, db, deferredQuery]);
-
-  const createQuickNote = useCallback(async () => {
-    if (!snapshot?.templates.length || !snapshot.threads.length) {
-      return;
-    }
-
-    const thread = snapshot.threads[0];
-    const template =
-      snapshot.templates.find((item) => item.threadHint === thread.id) ?? snapshot.templates[0];
-    const noteId = await createNoteFromTemplate(db, {
-      templateId: template.id,
-      spaceId: activeSpaceId,
-      threadId: thread.id,
-      title: thread.name === 'Personal Journal' ? 'Fresh Reflection' : `New ${thread.name} Note`,
-    });
-    router.push(`/editor/${noteId}`);
-  }, [activeSpaceId, db, router, snapshot]);
 
   const openCollection = useCallback(async (collection: 'all' | 'favorites' | 'recent', title: string) => {
     const notes = await getNotesByCollection(db, activeSpaceId, collection);
@@ -143,218 +67,104 @@ export default function WorkspaceScreen() {
 
   return (
     <Screen>
-      <TopBar
-        title="Stillnote"
-        onLeftPress={() =>
-          Alert.alert('Stillnote', 'Private study companion.\nYour notes stay on your device.')
-        }
-        onRightPress={() => scrollRef.current?.scrollTo({ y: 0, animated: true })}
-      />
+      <TopBar title="Stillnote" onRightPress={() => scrollRef.current?.scrollTo({ y: 0, animated: true })} />
       <PageScroll ref={scrollRef}>
         <View style={styles.spaceRow}>
           {snapshot?.spaces.map((space) => (
-            <Pill
-              active={space.id === activeSpaceId}
-              key={space.id}
-              label={space.name}
-              onPress={() => setActiveSpaceId(space.id)}
-            />
+            <Pill key={space.id} active={space.id === activeSpaceId} label={space.name} onPress={() => setActiveSpaceId(space.id)} />
           ))}
         </View>
 
-        <SearchField
-          onChangeText={setQuery}
-          placeholder="Search notes, tags, or scripture"
-          value={query}
-        />
+        <SearchField onChangeText={setQuery} placeholder="Search notes, tags, or scripture" value={query} />
 
         {deferredQuery.trim() ? (
           <Card>
-            <SectionTitle title="Search Results" />
-            {results.length ? (
-              results.map((result) => (
-                <AnimatedPressable
-                  key={`${result.type}-${result.id}`}
-                  onPress={() =>
-                    result.type === 'note'
-                      ? router.push(`/editor/${result.id}`)
-                      : router.push({
-                          pathname: '/(tabs)/bible',
-                          params: { reference: result.title },
-                        })
-                  }
-                  style={({ pressed }) => [styles.searchResult, pressed && styles.pressed]}>
-                  <View style={styles.searchResultIcon}>
-                    <Ionicons
-                      color={result.type === 'note' ? palette.blue : palette.success}
-                      name={result.type === 'note' ? 'document-text-outline' : 'book-outline'}
-                      size={16}
-                    />
-                  </View>
-                  <View style={styles.searchResultBody}>
-                    <Text style={styles.searchResultTitle}>{result.title}</Text>
-                    <Text numberOfLines={2} style={styles.searchResultText}>
-                      {result.body}
-                    </Text>
-                  </View>
-                </AnimatedPressable>
-              ))
-            ) : (
-              <EmptyState
-                subtitle="Try a thread name, a theme, or a verse like John 1:1."
-                title="Nothing surfaced yet"
-              />
-            )}
+            <SectionTitle title="SEARCH RESULTS" />
+            {results.length ? results.map((r) => (
+              <AnimatedPressable key={`${r.type}-${r.id}`} onPress={() => r.type === 'note' ? router.push(`/editor/${r.id}`) : router.push({ pathname: '/(tabs)/bible', params: { reference: r.title } })} style={({ pressed }) => [styles.searchResult, pressed && styles.pressed]}>
+                <View style={[styles.searchIcon, { backgroundColor: colors.accentSoft }]}>
+                  <Ionicons color={colors.accent} name={r.type === 'note' ? 'document-text-outline' : 'book-outline'} size={16} />
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={[styles.searchTitle, { color: colors.textPrimary }]}>{r.title}</Text>
+                  <Text numberOfLines={2} style={[styles.searchText, { color: colors.textSecondary }]}>{r.body}</Text>
+                </View>
+              </AnimatedPressable>
+            )) : <EmptyState title="Nothing surfaced yet" subtitle="Try a thread name, a theme, or a verse like John 1:1." />}
           </Card>
         ) : null}
 
         {!deferredQuery.trim() && snapshot ? (
           <>
             <Card>
-              <SmartCollectionRow
-                count={snapshot.collectionCounts.allNotes}
-                icon="document-text-outline"
-                label="All Notes"
-                onPress={() => openCollection('all', 'All Notes')}
-              />
-              <View style={styles.divider} />
-              <SmartCollectionRow
-                count={snapshot.collectionCounts.favorites}
-                icon="heart-outline"
-                label="Favorites"
-                onPress={() => openCollection('favorites', 'Favorites')}
-              />
-              <View style={styles.divider} />
-              <SmartCollectionRow
-                count={snapshot.collectionCounts.recent}
-                icon="time-outline"
-                label="Recent"
-                onPress={() => openCollection('recent', 'Recent')}
-              />
+              <SmartCollectionRow count={snapshot.collectionCounts.allNotes} icon="document-text-outline" label="All Notes" onPress={() => openCollection('all', 'All Notes')} />
+              <View style={[styles.divider, { backgroundColor: colors.border }]} />
+              <SmartCollectionRow count={snapshot.collectionCounts.favorites} icon="heart-outline" label="Favorites" onPress={() => openCollection('favorites', 'Favorites')} />
+              <View style={[styles.divider, { backgroundColor: colors.border }]} />
+              <SmartCollectionRow count={snapshot.collectionCounts.recent} icon="time-outline" label="Recent" onPress={() => openCollection('recent', 'Recent')} />
             </Card>
 
             <View style={styles.sectionGap}>
               <SectionTitle title="My Threads" />
               <Card>
-                {snapshot.threads.map((thread, index) => (
+                {snapshot.threads.map((thread, i) => (
                   <View key={thread.id}>
-                    <ThreadRow
-                      accent={thread.accent}
-                      count={thread.noteCount}
-                      icon={thread.icon as any}
-                      name={thread.name}
-                      onPress={async () => {
-                        const template =
-                          snapshot.templates.find((item) => item.threadHint === thread.id) ??
-                          snapshot.templates[0];
-                        const noteId = await createNoteFromTemplate(db, {
-                          templateId: template.id,
-                          spaceId: activeSpaceId,
-                          threadId: thread.id,
-                        });
-                        router.push(`/editor/${noteId}`);
-                      }}
-                    />
-                    {index < snapshot.threads.length - 1 ? <View style={styles.threadDivider} /> : null}
+                    <ThreadRow accent={thread.accent} count={thread.noteCount} icon={thread.icon as any} name={thread.name} onPress={async () => {
+                      const tpl = snapshot.templates.find((t) => t.threadHint === thread.id) ?? snapshot.templates[0];
+                      const id = await createNoteFromTemplate(db, { templateId: tpl.id, spaceId: activeSpaceId, threadId: thread.id });
+                      router.push(`/editor/${id}`);
+                    }} />
+                    {i < snapshot.threads.length - 1 ? <View style={[styles.threadDiv, { backgroundColor: colors.border }]} /> : null}
                   </View>
                 ))}
               </Card>
-              <TextButton
-                icon="add-outline"
-                label="New Thread"
-                onPress={async () => {
-                  const thread = await createThread(db, { spaceId: activeSpaceId });
-                  const template =
-                    snapshot.templates.find((item) => item.threadHint === thread.id) ??
-                    snapshot.templates[0];
-                  const noteId = await createNoteFromTemplate(db, {
-                    templateId: template.id,
-                    spaceId: activeSpaceId,
-                    threadId: thread.id,
-                    title: `${thread.name} Note`,
-                  });
-                  await loadSnapshot();
-                  router.push(`/editor/${noteId}`);
-                }}
-              />
+              <TextButton icon="add-outline" label="New Thread" onPress={async () => {
+                const thread = await createThread(db, { spaceId: activeSpaceId });
+                const tpl = snapshot.templates.find((t) => t.threadHint === thread.id) ?? snapshot.templates[0];
+                const id = await createNoteFromTemplate(db, { templateId: tpl.id, spaceId: activeSpaceId, threadId: thread.id, title: `${thread.name} Note` });
+                await loadSnapshot();
+                router.push(`/editor/${id}`);
+              }} />
             </View>
 
             <View style={styles.sectionGap}>
               <SectionTitle title="Study Frameworks" />
-              <View style={styles.templateStack}>
-                {snapshot.templates.map((template) => (
-                  <AnimatedPressable
-                    key={template.id}
-                    onPress={async () => {
-                      const thread =
-                        snapshot.threads.find((item) => item.id === template.threadHint) ??
-                        snapshot.threads[0];
-                      const noteId = await createNoteFromTemplate(db, {
-                        templateId: template.id,
-                        spaceId: activeSpaceId,
-                        threadId: thread.id,
-                      });
-                      router.push(`/editor/${noteId}`);
-                    }}
-                    style={({ pressed }) => [styles.templateCard, pressed && styles.pressed]}>
-                    <View style={styles.templateIconWrap}>
-                      <Ionicons color={palette.blue} name={template.icon as any} size={18} />
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.frameworkScroll}>
+                {snapshot.templates.map((tpl) => (
+                  <AnimatedPressable key={tpl.id} onPress={async () => {
+                    const thread = snapshot.threads.find((t) => t.id === tpl.threadHint) ?? snapshot.threads[0];
+                    const id = await createNoteFromTemplate(db, { templateId: tpl.id, spaceId: activeSpaceId, threadId: thread.id });
+                    router.push(`/editor/${id}`);
+                  }} style={({ pressed }) => [styles.frameworkCard, { backgroundColor: colors.bgElevated, borderColor: colors.border }, pressed && styles.pressed]}>
+                    <View style={[styles.frameworkStrip, { backgroundColor: colors.accent }]} />
+                    <View style={[styles.frameworkIcon, { backgroundColor: colors.accentSoft }]}>
+                      <Ionicons color={colors.accent} name={tpl.icon as any} size={18} />
                     </View>
-                    <View style={styles.templateBody}>
-                      <Text style={styles.templateTitle}>{template.name}</Text>
-                      <Text style={styles.templateText}>{template.description}</Text>
-                    </View>
+                    <Text style={[styles.frameworkName, { color: colors.textPrimary }]}>{tpl.name}</Text>
+                    <Text style={[styles.frameworkDesc, { color: colors.textSecondary }]} numberOfLines={2}>{tpl.description}</Text>
                   </AnimatedPressable>
                 ))}
-              </View>
+              </ScrollView>
             </View>
 
             {snapshot.dailyVerse ? (
               <View style={styles.sectionGap}>
-                <SectionTitle title="Daily Verse Prompt" />
-                <AnimatedPressable
-                  onPress={() => {
-                    if (snapshot?.dailyVerse) {
-                      router.push({
-                        pathname: '/(tabs)/bible',
-                        params: { reference: snapshot.dailyVerse.reference },
-                      });
-                    }
-                  }}
-                  style={({ pressed }) => [styles.promptCard, pressed && styles.pressed]}>
-                  <Text style={styles.promptReference}>{snapshot.dailyVerse.reference}</Text>
-                  <Text style={styles.promptText}>{snapshot.dailyVerse.text}</Text>
+                <SectionTitle title="Daily Verse" />
+                <AnimatedPressable onPress={() => { if (snapshot?.dailyVerse) router.push({ pathname: '/(tabs)/bible', params: { reference: snapshot.dailyVerse.reference } }); }} style={({ pressed }) => [styles.promptCard, { backgroundColor: colors.goldSoft, borderColor: colors.gold + '20' }, pressed && styles.pressed]}>
+                  <Text style={[styles.promptRef, { color: colors.gold }]}>{snapshot.dailyVerse.reference}</Text>
+                  <Text style={[styles.promptText, { color: colors.textPrimary }]}>{snapshot.dailyVerse.text}</Text>
                 </AnimatedPressable>
               </View>
             ) : null}
 
             <View style={styles.sectionGap}>
-              <SectionTitle
-                title="Automated Tags"
-                actionIcon="ellipsis-horizontal"
-                onActionPress={() =>
-                  Alert.alert('Tags', 'Tags are auto-extracted from #hashtags typed in your notes. Type # followed by a word in any note body to create a tag.')
-                }
-              />
+              <SectionTitle title="Tags" />
               <View style={styles.tagsWrap}>
-                {snapshot.tags.map((tag) => (
-                  <TagChip key={tag.id} label={`#${tag.name}`} />
-                ))}
-                <TagChip
-                  label="Tag"
-                  outlined
-                  onPress={() => {
-                    if (Alert.prompt) {
-                      Alert.prompt('Create Tag', 'Enter a tag name:', (name) => {
-                        if (name?.trim()) {
-                          createTag(db, name.trim()).then(loadSnapshot);
-                        }
-                      });
-                    } else {
-                      Alert.alert('Create Tag', 'Tag creation from notes uses #tag syntax. Type #YourTag in any note to auto-create it.');
-                    }
-                  }}
-                />
+                {snapshot.tags.map((tag) => (<TagChip key={tag.id} label={`#${tag.name}`} />))}
+                <TagChip label="Tag" outlined onPress={() => {
+                  if (Alert.prompt) { Alert.prompt('Create Tag', 'Enter a tag name:', (name) => { if (name?.trim()) createTag(db, name.trim()).then(loadSnapshot); }); }
+                  else { Alert.alert('Create Tag', 'Use #hashtag syntax in any note to auto-create it.'); }
+                }} />
               </View>
             </View>
 
@@ -362,14 +172,9 @@ export default function WorkspaceScreen() {
               <SectionTitle title="Recent Notes" />
               <View style={styles.templateStack}>
                 {snapshot.recentNotes.map((note) => (
-                  <AnimatedPressable
-                    key={note.id}
-                    onPress={() => router.push(`/editor/${note.id}`)}
-                    style={({ pressed }) => [styles.noteCard, pressed && styles.pressed]}>
-                    <Text style={styles.noteCardTitle}>{note.title}</Text>
-                    <Text numberOfLines={3} style={styles.noteCardText}>
-                      {note.plainText}
-                    </Text>
+                  <AnimatedPressable key={note.id} onPress={() => router.push(`/editor/${note.id}`)} style={({ pressed }) => [styles.noteCard, { backgroundColor: colors.bgCard, borderColor: colors.border }, pressed && styles.pressed]}>
+                    <Text style={[styles.noteTitle, { color: colors.textPrimary }]}>{note.title}</Text>
+                    <Text numberOfLines={3} style={[styles.noteText, { color: colors.textSecondary }]}>{note.plainText}</Text>
                   </AnimatedPressable>
                 ))}
               </View>
@@ -378,39 +183,23 @@ export default function WorkspaceScreen() {
         ) : null}
       </PageScroll>
       <Animated.View style={fabPulseStyle}>
-        <FloatingActionButton icon="add-outline" onPress={createQuickNote} />
+        <FloatingActionButton icon="add-outline" onPress={() => {
+          if (!snapshot?.templates.length || !snapshot.threads.length) return;
+          const t = snapshot.threads[0];
+          const tpl = snapshot.templates.find((x) => x.threadHint === t.id) ?? snapshot.templates[0];
+          createNoteFromTemplate(db, { templateId: tpl.id, spaceId: activeSpaceId, threadId: t.id, title: t.name === 'Personal Journal' ? 'Fresh Reflection' : `New ${t.name} Note` }).then((id) => router.push(`/editor/${id}`));
+        }} />
       </Animated.View>
 
-      <BottomSheetModal
-        ref={collectionSheetRef}
-        backdropComponent={(props) => (
-          <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} opacity={0.35} />
-        )}
-        handleIndicatorStyle={styles.sheetHandle}
-        snapPoints={collectionSnapPoints}>
+      <BottomSheetModal ref={collectionSheetRef} backdropComponent={(p) => <BottomSheetBackdrop {...p} appearsOnIndex={0} disappearsOnIndex={-1} opacity={0.35} />} handleIndicatorStyle={[styles.sheetHandle, { backgroundColor: colors.textTertiary }]} snapPoints={collectionSnapPoints}>
         <BottomSheetScrollView contentContainerStyle={styles.sheetContent}>
-          <View style={styles.sheetHeader}>
-            <Text style={styles.sheetTitle}>{collectionTitle}</Text>
-          </View>
-          {collectionNotes.length ? (
-            collectionNotes.map((note) => (
-              <AnimatedPressable
-                key={note.id}
-                haptic="light"
-                onPress={() => {
-                  collectionSheetRef.current?.dismiss();
-                  router.push(`/editor/${note.id}`);
-                }}
-                style={({ pressed }) => [styles.sheetNote, pressed && styles.pressed]}>
-                <Text style={styles.sheetNoteTitle}>{note.title}</Text>
-                <Text numberOfLines={2} style={styles.sheetNoteText}>
-                  {note.plainText || 'Empty note'}
-                </Text>
-              </AnimatedPressable>
-            ))
-          ) : (
-            <EmptyState subtitle="No notes found in this collection." title="Nothing here yet" />
-          )}
+          <Text style={[styles.sheetTitle, { color: colors.textPrimary }]}>{collectionTitle}</Text>
+          {collectionNotes.length ? collectionNotes.map((note) => (
+            <AnimatedPressable key={note.id} haptic="light" onPress={() => { collectionSheetRef.current?.dismiss(); router.push(`/editor/${note.id}`); }} style={({ pressed }) => [styles.sheetNote, { backgroundColor: colors.bgCard, borderColor: colors.border }, pressed && styles.pressed]}>
+              <Text style={[styles.sheetNoteTitle, { color: colors.textPrimary }]}>{note.title}</Text>
+              <Text numberOfLines={2} style={[styles.sheetNoteText, { color: colors.textSecondary }]}>{note.plainText || 'Empty note'}</Text>
+            </AnimatedPressable>
+          )) : <EmptyState title="Nothing here yet" subtitle="No notes found in this collection." />}
         </BottomSheetScrollView>
       </BottomSheetModal>
     </Screen>
@@ -418,168 +207,33 @@ export default function WorkspaceScreen() {
 }
 
 const styles = StyleSheet.create({
-  divider: {
-    backgroundColor: 'rgba(193,198,214,0.2)',
-    height: 1,
-    marginLeft: 60,
-  },
-  threadDivider: {
-    backgroundColor: 'rgba(193,198,214,0.2)',
-    height: 1,
-    marginLeft: 68,
-  },
-  spaceRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  sectionGap: {
-    gap: 14,
-  },
-  templateStack: {
-    gap: 12,
-  },
-  templateCard: {
-    alignItems: 'center',
-    backgroundColor: palette.surface,
-    borderRadius: 20,
-    flexDirection: 'row',
-    gap: 14,
-    paddingHorizontal: 18,
-    paddingVertical: 16,
-  },
-  templateIconWrap: {
-    alignItems: 'center',
-    backgroundColor: palette.blueSoft,
-    borderRadius: 16,
-    height: 46,
-    justifyContent: 'center',
-    width: 46,
-  },
-  templateBody: {
-    flex: 1,
-    gap: 4,
-  },
-  templateTitle: {
-    color: palette.text,
-    fontSize: 16,
-    fontWeight: '700',
-  },
-  templateText: {
-    color: palette.textMuted,
-    fontSize: 13,
-    lineHeight: 18,
-  },
-  promptCard: {
-    backgroundColor: palette.surfaceMuted,
-    borderRadius: 24,
-    gap: 10,
-    padding: 20,
-  },
-  promptReference: {
-    color: palette.success,
-    fontSize: 14,
-    fontWeight: '700',
-  },
-  promptText: {
-    color: palette.text,
-    fontSize: 16,
-    lineHeight: 26,
-  },
-  tagsWrap: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 10,
-  },
-  noteCard: {
-    backgroundColor: palette.surface,
-    borderRadius: 20,
-    gap: 8,
-    padding: 18,
-  },
-  noteCardTitle: {
-    color: palette.text,
-    fontSize: 16,
-    fontWeight: '700',
-  },
-  noteCardText: {
-    color: palette.textMuted,
-    fontSize: 14,
-    lineHeight: 22,
-  },
-  searchResult: {
-    flexDirection: 'row',
-    gap: 12,
-    paddingHorizontal: 18,
-    paddingVertical: 16,
-  },
-  searchResultIcon: {
-    alignItems: 'center',
-    backgroundColor: '#F5F5F4',
-    borderRadius: 14,
-    height: 34,
-    justifyContent: 'center',
-    width: 34,
-  },
-  searchResultBody: {
-    flex: 1,
-    gap: 4,
-  },
-  searchResultTitle: {
-    color: palette.text,
-    fontSize: 15,
-    fontWeight: '700',
-  },
-  searchResultText: {
-    color: palette.textMuted,
-    fontSize: 13,
-    lineHeight: 18,
-  },
-  sheetHandle: {
-    backgroundColor: palette.borderStrong,
-    height: 5,
-    width: 40,
-  },
-  sheetContent: {
-    paddingHorizontal: 16,
-    paddingBottom: 40,
-    gap: 8,
-  },
-  sheetHeader: {
-    paddingBottom: 12,
-    paddingHorizontal: 4,
-    paddingTop: 4,
-  },
-  sheetTitle: {
-    color: palette.text,
-    fontSize: 18,
-    fontWeight: '700',
-  },
-  sheetNote: {
-    backgroundColor: palette.surface,
-    borderColor: palette.border,
-    borderRadius: 14,
-    borderWidth: 1,
-    gap: 6,
-    padding: 14,
-  },
-  sheetNoteTitle: {
-    color: palette.text,
-    fontSize: 15,
-    fontWeight: '700',
-  },
-  sheetNoteText: {
-    color: palette.textMuted,
-    fontSize: 13,
-    lineHeight: 18,
-  },
-  modalScrim: { display: 'none' },
-  modalPanel: { display: 'none' },
-  modalHeader: { display: 'none' },
-  modalTitle: { display: 'none' },
-  modalList: { display: 'none' },
-  modalNoteCard: { display: 'none' },
-  modalNoteTitle: { display: 'none' },
-  modalNoteText: { display: 'none' },
-  pressed: { opacity: 0.75 },
+  spaceRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  divider: { height: StyleSheet.hairlineWidth, marginLeft: 60 },
+  threadDiv: { height: StyleSheet.hairlineWidth, marginLeft: 68 },
+  sectionGap: { gap: 12 },
+  templateStack: { gap: 10 },
+  frameworkScroll: { gap: 12, paddingRight: 20 },
+  frameworkCard: { borderRadius: 16, borderWidth: 1, width: 150, overflow: 'hidden', gap: 10, paddingHorizontal: 14, paddingVertical: 16 },
+  frameworkStrip: { height: 4, marginTop: -16, marginHorizontal: -14, width: '100%' },
+  frameworkIcon: { alignItems: 'center', borderRadius: 10, height: 38, justifyContent: 'center', width: 38 },
+  frameworkName: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 14, lineHeight: 20 },
+  frameworkDesc: { fontFamily: 'DMSans_400Regular', fontSize: 12, lineHeight: 16 },
+  promptCard: { borderRadius: 16, borderWidth: 1, gap: 8, padding: 16 },
+  promptRef: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 14 },
+  promptText: { fontFamily: 'DMSans_400Regular', fontSize: 15, lineHeight: 24 },
+  tagsWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  noteCard: { borderRadius: 14, borderWidth: 1, gap: 6, padding: 14 },
+  noteTitle: { fontFamily: 'DMSans_500Medium', fontSize: 15 },
+  noteText: { fontFamily: 'DMSans_400Regular', fontSize: 13, lineHeight: 18 },
+  searchResult: { flexDirection: 'row', gap: 12, paddingHorizontal: 16, paddingVertical: 14 },
+  searchIcon: { alignItems: 'center', borderRadius: 10, height: 32, justifyContent: 'center', width: 32 },
+  searchTitle: { fontFamily: 'DMSans_500Medium', fontSize: 14 },
+  searchText: { fontFamily: 'DMSans_400Regular', fontSize: 13, lineHeight: 18 },
+  sheetHandle: { height: 4, width: 36, borderRadius: 100 },
+  sheetContent: { paddingHorizontal: 16, paddingBottom: 40, gap: 8 },
+  sheetTitle: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 18, paddingBottom: 12, paddingTop: 4 },
+  sheetNote: { borderRadius: 14, borderWidth: 1, gap: 6, padding: 14 },
+  sheetNoteTitle: { fontFamily: 'DMSans_500Medium', fontSize: 15 },
+  sheetNoteText: { fontFamily: 'DMSans_400Regular', fontSize: 13, lineHeight: 18 },
+  pressed: { opacity: 0.85 },
 });

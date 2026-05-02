@@ -2,92 +2,51 @@ import { Ionicons } from '@expo/vector-icons';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
-import {
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  useColorScheme,
-  View,
-} from 'react-native';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { RichText, useEditorBridge } from '@10play/tentap-editor';
-import { BlurView } from 'expo-blur';
-import Animated, {
-  useAnimatedKeyboard,
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-} from 'react-native-reanimated';
+import Animated, { useAnimatedKeyboard, useSharedValue, useAnimatedStyle, withTiming, withSpring } from 'react-native-reanimated';
 
-import { BibleSheet } from '@/src/components/bible-sheet';
-import {
-  AttachmentPreview,
-  SearchField,
-  darkPalette,
-  palette,
-} from '@/src/components/primitives';
 import { AnimatedPressable } from '@/src/components/animated-pressable';
 import { AnimatedChip, AnimatedChipRow } from '@/src/components/animated-chip';
-import { EditorToolbar } from '@/src/components/editor-toolbar';
+import { BibleSheet } from '@/src/components/bible-sheet';
+import { AttachmentPreview, SearchField } from '@/src/components/primitives';
 import { markdownToHtml, stripHtml } from '@/src/lib/editor';
-import {
-  buildInsertedVerseText,
-  createNoteFromTemplate,
-  deleteNote,
-  getBibleChapter,
-  getNoteById,
-  getVerseByReference,
-  getVersesForReferences,
-  saveNoteDraft,
-  toggleNoteFavorite,
-  createThread,
-} from '@/src/lib/database';
+import { buildInsertedVerseText, createNoteFromTemplate, deleteNote, getBibleChapter, getNoteById, getVerseByReference, getVersesForReferences, saveNoteDraft, toggleNoteFavorite, createThread } from '@/src/lib/database';
 import { detectVerseReferences } from '@/src/lib/verse-references';
-import type { BibleVerse, MediaAttachment } from '@/src/types/domain';
 import { useAppState } from '@/src/providers/app-provider';
+import { useTheme } from '@/src/theme/useTheme';
+import type { BibleVerse, MediaAttachment } from '@/src/types/domain';
 
-type AttachmentDraft = Pick<
-  MediaAttachment,
-  'id' | 'uri' | 'width' | 'height' | 'type' | 'createdAt'
->;
+type AttachmentDraft = Pick<MediaAttachment, 'id' | 'uri' | 'width' | 'height' | 'type' | 'createdAt'>;
 
 export default function EditorScreen() {
   const { noteId } = useLocalSearchParams<{ noteId: string }>();
   const db = useSQLiteContext();
   const router = useRouter();
   const { bumpRefreshToken } = useAppState();
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === 'dark';
-  const p = isDark ? darkPalette : palette;
+  const { colors, isDark } = useTheme();
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
-  const headerOpacity = useSharedValue(1);
   const bodyRef = useRef('');
+  const headerY = useSharedValue(0);
+  const headerOpacity = useSharedValue(1);
   const [isDistractionFree, setIsDistractionFree] = useState(false);
 
-  const headerOpacityStyle = useAnimatedStyle(() => ({
-    opacity: headerOpacity.value,
-  }));
+  const headerStyle = useAnimatedStyle(() => ({ transform: [{ translateY: headerY.value }], opacity: headerOpacity.value }));
+  const breadcrumbStyle = useAnimatedStyle(() => ({ opacity: headerOpacity.value, transform: [{ translateY: withSpring(headerOpacity.value === 1 ? 0 : -10, { damping: 20 }) }] }));
 
   const enterDistractionFree = useCallback(() => {
     setIsDistractionFree(true);
     headerOpacity.value = withTiming(0, { duration: 300 });
-  }, [headerOpacity]);
+    headerY.value = withSpring(-20, { damping: 20, stiffness: 300 });
+  }, [headerOpacity, headerY]);
 
   const exitDistractionFree = useCallback(() => {
     setIsDistractionFree(false);
     headerOpacity.value = withTiming(1, { duration: 300 });
-  }, [headerOpacity]);
+    headerY.value = withSpring(0, { damping: 20, stiffness: 300 });
+  }, [headerOpacity, headerY]);
 
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
@@ -102,31 +61,22 @@ export default function EditorScreen() {
   const [chapterNumber, setChapterNumber] = useState(1);
   const [chapterVerses, setChapterVerses] = useState<BibleVerse[]>([]);
   const [saveState, setSaveState] = useState<'idle' | 'saving' | 'saved'>('idle');
-  const saveDotOpacity = useSharedValue(0);
-  const titleUnderlineWidth = useSharedValue(0);
-  const [titleFocused, setTitleFocused] = useState(false);
-
-  const titleUnderlineStyle = useAnimatedStyle(() => ({
-    width: `${titleUnderlineWidth.value * 100}%`,
-  }));
   const [verseSearch, setVerseSearch] = useState('');
   const [referenceVerses, setReferenceVerses] = useState<BibleVerse[]>([]);
   const [initialContent, setInitialContent] = useState('');
+  const [titleFocused, setTitleFocused] = useState(false);
+
+  const saveDotOpacity = useSharedValue(0);
+  const titleUnderlineWidth = useSharedValue(0);
+  const saveDotStyle = useAnimatedStyle(() => ({ opacity: saveDotOpacity.value }));
+  const titleUnderlineStyle = useAnimatedStyle(() => ({ width: `${titleUnderlineWidth.value * 100}%` }));
 
   const editor = useEditorBridge({
     autofocus: true,
     avoidIosKeyboard: true,
     initialContent,
     onChange: async () => {
-      try {
-        const html = await (editor as any).getHTML();
-        if (html) {
-          bodyRef.current = html;
-          setBody(html);
-        }
-      } catch {
-        // getHTML may fail during init
-      }
+      try { const html = await (editor as any).getHTML(); if (html) { bodyRef.current = html; setBody(html); } } catch {}
     },
   });
 
@@ -134,17 +84,12 @@ export default function EditorScreen() {
 
   useEffect(() => {
     let cancelled = false;
-
     async function load() {
       const payload = await getNoteById(db, noteId);
-      if (!payload || cancelled) {
-        return;
-      }
-
+      if (!payload || cancelled) return;
       const rawBody = payload.note.markdownBody || '';
       const isHtml = rawBody.trim().startsWith('<');
       const htmlBody = isHtml ? rawBody : markdownToHtml(rawBody);
-
       setTitle(payload.note.title);
       setInitialContent(htmlBody);
       setSpaceId(payload.note.spaceId);
@@ -153,14 +98,11 @@ export default function EditorScreen() {
       setTemplateId(payload.note.templateId);
       setAttachments(payload.attachments as AttachmentDraft[]);
       setIsFavorite(payload.note.isFavorite);
-      bodyRef.current = payload.note.markdownBody || '';
+      bodyRef.current = htmlBody;
       setIsReady(true);
     }
-
     load();
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, [db, noteId]);
 
   const plainText = useMemo(() => stripHtml(body), [body]);
@@ -172,83 +114,42 @@ export default function EditorScreen() {
 
   useEffect(() => {
     let cancelled = false;
-
-    async function loadActiveChapter() {
-      const firstReference = references[0];
-      const book = firstReference?.book ?? 'Genesis';
-      const chapter = firstReference?.chapterStart ?? 1;
-      setChapterBook(book);
-      setChapterNumber(chapter);
-      const verses = await getBibleChapter(db, book, chapter);
-      if (!cancelled) {
-        setChapterVerses(verses);
-      }
+    async function loadCh() {
+      const first = references[0];
+      const book = first?.book ?? 'Genesis';
+      const ch = first?.chapterStart ?? 1;
+      setChapterBook(book); setChapterNumber(ch);
+      const verses = await getBibleChapter(db, book, ch);
+      if (!cancelled) setChapterVerses(verses);
     }
-
-    loadActiveChapter();
-    return () => {
-      cancelled = true;
-    };
+    loadCh();
+    return () => { cancelled = true; };
   }, [db, references]);
 
   useEffect(() => {
     let cancelled = false;
-
-    async function loadReferenceChips() {
-      if (!references.length) {
-        setReferenceVerses([]);
-        return;
-      }
-
-      const verses = await getVersesForReferences(
-        db,
-        references.map((reference) => `${reference.book} ${reference.chapterStart}:${reference.verseStart}`)
-      );
-
-      if (!cancelled) {
-        setReferenceVerses(verses);
-      }
+    async function loadChips() {
+      if (!references.length) { setReferenceVerses([]); return; }
+      const verses = await getVersesForReferences(db, references.map((r) => `${r.book} ${r.chapterStart}:${r.verseStart}`));
+      if (!cancelled) setReferenceVerses(verses);
     }
-
-    loadReferenceChips();
-    return () => {
-      cancelled = true;
-    };
+    loadChips();
+    return () => { cancelled = true; };
   }, [db, references]);
 
   useEffect(() => {
-    if (!isReady) {
-      return;
-    }
-
+    if (!isReady) return;
     const timeout = setTimeout(async () => {
       setSaveState('saving');
-      await saveNoteDraft(db, {
-        id: noteId,
-        title: title.trim() || 'Untitled Note',
-        markdownBody: bodyRef.current,
-        templateId,
-        spaceId,
-        threadId,
-        attachments,
-      });
+      await saveNoteDraft(db, { id: noteId, title: title.trim() || 'Untitled Note', markdownBody: bodyRef.current, templateId, spaceId, threadId, attachments });
       setSaveState('saved');
     }, 400);
-
     return () => clearTimeout(timeout);
-  }, [attachments, db, isReady, noteId, spaceId, templateId, threadId, title]);
-
-  const saveDotStyle = useAnimatedStyle(() => ({
-    opacity: saveDotOpacity.value,
-  }));
+  }, [attachments, body, db, isReady, noteId, spaceId, templateId, threadId, title]);
 
   useEffect(() => {
-    if (saveState === 'saving') {
-      saveDotOpacity.value = 1;
-    } else if (saveState === 'saved') {
-      saveDotOpacity.value = 1;
-      saveDotOpacity.value = withTiming(0, { duration: 1200 });
-    }
+    if (saveState === 'saving') saveDotOpacity.value = 1;
+    else if (saveState === 'saved') { saveDotOpacity.value = 1; saveDotOpacity.value = withTiming(0, { duration: 1400 }); }
   }, [saveState, saveDotOpacity]);
 
   const insertVerseHtml = useCallback(async (verseHtml: string) => {
@@ -256,412 +157,155 @@ export default function EditorScreen() {
       const current = await (editor as any).getHTML();
       (editor as any).setContent(current + verseHtml);
     } catch {
-      // fallback: inject via webview
-      editor.webviewRef.current?.injectJavaScript(
-        `document.execCommand('insertHTML', false, ${JSON.stringify(verseHtml)}); true;`
-      );
+      editor.webviewRef.current?.injectJavaScript(`document.execCommand('insertHTML', false, ${JSON.stringify(verseHtml)}); true;`);
     }
   }, [editor]);
 
   const insertReferenceFromSearch = useCallback(async () => {
     const verse = await getVerseByReference(db, verseSearch.trim());
-    if (!verse) {
-      Alert.alert('Verse not found', 'Try a full reference like Genesis 1:1.');
-      return;
-    }
-
+    if (!verse) { Alert.alert('Verse not found', 'Try a reference like Genesis 1:1.'); return; }
     const text = buildInsertedVerseText([verse]);
-    const verseHtml = `<p><em>${text.replace(/\n/g, '<br>')}</em></p><p></p>`;
-    await insertVerseHtml(verseHtml);
+    await insertVerseHtml(`<p><em>${text.replace(/\n/g, '<br>')}</em></p><p></p>`);
     setVerseSearch('');
   }, [db, verseSearch, insertVerseHtml]);
 
   const insertVerseIntoBody = useCallback((verse: BibleVerse) => {
     const text = buildInsertedVerseText([verse]);
-    const verseHtml = `<p><em>${text.replace(/\n/g, '<br>')}</em></p><p></p>`;
-    insertVerseHtml(verseHtml);
+    insertVerseHtml(`<p><em>${text.replace(/\n/g, '<br>')}</em></p><p></p>`);
     bottomSheetRef.current?.dismiss();
   }, [insertVerseHtml]);
 
   const extractToNewNote = useCallback(async () => {
     const currentBody = bodyRef.current;
-    if (!stripHtml(currentBody).trim()) {
-      Alert.alert('Nothing to extract', 'Write some content first.');
-      return;
-    }
-    Alert.alert('Extract to Note', 'Create a new note from this content?', [
-      { text: 'Cancel', style: 'cancel' },
-      {
-        text: 'Extract',
-        onPress: async () => {
-          const thread = await createThread(db, { spaceId });
-          const noteId = await createNoteFromTemplate(db, {
-            templateId: templateId ?? '',
-            spaceId,
-            threadId: thread.id,
-            title: title ? `Branch: ${title}` : 'Extracted Note',
-          });
-          await saveNoteDraft(db, {
-            id: noteId,
-            title: title ? `Branch: ${title}` : 'Extracted Note',
-            markdownBody: currentBody,
-            templateId,
-            spaceId,
-            threadId: thread.id,
-          });
-          bumpRefreshToken();
-          Alert.alert('Note created', 'The new note has been created from this content.');
-        },
-      },
-    ]);
-  }, [db, spaceId, templateId, title, bumpRefreshToken]);
+    if (!stripHtml(currentBody).trim()) { Alert.alert('Nothing to extract', 'Write some content first.'); return; }
+    Alert.alert('Extract to Note', 'Create a new note from this content?', [{ text: 'Cancel', style: 'cancel' }, { text: 'Extract', onPress: async () => {
+      const thread = await createThread(db, { spaceId });
+      const noteId = await createNoteFromTemplate(db, { templateId: templateId ?? '', spaceId, threadId: thread.id, title: title ? `Branch: ${title}` : 'Extracted Note' });
+      await saveNoteDraft(db, { id: noteId, title: title ? `Branch: ${title}` : 'Extracted Note', markdownBody: currentBody, templateId, spaceId, threadId: thread.id });
+      bumpRefreshToken();
+      Alert.alert('Note created', 'The new note has been created from this content.');
+    } }]);
+  }, [body, db, spaceId, templateId, title, bumpRefreshToken]);
 
   if (!isReady) {
-    return (
-      <View style={[styles.container, styles.centered]}>
-        <Text style={styles.loadingText}>Preparing your study note...</Text>
-      </View>
-    );
+    return <View style={[styles.container, styles.centered, { backgroundColor: colors.bg }]}><Text style={[styles.loadingText, { color: colors.textSecondary }]}>Preparing your study note…</Text></View>;
   }
 
+  const wordCount = plainText ? plainText.split(/\s+/).filter(Boolean).length : 0;
+
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      style={[styles.container, { backgroundColor: p.backgroundAlt }]}>
-      <Animated.View style={[styles.header, headerOpacityStyle]}>
-        <AnimatedPressable
-          onPress={() => {
-            if (isDistractionFree) {
-              exitDistractionFree();
-            } else {
-              router.back();
-            }
-          }}
-          style={styles.headerButton}>
-          <Ionicons
-            color={isDistractionFree ? palette.blue : palette.textMuted}
-            name={isDistractionFree ? 'eye-outline' : 'chevron-back-outline'}
-            size={20}
-          />
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={[styles.container, { backgroundColor: colors.bg }]}>
+      <Animated.View style={[styles.header, { backgroundColor: colors.bg, borderBottomColor: colors.border }, headerStyle]}>
+        <AnimatedPressable onPress={() => isDistractionFree ? exitDistractionFree() : router.back()} style={styles.headerBtn}>
+          <Ionicons color={isDistractionFree ? colors.accent : colors.textSecondary} name={isDistractionFree ? 'eye-outline' : 'chevron-back-outline'} size={20} />
         </AnimatedPressable>
-        <Text style={styles.headerTitle}>Stillnote</Text>
+        <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>Stillnote</Text>
         <View style={styles.headerActions}>
-          <AnimatedPressable
-            onPress={async () => {
-              await toggleNoteFavorite(db, noteId);
-              setIsFavorite((v) => !v);
-              bumpRefreshToken();
-            }}
-            style={styles.headerButton}>
-            <Ionicons
-              color={isFavorite ? '#E74C3C' : palette.textMuted}
-              name={isFavorite ? 'heart' : 'heart-outline'}
-              size={20}
-            />
+          <AnimatedPressable haptic="light" onPress={async () => { await toggleNoteFavorite(db, noteId); setIsFavorite((v) => !v); bumpRefreshToken(); }} style={styles.headerBtn}>
+            <Ionicons color={isFavorite ? '#E74C3C' : colors.textSecondary} name={isFavorite ? 'heart' : 'heart-outline'} size={20} />
           </AnimatedPressable>
-          <AnimatedPressable
-            onPress={() => {
-              Alert.alert('Delete Note', 'Are you sure you want to delete this note? This action cannot be undone.', [
-                { text: 'Cancel', style: 'cancel' },
-                {
-                  text: 'Delete',
-                  style: 'destructive',
-                  onPress: async () => {
-                    await deleteNote(db, noteId);
-                    bumpRefreshToken();
-                    router.back();
-                  },
-                },
-              ]);
-            }}
-            style={styles.headerButton}>
-            <Ionicons color={palette.textMuted} name="trash-outline" size={20} />
+          <AnimatedPressable haptic="heavy" onPress={() => Alert.alert('Delete Note', 'This cannot be undone.', [{ text: 'Cancel', style: 'cancel' }, { text: 'Delete', style: 'destructive', onPress: async () => { await deleteNote(db, noteId); bumpRefreshToken(); router.back(); } }])} style={styles.headerBtn}>
+            <Ionicons color={colors.textSecondary} name="trash-outline" size={20} />
           </AnimatedPressable>
-          <AnimatedPressable onPress={() => bottomSheetRef.current?.present()} style={styles.headerButton}>
-            <Ionicons color={palette.blue} name="book-outline" size={20} />
+          <AnimatedPressable onPress={() => bottomSheetRef.current?.present()} style={styles.headerBtn}>
+            <Ionicons color={colors.accent} name="book-outline" size={20} />
           </AnimatedPressable>
         </View>
       </Animated.View>
 
       <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-        <Animated.View style={headerOpacityStyle}>
-          <Text style={styles.breadcrumb}>
-            Threads <Text style={styles.breadcrumbAccent}>›</Text> {threadName}
-          </Text>
+        <Animated.View style={breadcrumbStyle}>
+          <Text style={[styles.breadcrumb, { color: colors.textTertiary }]}>Threads <Text style={{ color: colors.borderStrong }}>›</Text> {threadName}</Text>
         </Animated.View>
 
-        <TextInput
-          onBlur={() => { exitDistractionFree(); setTitleFocused(false); titleUnderlineWidth.value = withTiming(0, { duration: 400 }); }}
-          onChangeText={setTitle}
-          onFocus={() => { enterDistractionFree(); setTitleFocused(true); titleUnderlineWidth.value = withTiming(1, { duration: 400 }); }}
-          placeholder="Untitled note"
-          placeholderTextColor="#8C847A"
-          selectionColor={palette.blue}
-          style={styles.titleInput}
-          value={title}
-        />
-        <Animated.View style={[styles.titleUnderline, titleUnderlineStyle, titleFocused ? styles.titleUnderlineVisible : null]} />
+        <TextInput onBlur={() => { exitDistractionFree(); setTitleFocused(false); titleUnderlineWidth.value = withTiming(0, { duration: 350 }); }} onChangeText={setTitle} onFocus={() => { enterDistractionFree(); setTitleFocused(true); titleUnderlineWidth.value = withTiming(1, { duration: 350 }); }} placeholder="Untitled" placeholderTextColor={colors.textTertiary} selectionColor={colors.accent} style={[styles.titleInput, { color: colors.textPrimary }]} value={title} />
+        <Animated.View style={[styles.titleUnderline, { backgroundColor: colors.accent }, titleUnderlineStyle, titleFocused && { backgroundColor: colors.accent }]} />
 
-        <AnimatedPressable onPress={extractToNewNote} style={({ pressed }) => [styles.extractButton, pressed && styles.pressed]}>
-          <Ionicons color={palette.blue} name="git-branch-outline" size={16} />
-          <Text style={styles.extractButtonText}>Extract to New Note</Text>
+        <EditorToolbar editor={editor} keyboardHeight={keyboardHeight} onBiblePress={() => bottomSheetRef.current?.present()} colors={colors} isDark={isDark} />
+
+        <AnimatedPressable onPress={extractToNewNote} style={({ pressed }) => [styles.extractBtn, { backgroundColor: colors.accentSoft }, pressed && styles.pressed]}>
+          <Ionicons color={colors.accent} name="git-branch-outline" size={14} />
+          <Text style={[styles.extractText, { color: colors.accent }]}>Extract to Note</Text>
         </AnimatedPressable>
 
         <View style={styles.verseSearchCard}>
-          <SearchField
-            onChangeText={setVerseSearch}
-            placeholder="Insert a verse like Genesis 1:1"
-            value={verseSearch}
-          />
-          <AnimatedPressable onPress={insertReferenceFromSearch} style={({ pressed }) => [styles.insertReferenceButton, pressed && styles.pressed]}>
-            <Text style={styles.insertReferenceText}>Insert Verse</Text>
+          <SearchField onChangeText={setVerseSearch} placeholder="Insert a verse like Genesis 1:1" value={verseSearch} />
+          <AnimatedPressable onPress={insertReferenceFromSearch} style={({ pressed }) => [styles.insertVerseBtn, { backgroundColor: colors.accent }, pressed && styles.pressed]}>
+            <Text style={styles.insertVerseText}>Insert Verse</Text>
           </AnimatedPressable>
         </View>
 
-        {referenceVerses.length ? (
-          <AnimatedChipRow>
-            {referenceVerses.map((verse) => (
-              <AnimatedChip
-                key={verse.reference}
-                accent={palette.gold}
-                bg={palette.goldSoft}
-                icon="book-outline"
-                label={verse.reference}
-                onPress={() => {
-                  setChapterBook(verse.book);
-                  setChapterNumber(verse.chapter);
-                  bottomSheetRef.current?.present();
-                }}
-              />
-            ))}
-          </AnimatedChipRow>
-        ) : null}
+        {referenceVerses.length ? <AnimatedChipRow>{referenceVerses.map((v) => (<AnimatedChip key={v.reference} accent={colors.gold} bg={colors.goldSoft} icon="book-outline" label={v.reference} onPress={() => { setChapterBook(v.book); setChapterNumber(v.chapter); bottomSheetRef.current?.present(); }} />))}</AnimatedChipRow> : null}
+        {hashtags.size ? <AnimatedChipRow>{Array.from(hashtags).map((t) => (<AnimatedChip key={t} accent={colors.accent} bg={colors.accentSoft} icon="pricetag-outline" label={`#${t}`} />))}</AnimatedChipRow> : null}
 
-        {hashtags.size ? (
-          <AnimatedChipRow>
-            {Array.from(hashtags).map((tag) => (
-              <AnimatedChip
-                key={tag}
-                accent="#7C3AED"
-                bg="#F5F3FF"
-                icon="pricetag-outline"
-                label={`#${tag}`}
-              />
-            ))}
-          </AnimatedChipRow>
-        ) : null}
+        <RichText editor={editor} style={styles.editor} />
 
-        <RichText
-          editor={editor}
-          style={styles.editor}
-        />
-
-        {attachments.length ? (
-          <View style={styles.attachmentStack}>
-            {attachments.map((attachment, index) => (
-              <AttachmentPreview
-                index={index}
-                key={attachment.id}
-                onRemove={() =>
-                  setAttachments((current) => current.filter((item) => item.id !== attachment.id))
-                }
-              />
-            ))}
-          </View>
-        ) : null}
+        {attachments.length ? <View style={styles.attachmentStack}>{attachments.map((a, i) => (<AttachmentPreview key={a.id} index={i} onRemove={() => setAttachments((c) => c.filter((x) => x.id !== a.id))} />))}</View> : null}
 
         <View style={styles.statusRow}>
           <View style={styles.saveIndicator}>
-            <Animated.View style={[styles.saveDot, saveDotStyle, saveState === 'saved' ? styles.saveDotSaved : styles.saveDotSaving]} />
-            <Text style={styles.statusText}>
-              {saveState === 'saving' ? 'Saving…' : saveState === 'saved' ? 'Saved' : 'Autosave active'}
-            </Text>
+            <Animated.View style={[styles.saveDot, saveDotStyle, { backgroundColor: saveState === 'saved' ? colors.accent : colors.textTertiary }]} />
+            <Text style={[styles.statusText, { color: colors.textTertiary }]}>{saveState === 'saving' ? 'Saving…' : saveState === 'saved' ? 'Saved' : ''}</Text>
           </View>
-          <View style={styles.metaRow}>
-            <Text style={styles.statusText}>{plainText.split(/\s+/).filter(Boolean).length} words</Text>
-            <Text style={styles.statusText}>·</Text>
-            <Text style={styles.statusText}>{Math.max(1, Math.ceil(plainText.split(/\s+/).filter(Boolean).length / 200))} min read</Text>
-            <Text style={styles.statusText}>·</Text>
-            <Text style={styles.statusText}>{hashtags.size} tags</Text>
-          </View>
+          <Text style={[styles.statusText, { color: colors.textTertiary }]}>{wordCount} words · {Math.max(1, Math.ceil(wordCount / 200))} min · {hashtags.size} tags</Text>
         </View>
-
-        <BlurView intensity={20} tint="light" style={styles.metadataBar}>
-          <Text style={styles.metadataText}>
-            {plainText.length ? `${plainText.split(/\s+/).filter(Boolean).length} words · ${Math.max(1, Math.ceil(plainText.split(/\s+/).filter(Boolean).length / 200))} min read · ${hashtags.size} tags` : 'Start writing…'}
-          </Text>
-        </BlurView>
       </ScrollView>
 
-      <BibleSheet
-        book={chapterBook}
-        chapter={chapterNumber}
-        onInsertVerse={insertVerseIntoBody}
-        ref={bottomSheetRef}
-        translationName="King James Version"
-        verses={chapterVerses}
-      />
-      <EditorToolbar
-        editor={editor}
-        keyboardHeight={keyboardHeight}
-        onBiblePress={() => bottomSheetRef.current?.present()}
-      />
+      <BibleSheet book={chapterBook} chapter={chapterNumber} onInsertVerse={insertVerseIntoBody} ref={bottomSheetRef} translationName="King James Version" verses={chapterVerses} />
     </KeyboardAvoidingView>
   );
 }
 
+function EditorToolbar({ editor, keyboardHeight, onBiblePress, colors, isDark }: any) {
+  const toolbarStyle = useAnimatedStyle(() => ({ bottom: withTiming(keyboardHeight.value + 8, { duration: 150 }) }));
+  const btns = [
+    { icon: 'text-outline' as const, action: () => (editor as any).toggleBold?.() },
+    { icon: 'text-outline' as const, action: () => (editor as any).toggleItalic?.() },
+    { icon: 'remove-outline' as const, action: () => (editor as any).toggleUnderline?.() },
+    { icon: 'chatbox-ellipses-outline' as const, action: () => (editor as any).toggleBlockquote?.() },
+    { icon: 'list-outline' as const, action: () => (editor as any).toggleBulletList?.() },
+    { icon: 'list-circle-outline' as const, action: () => (editor as any).toggleOrderedList?.() },
+    { icon: 'book-outline' as const, action: onBiblePress },
+  ];
+
+  return (
+    <Animated.View style={[styles.toolbar, toolbarStyle]}>
+      <View style={[styles.toolbarInner, { backgroundColor: isDark ? 'rgba(26,23,18,0.92)' : 'rgba(255,255,255,0.88)', borderColor: colors.border }]}>
+        {btns.map((btn, i) => (
+          <AnimatedPressable key={i} haptic="light" onPress={btn.action} style={styles.toolBtn}>
+            <Ionicons color={colors.textSecondary} name={btn.icon} size={18} />
+          </AnimatedPressable>
+        ))}
+      </View>
+    </Animated.View>
+  );
+}
+
 const styles = StyleSheet.create({
-  attachmentStack: {
-    gap: 10,
-  },
-  breadcrumb: {
-    color: '#727785',
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  breadcrumbAccent: {
-    color: '#B7BCC9',
-  },
-  centered: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  container: {
-    flex: 1,
-  },
-  content: {
-    gap: 16,
-    paddingBottom: 56,
-    paddingHorizontal: 20,
-    paddingTop: 20,
-  },
-  editor: {
-    flex: 1,
-    minHeight: 400,
-  },
-  header: {
-    alignItems: 'center',
-    backgroundColor: '#FAF9F6',
-    borderBottomColor: 'rgba(231,229,228,0.35)',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 18,
-    paddingTop: 58,
-    paddingBottom: 14,
-  },
-  headerButton: {
-    alignItems: 'center',
-    height: 34,
-    justifyContent: 'center',
-    width: 34,
-  },
-  headerTitle: {
-    color: palette.text,
-    fontSize: 20,
-    fontWeight: '700',
-  },
-  headerActions: {
-    flexDirection: 'row',
-    gap: 4,
-  },
-  insertReferenceButton: {
-    alignItems: 'center',
-    alignSelf: 'flex-start',
-    backgroundColor: palette.blue,
-    borderRadius: 999,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-  },
-  insertReferenceText: {
-    color: '#FFFFFF',
-    fontSize: 13,
-    fontWeight: '700',
-  },
-  loadingText: {
-    color: palette.textMuted,
-    fontSize: 15,
-  },
-  pressed: {
-    opacity: 0.82,
-  },
-  referenceChipRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 10,
-  },
-  extractButton: {
-    alignItems: 'center',
-    alignSelf: 'center',
-    backgroundColor: palette.blueSoft,
-    borderRadius: 12,
-    flexDirection: 'row',
-    gap: 8,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-  },
-  extractButtonText: {
-    color: palette.blue,
-    fontSize: 13,
-    fontWeight: '600',
-  },
-  statusRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 4,
-  },
-  saveIndicator: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    gap: 6,
-  },
-  saveDot: {
-    borderRadius: 999,
-    height: 8,
-    width: 8,
-  },
-  saveDotSaving: {
-    backgroundColor: '#94A3B8',
-  },
-  saveDotSaved: {
-    backgroundColor: '#0D9488',
-  },
-  statusText: {
-    color: '#8C847A',
-    fontSize: 12,
-  },
-  titleInput: {
-    color: palette.text,
-    fontSize: 32,
-    fontWeight: '700',
-    lineHeight: 38,
-    paddingVertical: 0,
-  },
-  titleUnderline: {
-    backgroundColor: palette.blue,
-    height: 2,
-    marginTop: -4,
-    width: 0,
-  },
-  titleUnderlineVisible: {
-    backgroundColor: palette.blue,
-  },
-  metaRow: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    gap: 6,
-  },
-  metadataBar: {
-    borderTopColor: palette.border,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-  metadataText: {
-    color: palette.textMuted,
-    fontSize: 12,
-  },
-  verseSearchCard: {
-    gap: 10,
-  },
+  container: { flex: 1 },
+  centered: { alignItems: 'center', justifyContent: 'center' },
+  header: { alignItems: 'center', borderBottomWidth: StyleSheet.hairlineWidth, flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 16, paddingTop: 58, paddingBottom: 12 },
+  headerBtn: { alignItems: 'center', height: 34, justifyContent: 'center', width: 34 },
+  headerTitle: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 18 },
+  headerActions: { flexDirection: 'row', gap: 4 },
+  content: { gap: 16, paddingBottom: 56, paddingHorizontal: 20, paddingTop: 20 },
+  breadcrumb: { fontFamily: 'DMSans_400Regular', fontSize: 11, letterSpacing: 0.5 },
+  titleInput: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 28, lineHeight: 36, paddingVertical: 0 },
+  titleUnderline: { height: 2, marginTop: -6, width: 0 },
+  editor: { flex: 1, minHeight: 400 },
+  toolbar: { left: 20, position: 'absolute', right: 20, zIndex: 100 },
+  toolbarInner: { alignItems: 'center', borderRadius: 100, borderWidth: 1, flexDirection: 'row', gap: 2, paddingHorizontal: 10, paddingVertical: 8, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.08, shadowRadius: 12, elevation: 4 },
+  toolBtn: { alignItems: 'center', borderRadius: 100, height: 36, justifyContent: 'center', width: 38 },
+  extractBtn: { alignItems: 'center', alignSelf: 'center', borderRadius: 100, flexDirection: 'row', gap: 6, paddingHorizontal: 14, paddingVertical: 8 },
+  extractText: { fontFamily: 'DMSans_500Medium', fontSize: 12 },
+  verseSearchCard: { gap: 10 },
+  insertVerseBtn: { alignItems: 'center', alignSelf: 'flex-start', borderRadius: 100, paddingHorizontal: 14, paddingVertical: 9 },
+  insertVerseText: { color: '#FFF', fontFamily: 'DMSans_500Medium', fontSize: 13 },
+  attachmentStack: { gap: 10 },
+  statusRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 },
+  saveIndicator: { alignItems: 'center', flexDirection: 'row', gap: 6 },
+  saveDot: { borderRadius: 100, height: 7, width: 7 },
+  statusText: { fontFamily: 'DMSans_400Regular', fontSize: 11 },
+  loadingText: { fontFamily: 'DMSans_400Regular', fontSize: 15 },
+  pressed: { opacity: 0.85 },
 });

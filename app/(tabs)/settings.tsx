@@ -1,67 +1,40 @@
-import { Alert, StyleSheet, Text, View } from 'react-native';
-
-import { Card, PageScroll, Screen, SectionTitle, TopBar, palette } from '@/src/components/primitives';
+import { StyleSheet, Text, View } from 'react-native';
+import { Card, PageScroll, Screen, SectionTitle, TopBar } from '@/src/components/primitives';
+import { useTheme } from '@/src/theme/useTheme';
 
 export default function SettingsScreen() {
+  const { colors } = useTheme();
   return (
     <Screen>
-      <TopBar
-        leftIcon="settings-outline"
-        rightIcon="shield-checkmark-outline"
-        title="Settings"
-        onLeftPress={() =>
-          Alert.alert('Stillnote', 'Private study companion.\nYour notes stay on your device.')
-        }
-        onRightPress={() =>
-          Alert.alert('Privacy & Security', 'All your notes, tags, and Bible data are stored locally on this device using SQLite. Nothing is sent to any server.\n\nFeatures like biometric vault lock and encrypted export are coming in a future release.')
-        }
-      />
+      <TopBar leftIcon="settings-outline" rightIcon="shield-checkmark-outline" title="Settings" />
       <PageScroll>
         <View style={styles.section}>
-          <SectionTitle title="Local-first by design" />
+          <SectionTitle title="Local-First by Design" />
           <Card>
             <View style={styles.cardBody}>
-              <Text style={styles.cardTitle}>Your study stays on device</Text>
-              <Text style={styles.cardText}>
+              <Text style={[styles.cardTitle, { color: colors.textPrimary }]}>Your study stays on device</Text>
+              <Text style={[styles.cardText, { color: colors.textSecondary }]}>
                 Notes, tags, templates, Bible content, and concordance lookups are persisted locally in SQLite for this first slice.
               </Text>
             </View>
           </Card>
         </View>
-
         <View style={styles.section}>
-          <SectionTitle title="What this slice includes" />
+          <SectionTitle title="What This Slice Includes" />
           <Card>
             <View style={styles.bulletBlock}>
-              {[
-                'Workspace and Threads',
-                'Template-backed rich markdown editor',
-                'Autosave on every keystroke',
-                'Inline verse insertion via slide-over Bible sheet',
-                "Offline KJV seed + scoped Strong's preview",
-              ].map((item) => (
-                <Text key={item} style={styles.bullet}>
-                  • {item}
-                </Text>
+              {['Workspace and Threads', 'Template-backed rich markdown editor', 'Autosave on every keystroke', 'Inline verse insertion via slide-over Bible sheet', "Offline KJV seed + scoped Strong's preview"].map((item) => (
+                <Text key={item} style={[styles.bullet, { color: colors.textPrimary }]}>• {item}</Text>
               ))}
             </View>
           </Card>
         </View>
-
         <View style={styles.section}>
-          <SectionTitle title="Coming later" />
+          <SectionTitle title="Coming Later" />
           <Card>
             <View style={styles.bulletBlock}>
-              {[
-                'Thread share cards',
-                'Biometric vault lock',
-                'Encrypted export',
-                'Semantic search',
-                'Downloaded translation management',
-              ].map((item) => (
-                <Text key={item} style={styles.bulletMuted}>
-                  • {item}
-                </Text>
+              {['Thread share cards', 'Biometric vault lock', 'Encrypted export', 'Semantic search', 'Downloaded translation management'].map((item) => (
+                <Text key={item} style={[styles.bulletMuted, { color: colors.textSecondary }]}>• {item}</Text>
               ))}
             </View>
           </Card>
@@ -72,35 +45,11 @@ export default function SettingsScreen() {
 }
 
 const styles = StyleSheet.create({
-  section: {
-    gap: 14,
-  },
-  cardBody: {
-    gap: 10,
-    padding: 20,
-  },
-  cardTitle: {
-    color: palette.text,
-    fontSize: 17,
-    fontWeight: '700',
-  },
-  cardText: {
-    color: palette.textMuted,
-    fontSize: 14,
-    lineHeight: 21,
-  },
-  bulletBlock: {
-    gap: 10,
-    padding: 20,
-  },
-  bullet: {
-    color: palette.text,
-    fontSize: 14,
-    lineHeight: 20,
-  },
-  bulletMuted: {
-    color: palette.textMuted,
-    fontSize: 14,
-    lineHeight: 20,
-  },
+  section: { gap: 12 },
+  cardBody: { gap: 10, padding: 18 },
+  cardTitle: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 16 },
+  cardText: { fontFamily: 'DMSans_400Regular', fontSize: 14, lineHeight: 21 },
+  bulletBlock: { gap: 10, padding: 18 },
+  bullet: { fontFamily: 'DMSans_400Regular', fontSize: 14, lineHeight: 20 },
+  bulletMuted: { fontFamily: 'DMSans_400Regular', fontSize: 14, lineHeight: 20 },
 });
