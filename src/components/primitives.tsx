@@ -1,56 +1,60 @@
 import { Ionicons } from '@expo/vector-icons';
 import type { ComponentProps, ReactNode } from 'react';
 import { forwardRef } from 'react';
-import { ScrollView, StyleSheet, Text, TextInput, View, useColorScheme } from 'react-native';
+import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AnimatedPressable } from '@/src/components/animated-pressable';
+import { useTheme } from '@/src/theme/useTheme';
+import { theme } from '@/src/theme/theme';
 
 type IoniconName = ComponentProps<typeof Ionicons>['name'];
 
+const light = theme.light;
+const dark = theme.dark;
+
 export const palette = {
-  background: '#FAF8F5',
-  backgroundAlt: '#FFF8F5',
-  surface: '#FFFFFF',
-  surfaceMuted: '#FBF2ED',
-  text: '#1E1B18',
-  textMuted: '#727785',
-  textSoft: '#8C847A',
-  border: '#EAE3DB',
-  borderStrong: '#D6D3D1',
-  blue: '#1A73E8',
-  blueSoft: '#EAF3FF',
-  gold: '#B5924C',
-  goldSoft: '#F2E0C3',
-  tag: '#EFE6E2',
-  success: '#747A57',
-  scrim: 'rgba(30,27,24,0.38)',
+  background: light.bg,
+  backgroundAlt: light.bg,
+  surface: light.bgCard,
+  surfaceMuted: light.accentSoft,
+  text: light.textPrimary,
+  textMuted: light.textSecondary,
+  textSoft: light.textTertiary,
+  border: light.border,
+  borderStrong: light.borderStrong,
+  blue: light.accent,
+  blueSoft: light.accentSoft,
+  gold: light.gold,
+  goldSoft: light.goldSoft,
+  tag: light.goldSoft,
+  success: light.accent,
+  scrim: light.scrim,
 };
 
 export const darkPalette = {
-  background: '#0F0F0F',
-  backgroundAlt: '#161616',
-  surface: '#1C1C1E',
-  surfaceMuted: '#2C2C2E',
-  text: '#F2F2F7',
-  textMuted: '#8E8E93',
-  textSoft: '#636366',
-  border: '#2C2C2E',
-  borderStrong: '#3A3A3C',
-  blue: '#4A9EFF',
-  blueSoft: '#1C3A5C',
-  gold: '#C9A84C',
-  goldSoft: '#3D3520',
-  tag: '#2C2C2E',
-  success: '#8BA876',
-  scrim: 'rgba(0,0,0,0.6)',
+  background: dark.bg,
+  backgroundAlt: dark.bg,
+  surface: dark.bgCard,
+  surfaceMuted: dark.accentSoft,
+  text: dark.textPrimary,
+  textMuted: dark.textSecondary,
+  textSoft: dark.textTertiary,
+  border: dark.border,
+  borderStrong: dark.borderStrong,
+  blue: dark.accent,
+  blueSoft: dark.accentSoft,
+  gold: dark.gold,
+  goldSoft: dark.goldSoft,
+  tag: dark.goldSoft,
+  success: dark.accent,
+  scrim: dark.scrim,
 };
 
 export function Screen({ children }: { children: React.ReactNode }) {
-  const isDark = useColorScheme() === 'dark';
-  const bg = isDark ? darkPalette.background : palette.background;
+  const { colors } = useTheme();
   return (
-    <SafeAreaView style={[styles.safeArea, { backgroundColor: bg }]} edges={['top']}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.bg }]} edges={['top']}>
       {children}
     </SafeAreaView>
   );
@@ -84,11 +88,20 @@ export function TopBar({
   onLeftPress?: () => void;
   onRightPress?: () => void;
 }) {
+  const { colors } = useTheme();
   return (
-    <View style={styles.topBar}>
-      <CircleButton icon={leftIcon ?? 'person-outline'} onPress={onLeftPress} muted />
-      <Text style={styles.topBarTitle}>{title}</Text>
-      <CircleButton icon={rightIcon ?? 'search-outline'} onPress={onRightPress} />
+    <View style={[styles.topBar, { backgroundColor: colors.bg, borderBottomColor: colors.border }]}>
+      {leftIcon ? (
+        <CircleButton icon={leftIcon} onPress={onLeftPress} />
+      ) : (
+        <View style={styles.circleButton} />
+      )}
+      <Text style={[styles.topBarTitle, { color: colors.textPrimary }]}>{title}</Text>
+      {rightIcon ? (
+        <CircleButton icon={rightIcon} onPress={onRightPress} />
+      ) : (
+        <View style={styles.circleButton} />
+      )}
     </View>
   );
 }
@@ -96,22 +109,17 @@ export function TopBar({
 export function CircleButton({
   icon,
   onPress,
-  muted = false,
 }: {
   icon: IoniconName;
   onPress?: () => void;
-  muted?: boolean;
 }) {
+  const { colors } = useTheme();
   return (
     <AnimatedPressable
       accessibilityRole="button"
       onPress={onPress}
-      style={({ pressed }) => [
-        styles.circleButton,
-        muted && styles.circleButtonMuted,
-        pressed && styles.pressed,
-      ]}>
-      <Ionicons color={muted ? palette.success : palette.blue} name={icon} size={18} />
+      style={[styles.circleButton, { backgroundColor: colors.border }]}>
+      <Ionicons color={colors.textSecondary} name={icon} size={18} />
     </AnimatedPressable>
   );
 }
@@ -125,9 +133,10 @@ export function SectionTitle({
   actionIcon?: IoniconName;
   onActionPress?: () => void;
 }) {
+  const { colors } = useTheme();
   return (
     <View style={styles.sectionTitleRow}>
-      <Text style={styles.sectionTitle}>{title}</Text>
+      <Text style={[styles.sectionCaps, { color: colors.textTertiary }]}>{title}</Text>
       {actionIcon ? <CircleButton icon={actionIcon} onPress={onActionPress} /> : null}
     </View>
   );
@@ -142,14 +151,15 @@ export function SearchField({
   onChangeText: (value: string) => void;
   placeholder: string;
 }) {
+  const { colors } = useTheme();
   return (
-    <View style={styles.searchField}>
-      <Ionicons color={palette.textMuted} name="search-outline" size={18} />
+    <View style={[styles.searchField, { backgroundColor: colors.bgCard, borderColor: colors.border }]}>
+      <Ionicons color={colors.textTertiary} name="search-outline" size={18} />
       <TextInput
         onChangeText={onChangeText}
         placeholder={placeholder}
-        placeholderTextColor={palette.textSoft}
-        style={styles.searchInput}
+        placeholderTextColor={colors.textTertiary}
+        style={[styles.searchInput, { color: colors.textPrimary }]}
         value={value}
       />
     </View>
@@ -157,7 +167,13 @@ export function SearchField({
 }
 
 export function Card({ children }: { children: React.ReactNode }) {
-  return <View style={styles.card}>{children}</View>;
+  const { colors } = useTheme();
+  return (
+    <View
+      style={[styles.card, { backgroundColor: colors.bgCard, borderColor: colors.border }]}>
+      {children}
+    </View>
+  );
 }
 
 export function SmartCollectionRow({
@@ -171,14 +187,19 @@ export function SmartCollectionRow({
   count?: number;
   onPress?: () => void;
 }) {
+  const { colors } = useTheme();
   return (
-    <AnimatedPressable onPress={onPress} style={({ pressed }) => [styles.row, pressed && styles.pressed]}>
-      <View style={styles.rowIconWrap}>
-        <Ionicons color={palette.blue} name={icon} size={18} />
+    <AnimatedPressable onPress={onPress} style={styles.row}>
+      <View style={[styles.rowIconWrap, { backgroundColor: colors.accentSoft }]}>
+        <Ionicons color={colors.accent} name={icon} size={18} />
       </View>
-      <Text style={styles.rowLabel}>{label}</Text>
-      {typeof count === 'number' ? <Text style={styles.rowCount}>{count}</Text> : null}
-      <Ionicons color="#B7BCC9" name="chevron-forward-outline" size={16} />
+      <Text style={[styles.rowLabel, { color: colors.textPrimary }]}>{label}</Text>
+      {typeof count === 'number' ? (
+        <View style={[styles.countPill, { backgroundColor: colors.accentSoft }]}>
+          <Text style={[styles.countText, { color: colors.accent }]}>{count}</Text>
+        </View>
+      ) : null}
+      <Ionicons color={colors.borderStrong} name="chevron-forward-outline" size={16} />
     </AnimatedPressable>
   );
 }
@@ -196,14 +217,19 @@ export function ThreadRow({
   accent: string;
   onPress?: () => void;
 }) {
+  const { colors } = useTheme();
   return (
-    <AnimatedPressable onPress={onPress} style={({ pressed }) => [styles.row, pressed && styles.pressed]}>
-      <View style={[styles.threadIconWrap, { backgroundColor: accent }]}>
-        <Ionicons color={palette.text} name={icon} size={16} />
+    <AnimatedPressable
+      onPress={onPress}
+      style={[styles.row, { borderLeftColor: accent, borderLeftWidth: 3 }]}>
+      <View style={[styles.threadIconWrap, { backgroundColor: accent + '20' }]}>
+        <Ionicons color={accent} name={icon} size={16} />
       </View>
-      <Text style={styles.rowLabel}>{name}</Text>
-      <Text style={styles.rowCount}>{count}</Text>
-      <Ionicons color="#B7BCC9" name="chevron-forward-outline" size={16} />
+      <Text style={[styles.rowLabel, { color: colors.textPrimary }]}>{name}</Text>
+      <View style={[styles.countPill, { backgroundColor: colors.accentSoft }]}>
+        <Text style={[styles.countText, { color: colors.accent }]}>{count}</Text>
+      </View>
+      <Ionicons color={colors.borderStrong} name="chevron-forward-outline" size={16} />
     </AnimatedPressable>
   );
 }
@@ -217,16 +243,20 @@ export function TagChip({
   outlined?: boolean;
   onPress?: () => void;
 }) {
+  const { colors } = useTheme();
   return (
     <AnimatedPressable
       onPress={onPress}
-      style={({ pressed }) => [
+      style={[
         styles.tagChip,
-        outlined && styles.tagChipOutlined,
-        pressed && styles.pressed,
+        outlined
+          ? { backgroundColor: 'transparent', borderColor: colors.borderStrong, borderWidth: 1 }
+          : { backgroundColor: colors.goldSoft },
       ]}>
-      {outlined ? <Ionicons color={palette.textMuted} name="add-outline" size={12} /> : null}
-      <Text style={[styles.tagText, outlined && styles.tagOutlinedText]}>{label}</Text>
+      {outlined ? <Ionicons color={colors.textTertiary} name="add-outline" size={12} /> : null}
+      <Text style={[styles.tagText, { color: outlined ? colors.textTertiary : colors.gold }]}>
+        {label}
+      </Text>
     </AnimatedPressable>
   );
 }
@@ -240,10 +270,11 @@ export function TextButton({
   label: string;
   onPress?: () => void;
 }) {
+  const { colors } = useTheme();
   return (
-    <AnimatedPressable onPress={onPress} style={({ pressed }) => [styles.textButton, pressed && styles.pressed]}>
-      {icon ? <Ionicons color={palette.blue} name={icon} size={16} /> : null}
-      <Text style={styles.textButtonLabel}>{label}</Text>
+    <AnimatedPressable onPress={onPress} style={styles.textButton}>
+      {icon ? <Ionicons color={colors.accent} name={icon} size={16} /> : null}
+      <Text style={[styles.textButtonLabel, { color: colors.accent }]}>{label}</Text>
     </AnimatedPressable>
   );
 }
@@ -255,8 +286,9 @@ export function FloatingActionButton({
   icon: IoniconName;
   onPress?: () => void;
 }) {
+  const { colors } = useTheme();
   return (
-    <AnimatedPressable onPress={onPress} style={({ pressed }) => [styles.fab, pressed && styles.pressed]}>
+    <AnimatedPressable onPress={onPress} style={[styles.fab, { backgroundColor: colors.accent }]}>
       <Ionicons color="#FFFFFF" name={icon} size={22} />
     </AnimatedPressable>
   );
@@ -271,9 +303,23 @@ export function Pill({
   active?: boolean;
   onPress?: () => void;
 }) {
+  const { colors } = useTheme();
   return (
-    <AnimatedPressable onPress={onPress} style={({ pressed }) => [styles.pill, active && styles.pillActive, pressed && styles.pressed]}>
-      <Text style={[styles.pillText, active && styles.pillTextActive]}>{label}</Text>
+    <AnimatedPressable
+      onPress={onPress}
+      style={[
+        styles.pill,
+        active
+          ? { backgroundColor: colors.accent }
+          : { backgroundColor: 'transparent', borderColor: colors.borderStrong, borderWidth: 1 },
+      ]}>
+      <Text
+        style={[
+          styles.pillText,
+          { color: active ? '#FFFFFF' : colors.textTertiary },
+        ]}>
+        {label}
+      </Text>
     </AnimatedPressable>
   );
 }
@@ -287,10 +333,13 @@ export function ToolbarButton({
   label: string;
   onPress?: () => void;
 }) {
+  const { colors } = useTheme();
   return (
-    <AnimatedPressable onPress={onPress} style={({ pressed }) => [styles.toolbarButton, pressed && styles.pressed]}>
-      <Ionicons color={palette.text} name={icon} size={16} />
-      <Text style={styles.toolbarText}>{label}</Text>
+    <AnimatedPressable
+      onPress={onPress}
+      style={[styles.toolbarButton, { backgroundColor: colors.bgCard, borderColor: colors.border }]}>
+      <Ionicons color={colors.textSecondary} name={icon} size={16} />
+      <Text style={[styles.toolbarText, { color: colors.textPrimary }]}>{label}</Text>
     </AnimatedPressable>
   );
 }
@@ -302,14 +351,18 @@ export function AttachmentPreview({
   index: number;
   onRemove?: () => void;
 }) {
+  const { colors } = useTheme();
   return (
-    <View style={styles.attachmentCard}>
+    <View
+      style={[styles.attachmentCard, { backgroundColor: colors.bgCard, borderColor: colors.border }]}>
       <View style={styles.attachmentBody}>
-        <Ionicons color={palette.blue} name="image-outline" size={18} />
-        <Text style={styles.attachmentTitle}>Attachment {index + 1}</Text>
+        <Ionicons color={colors.accent} name="image-outline" size={18} />
+        <Text style={[styles.attachmentTitle, { color: colors.textPrimary }]}>
+          Attachment {index + 1}
+        </Text>
       </View>
       <AnimatedPressable onPress={onRemove}>
-        <Ionicons color={palette.textMuted} name="close-outline" size={18} />
+        <Ionicons color={colors.textTertiary} name="close-outline" size={18} />
       </AnimatedPressable>
     </View>
   );
@@ -322,10 +375,14 @@ export function EmptyState({
   title: string;
   subtitle: string;
 }) {
+  const { colors } = useTheme();
   return (
-    <View style={styles.emptyState}>
-      <Text style={styles.emptyStateTitle}>{title}</Text>
-      <Text style={styles.emptyStateSubtitle}>{subtitle}</Text>
+    <View
+      style={[styles.emptyState, { backgroundColor: colors.bgCard, borderColor: colors.border }]}>
+      <Text style={[styles.emptyStateTitle, { color: colors.textPrimary }]}>{title}</Text>
+      <Text style={[styles.emptyStateSubtitle, { color: colors.textSecondary }]}>
+        {subtitle}
+      </Text>
     </View>
   );
 }
@@ -335,190 +392,158 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   pageContent: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 20,
     paddingBottom: 136,
-    paddingTop: 18,
-    gap: 28,
+    paddingTop: 16,
+    gap: 24,
   },
   topBar: {
     alignItems: 'center',
-    backgroundColor: '#FAF9F6',
-    borderBottomColor: 'rgba(231,229,228,0.35)',
     borderBottomWidth: StyleSheet.hairlineWidth,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 24,
-    paddingVertical: 16,
+    paddingHorizontal: 20,
+    paddingVertical: 14,
   },
   topBarTitle: {
-    color: palette.text,
-    fontSize: 20,
-    fontWeight: '700',
-    letterSpacing: -0.4,
+    fontFamily: 'LibreBaskerville_700Bold',
+    fontSize: 18,
   },
   circleButton: {
     alignItems: 'center',
-    borderRadius: 999,
-    height: 36,
+    borderRadius: 100,
+    height: 34,
     justifyContent: 'center',
-    width: 36,
-  },
-  circleButtonMuted: {
-    backgroundColor: '#E9E1DC',
+    width: 34,
   },
   sectionTitleRow: {
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  sectionTitle: {
-    color: palette.text,
-    fontSize: 17,
-    fontWeight: '700',
+  sectionCaps: {
+    fontFamily: 'DMSans_500Medium',
+    fontSize: 11,
+    letterSpacing: 1.5,
+    textTransform: 'uppercase',
   },
   searchField: {
     alignItems: 'center',
-    backgroundColor: palette.surface,
-    borderColor: palette.border,
-    borderRadius: 18,
+    borderRadius: 12,
     borderWidth: 1,
     flexDirection: 'row',
     gap: 10,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
   },
   searchInput: {
-    color: palette.text,
     flex: 1,
+    fontFamily: 'DMSans_400Regular',
     fontSize: 15,
   },
   card: {
-    backgroundColor: palette.surface,
-    borderRadius: 24,
-    shadowColor: '#000000',
-    shadowOpacity: 0.05,
-    shadowRadius: 16,
-    shadowOffset: { width: 0, height: 4 },
+    borderRadius: 16,
+    borderWidth: 1,
   },
   row: {
     alignItems: 'center',
     flexDirection: 'row',
     gap: 12,
-    paddingHorizontal: 24,
-    paddingVertical: 16,
+    paddingHorizontal: 20,
+    paddingVertical: 14,
   },
   rowIconWrap: {
-    alignItems: 'center',
-    height: 22,
-    justifyContent: 'center',
-    width: 22,
-  },
-  threadIconWrap: {
     alignItems: 'center',
     borderRadius: 8,
     height: 32,
     justifyContent: 'center',
     width: 32,
   },
-  rowLabel: {
-    color: palette.text,
-    flex: 1,
-    fontSize: 16,
-    fontWeight: '600',
+  threadIconWrap: {
+    alignItems: 'center',
+    borderRadius: 8,
+    height: 40,
+    justifyContent: 'center',
+    width: 40,
   },
-  rowCount: {
-    color: palette.textMuted,
-    fontSize: 13,
+  rowLabel: {
+    flex: 1,
+    fontFamily: 'DMSans_500Medium',
+    fontSize: 15,
+  },
+  countPill: {
+    borderRadius: 100,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+  },
+  countText: {
+    fontFamily: 'DMSans_500Medium',
+    fontSize: 12,
   },
   tagChip: {
     alignItems: 'center',
-    backgroundColor: palette.tag,
-    borderRadius: 999,
+    borderRadius: 100,
     flexDirection: 'row',
     gap: 4,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-  },
-  tagChipOutlined: {
-    backgroundColor: palette.surface,
-    borderColor: 'rgba(193,198,214,0.5)',
-    borderWidth: 1,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
   },
   tagText: {
-    color: '#414754',
+    fontFamily: 'DMSans_500Medium',
     fontSize: 13,
-    fontWeight: '500',
-  },
-  tagOutlinedText: {
-    color: palette.textMuted,
   },
   textButton: {
     alignItems: 'center',
     alignSelf: 'center',
     flexDirection: 'row',
-    gap: 8,
+    gap: 6,
     paddingHorizontal: 16,
     paddingVertical: 10,
   },
   textButtonLabel: {
-    color: palette.blue,
-    fontSize: 16,
-    fontWeight: '600',
+    fontFamily: 'DMSans_500Medium',
+    fontSize: 15,
   },
   fab: {
     alignItems: 'center',
-    backgroundColor: palette.blue,
-    borderRadius: 999,
+    borderRadius: 16,
     bottom: 108,
-    elevation: 8,
-    height: 56,
+    elevation: 4,
+    height: 52,
     justifyContent: 'center',
     position: 'absolute',
-    right: 24,
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 12 },
-    shadowOpacity: 0.22,
-    shadowRadius: 22,
-    width: 56,
+    right: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    width: 52,
   },
   pill: {
-    backgroundColor: '#F2EAE4',
-    borderRadius: 999,
-    paddingHorizontal: 14,
-    paddingVertical: 9,
-  },
-  pillActive: {
-    backgroundColor: palette.blueSoft,
+    borderRadius: 100,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
   },
   pillText: {
-    color: palette.textMuted,
+    fontFamily: 'DMSans_500Medium',
     fontSize: 12,
-    fontWeight: '600',
-  },
-  pillTextActive: {
-    color: palette.blue,
   },
   toolbarButton: {
     alignItems: 'center',
-    backgroundColor: palette.surface,
-    borderColor: palette.border,
-    borderRadius: 14,
+    borderRadius: 12,
     borderWidth: 1,
     flexDirection: 'row',
-    gap: 8,
+    gap: 6,
     paddingHorizontal: 12,
-    paddingVertical: 10,
+    paddingVertical: 9,
   },
   toolbarText: {
-    color: palette.text,
+    fontFamily: 'DMSans_500Medium',
     fontSize: 13,
-    fontWeight: '600',
   },
   attachmentCard: {
     alignItems: 'center',
-    backgroundColor: palette.surface,
-    borderColor: palette.border,
-    borderRadius: 14,
+    borderRadius: 12,
     borderWidth: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -531,32 +556,25 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   attachmentTitle: {
-    color: palette.text,
+    fontFamily: 'DMSans_500Medium',
     fontSize: 14,
-    fontWeight: '600',
   },
   emptyState: {
     alignItems: 'center',
-    backgroundColor: palette.surface,
-    borderColor: palette.border,
-    borderRadius: 24,
+    borderRadius: 16,
     borderWidth: 1,
     paddingHorizontal: 24,
-    paddingVertical: 28,
+    paddingVertical: 24,
   },
   emptyStateTitle: {
-    color: palette.text,
-    fontSize: 17,
-    fontWeight: '700',
+    fontFamily: 'LibreBaskerville_700Bold',
+    fontSize: 16,
     marginBottom: 6,
   },
   emptyStateSubtitle: {
-    color: palette.textMuted,
+    fontFamily: 'DMSans_400Regular',
     fontSize: 14,
     lineHeight: 20,
     textAlign: 'center',
-  },
-  pressed: {
-    opacity: 0.82,
   },
 });

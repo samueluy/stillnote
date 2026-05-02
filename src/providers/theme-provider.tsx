@@ -1,10 +1,6 @@
-import { useColorScheme } from 'react-native';
-import { darkPalette, palette } from '@/src/components/primitives';
+import { theme } from '@/src/theme/theme';
+import { useTheme as useAppTheme } from '@/src/theme/useTheme';
 
-export function useAppTheme() {
-  const colorScheme = useColorScheme();
-  return {
-    colors: colorScheme === 'dark' ? darkPalette : palette,
-    isDark: colorScheme === 'dark',
-  };
-}
+export { theme, useAppTheme };
+export const palette = theme.light;
+export const darkPalette = theme.dark;

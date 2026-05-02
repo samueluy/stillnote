@@ -11,7 +11,7 @@ import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 
 import { AnimatedPressable } from '@/src/components/animated-pressable';
-import { palette } from '@/src/components/primitives';
+import { useTheme } from '@/src/theme/useTheme';
 import type { BibleVerse } from '@/src/types/domain';
 
 type Props = {
@@ -29,11 +29,15 @@ function VerseRow({
   item: BibleVerse;
   onInsertVerse: (verse: BibleVerse) => void;
 }) {
+  const { colors } = useTheme();
   return (
     <View style={styles.verseRow}>
-      <Text style={styles.verseNumber}>{item.verse}</Text>
-      <Text style={styles.verseText}>{item.text}</Text>
-      <AnimatedPressable onPress={() => onInsertVerse(item)} style={({ pressed }) => [styles.insertButton, pressed && styles.pressed]}>
+      <Text style={[styles.verseNumber, { color: colors.gold }]}>{item.verse}</Text>
+      <Text style={[styles.verseText, { color: colors.textPrimary }]}>{item.text}</Text>
+      <AnimatedPressable
+        haptic="light"
+        onPress={() => onInsertVerse(item)}
+        style={[styles.insertButton, { backgroundColor: colors.accent }]}>
         <Ionicons color="#FFFFFF" name="add-outline" size={12} />
         <Text style={styles.insertButtonText}>Insert</Text>
       </AnimatedPressable>
@@ -50,6 +54,7 @@ export const BibleSheet = forwardRef<BottomSheetModal, Props>(function BibleShee
   const ScrollComponent = useBottomSheetScrollableCreator();
   const [sheetSearch, setSheetSearch] = useState('');
   const [isSheetSearchOpen, setIsSheetSearchOpen] = useState(false);
+  const { colors } = useTheme();
 
   const filteredVerses = useMemo(() => {
     if (!sheetSearch.trim()) return verses;
@@ -73,41 +78,45 @@ export const BibleSheet = forwardRef<BottomSheetModal, Props>(function BibleShee
         <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} opacity={0.18} />
       )}
       enableDynamicSizing={false}
-      handleIndicatorStyle={styles.handle}
+      handleIndicatorStyle={[styles.handle, { backgroundColor: colors.textTertiary }]}
       snapPoints={snapPoints}>
-      <BottomSheetView style={styles.header}>
+      <BottomSheetView style={[styles.header, { borderBottomColor: colors.border }]}>
         <View>
           <View style={styles.headerRow}>
-            <Text style={styles.headerTitle}>
+            <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>
               {book} {chapter}
             </Text>
-            <Ionicons color={palette.textMuted} name="chevron-down-outline" size={14} />
+            <Ionicons color={colors.textSecondary} name="chevron-down-outline" size={14} />
           </View>
-          <Text style={styles.headerSubtitle}>{translationName}</Text>
+          <Text style={[styles.headerSubtitle, { color: colors.textTertiary }]}>
+            {translationName}
+          </Text>
         </View>
         <View style={styles.headerActions}>
-          <AnimatedPressable onPress={() => { setIsSheetSearchOpen((v) => !v); setSheetSearch(''); }} style={styles.headerAction}>
-            <Ionicons color={palette.text} name="search-outline" size={18} />
+          <AnimatedPressable
+            onPress={() => { setIsSheetSearchOpen((v) => !v); setSheetSearch(''); }}
+            style={styles.headerAction}>
+            <Ionicons color={colors.textSecondary} name="search-outline" size={18} />
           </AnimatedPressable>
           <AnimatedPressable onPress={dismissSheet} style={styles.headerAction}>
-            <Ionicons color={palette.text} name="close-outline" size={20} />
+            <Ionicons color={colors.textSecondary} name="close-outline" size={20} />
           </AnimatedPressable>
         </View>
       </BottomSheetView>
 
       {isSheetSearchOpen ? (
-        <View style={styles.searchRow}>
+        <View style={[styles.searchRow, { backgroundColor: colors.bgCard, borderBottomColor: colors.border }]}>
           <TextInput
             autoFocus
             onChangeText={setSheetSearch}
-            placeholder="Search verses..."
-            placeholderTextColor={palette.textSoft}
-            style={styles.searchInput}
+            placeholder="Search verses…"
+            placeholderTextColor={colors.textTertiary}
+            style={[styles.searchInput, { color: colors.textPrimary }]}
             value={sheetSearch}
           />
           {sheetSearch.trim() ? (
             <AnimatedPressable onPress={() => setSheetSearch('')}>
-              <Ionicons color={palette.textMuted} name="close-outline" size={16} />
+              <Ionicons color={colors.textSecondary} name="close-outline" size={16} />
             </AnimatedPressable>
           ) : null}
         </View>
@@ -126,18 +135,17 @@ export const BibleSheet = forwardRef<BottomSheetModal, Props>(function BibleShee
 
 const styles = StyleSheet.create({
   handle: {
-    backgroundColor: '#E9E1DC',
-    height: 6,
-    width: 48,
+    height: 4,
+    width: 36,
+    borderRadius: 100,
   },
   header: {
     alignItems: 'center',
-    borderBottomColor: '#F5ECE7',
     borderBottomWidth: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingBottom: 16,
-    paddingHorizontal: 24,
+    paddingBottom: 14,
+    paddingHorizontal: 20,
   },
   headerRow: {
     alignItems: 'center',
@@ -145,73 +153,24 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   headerTitle: {
-    color: palette.text,
-    fontSize: 20,
-    fontWeight: '700',
+    fontFamily: 'LibreBaskerville_700Bold',
+    fontSize: 18,
   },
   headerSubtitle: {
-    color: '#695D46',
+    fontFamily: 'DMSans_400Regular',
     fontSize: 12,
     marginTop: 2,
   },
-  headerActions: {
-    flexDirection: 'row',
-    gap: 8,
-  },
+  headerActions: { flexDirection: 'row', gap: 6 },
   headerAction: {
     alignItems: 'center',
-    borderRadius: 999,
-    height: 40,
+    borderRadius: 100,
+    height: 36,
     justifyContent: 'center',
-    width: 40,
-  },
-  listContent: {
-    paddingBottom: 48,
-    paddingHorizontal: 16,
-    paddingTop: 16,
-  },
-  verseRow: {
-    alignItems: 'flex-start',
-    flexDirection: 'row',
-    gap: 16,
-    paddingHorizontal: 8,
-    paddingVertical: 14,
-  },
-  verseNumber: {
-    color: '#695D46',
-    fontSize: 14,
-    fontWeight: '700',
-    marginTop: 2,
-    width: 18,
-  },
-  verseText: {
-    color: palette.text,
-    flex: 1,
-    fontSize: 16,
-    lineHeight: 26,
-  },
-  insertButton: {
-    alignItems: 'center',
-    alignSelf: 'flex-start',
-    backgroundColor: palette.blue,
-    borderRadius: 999,
-    flexDirection: 'row',
-    gap: 5,
-    paddingHorizontal: 12,
-    paddingVertical: 7,
-  },
-  insertButtonText: {
-    color: '#FFFFFF',
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  pressed: {
-    opacity: 0.82,
+    width: 36,
   },
   searchRow: {
     alignItems: 'center',
-    backgroundColor: palette.backgroundAlt,
-    borderBottomColor: palette.border,
     borderBottomWidth: StyleSheet.hairlineWidth,
     flexDirection: 'row',
     gap: 8,
@@ -219,8 +178,43 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   searchInput: {
-    color: palette.text,
     flex: 1,
+    fontFamily: 'DMSans_400Regular',
     fontSize: 14,
+  },
+  listContent: { paddingBottom: 48, paddingHorizontal: 12, paddingTop: 14 },
+  verseRow: {
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    gap: 14,
+    paddingHorizontal: 8,
+    paddingVertical: 12,
+  },
+  verseNumber: {
+    fontFamily: 'DMSans_500Medium',
+    fontSize: 13,
+    fontWeight: '700',
+    marginTop: 2,
+    width: 18,
+  },
+  verseText: {
+    flex: 1,
+    fontFamily: 'LibreBaskerville_400Regular',
+    fontSize: 15,
+    lineHeight: 24,
+  },
+  insertButton: {
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    borderRadius: 100,
+    flexDirection: 'row',
+    gap: 5,
+    paddingHorizontal: 11,
+    paddingVertical: 7,
+  },
+  insertButtonText: {
+    color: '#FFFFFF',
+    fontFamily: 'DMSans_500Medium',
+    fontSize: 11,
   },
 });

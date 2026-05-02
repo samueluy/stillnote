@@ -3,7 +3,7 @@ import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { AnimatedPressable } from '@/src/components/animated-pressable';
-import { palette } from '@/src/components/primitives';
+import { useTheme } from '@/src/theme/useTheme';
 
 const TAB_META: Record<string, { label: string; icon: keyof typeof Ionicons.glyphMap }> = {
   index: { label: 'Workspace', icon: 'albums-outline' },
@@ -12,8 +12,10 @@ const TAB_META: Record<string, { label: string; icon: keyof typeof Ionicons.glyp
 };
 
 export function StillnoteTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
+  const { colors } = useTheme();
+
   return (
-    <View style={styles.shell}>
+    <View style={[styles.shell, { backgroundColor: colors.bgCard, borderTopColor: colors.border }]}>
       {state.routes.map((route, index) => {
         const focused = state.index === index;
         const meta = TAB_META[route.name] ?? { label: route.name, icon: 'ellipse-outline' };
@@ -21,15 +23,18 @@ export function StillnoteTabBar({ state, descriptors, navigation }: BottomTabBar
         return (
           <AnimatedPressable
             accessibilityRole="button"
+            haptic="light"
             key={route.key}
             onPress={() => navigation.navigate(route.name)}
-            style={({ pressed }) => [styles.item, focused && styles.itemActive, pressed && styles.itemPressed]}>
+            style={[styles.item, focused && { backgroundColor: colors.accentSoft }]}>
             <Ionicons
-              color={focused ? palette.blue : '#A8A29E'}
+              color={focused ? colors.accent : colors.textTertiary}
               name={meta.icon}
               size={18}
             />
-            <Text style={[styles.label, focused && styles.labelActive]}>{meta.label}</Text>
+            <Text style={[styles.label, { color: focused ? colors.accent : colors.textTertiary }]}>
+              {meta.label}
+            </Text>
           </AnimatedPressable>
         );
       })}
@@ -40,34 +45,22 @@ export function StillnoteTabBar({ state, descriptors, navigation }: BottomTabBar
 const styles = StyleSheet.create({
   shell: {
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.88)',
-    borderTopColor: '#F5F5F4',
     borderTopWidth: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingBottom: 26,
-    paddingHorizontal: 20,
-    paddingTop: 12,
+    paddingHorizontal: 16,
+    paddingTop: 10,
   },
   item: {
     alignItems: 'center',
-    borderRadius: 16,
+    borderRadius: 12,
     flex: 1,
     gap: 4,
     paddingVertical: 8,
   },
-  itemActive: {
-    backgroundColor: palette.blueSoft,
-  },
-  itemPressed: {
-    opacity: 0.82,
-  },
   label: {
-    color: '#A8A29E',
+    fontFamily: 'DMSans_500Medium',
     fontSize: 11,
-    fontWeight: '500',
-  },
-  labelActive: {
-    color: palette.blue,
   },
 });
