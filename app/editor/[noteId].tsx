@@ -95,7 +95,8 @@ export default function EditorScreen() {
   const [chapterBook, setChapterBook] = useState('Genesis');
   const [chapterNumber, setChapterNumber] = useState(1);
   const [chapterVerses, setChapterVerses] = useState<BibleVerse[]>([]);
-  const [lastSavedAt, setLastSavedAt] = useState<string | null>(null);
+  const [saveState, setSaveState] = useState<'idle' | 'saving' | 'saved'>('idle');
+  const saveDotOpacity = useSharedValue(0);
   const [verseSearch, setVerseSearch] = useState('');
   const [referenceVerses, setReferenceVerses] = useState<BibleVerse[]>([]);
   const [initialContent, setInitialContent] = useState('');
@@ -208,8 +209,9 @@ export default function EditorScreen() {
       return;
     }
 
-    const timeout = setTimeout(() => {
-      saveNoteDraft(db, {
+    const timeout = setTimeout(async () => {
+      setSaveState('saving');
+      await saveNoteDraft(db, {
         id: noteId,
         title: title.trim() || 'Untitled Note',
         markdownBody: bodyRef.current,
@@ -217,13 +219,25 @@ export default function EditorScreen() {
         spaceId,
         threadId,
         attachments,
-      }).then(() => {
-        setLastSavedAt(new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }));
       });
+      setSaveState('saved');
     }, 400);
 
     return () => clearTimeout(timeout);
   }, [attachments, db, isReady, noteId, spaceId, templateId, threadId, title]);
+
+  const saveDotStyle = useAnimatedStyle(() => ({
+    opacity: saveDotOpacity.value,
+  }));
+
+  useEffect(() => {
+    if (saveState === 'saving') {
+      saveDotOpacity.value = 1;
+    } else if (saveState === 'saved') {
+      saveDotOpacity.value = 1;
+      saveDotOpacity.value = withTiming(0, { duration: 1200 });
+    }
+  }, [saveState, saveDotOpacity]);
 
   const insertVerseHtml = useCallback(async (verseHtml: string) => {
     try {
@@ -442,9 +456,12 @@ export default function EditorScreen() {
         ) : null}
 
         <View style={styles.statusRow}>
-          <Text style={styles.statusText}>
-            {lastSavedAt ? `Saved locally at ${lastSavedAt}` : 'Autosave is active'}
-          </Text>
+          <View style={styles.saveIndicator}>
+            <Animated.View style={[styles.saveDot, saveDotStyle, saveState === 'saved' ? styles.saveDotSaved : styles.saveDotSaving]} />
+            <Text style={styles.statusText}>
+              {saveState === 'saving' ? 'Saving…' : saveState === 'saved' ? 'Saved' : 'Autosave active'}
+            </Text>
+          </View>
           <Text style={styles.statusText}>{attachments.length} attachments</Text>
         </View>
       </ScrollView>
@@ -566,6 +583,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 4,
+  },
+  saveIndicator: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 6,
+  },
+  saveDot: {
+    borderRadius: 999,
+    height: 8,
+    width: 8,
+  },
+  saveDotSaving: {
+    backgroundColor: '#94A3B8',
+  },
+  saveDotSaved: {
+    backgroundColor: '#0D9488',
   },
   statusText: {
     color: '#8C847A',
