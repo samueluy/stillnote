@@ -38,7 +38,7 @@ function VerseRow({
         haptic="light"
         onPress={() => onInsertVerse(item)}
         style={[styles.insertButton, { backgroundColor: colors.accent }]}>
-        <Ionicons color="#FFFFFF" name="add-outline" size={12} />
+        <Ionicons color="#FFFFFF" name="add-circle" size={12} />
         <Text style={styles.insertButtonText}>Insert</Text>
       </AnimatedPressable>
     </View>
