@@ -7,7 +7,7 @@ import { AnimatedPressable } from '@/src/components/animated-pressable';
 import { useTheme } from '@/src/theme/useTheme';
 
 const TAB_META: Record<string, { label: string; icon: keyof typeof Ionicons.glyphMap; activeIcon: keyof typeof Ionicons.glyphMap }> = {
-  index: { label: 'Journal', icon: 'book-outline', activeIcon: 'book' },
+  index: { label: 'Journal', icon: 'create-outline', activeIcon: 'create' },
   threads: { label: 'Threads', icon: 'layers-outline', activeIcon: 'layers' },
   bible: { label: 'Study', icon: 'compass-outline', activeIcon: 'compass' },
   search: { label: 'Search', icon: 'search-outline', activeIcon: 'search' },

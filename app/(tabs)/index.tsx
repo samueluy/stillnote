@@ -87,28 +87,16 @@ export default function WorkspaceScreen() {
           </Text>
         </View>
 
-        <AnimatedPressable haptic="medium" onPress={createQuickNote} style={({ pressed }) => [styles.ctaCard, { backgroundColor: colors.bgCard, borderColor: colors.border }, pressed && styles.pressed]}>
+        <AnimatedPressable haptic="medium" onPress={createQuickNote} style={({ pressed }) => [styles.ctaCard, { backgroundColor: colors.bgElevated }, pressed && styles.pressed]}>
           <View style={[styles.ctaIcon, { backgroundColor: colors.accentSoft }]}>
-            <Ionicons color={colors.accent} name="add-outline" size={20} />
+            <Ionicons color={colors.accent} name="add-outline" size={22} />
           </View>
-          <Text style={[styles.ctaText, { color: colors.textPrimary }]}>Start writing…</Text>
-          <Ionicons color={colors.borderStrong} name="chevron-forward-outline" size={16} />
+          <View style={styles.ctaBody}>
+            <Text style={[styles.ctaTitle, { color: colors.textPrimary }]}>New Entry</Text>
+            <Text style={[styles.ctaSubtitle, { color: colors.textTertiary }]}>Start writing your reflection…</Text>
+          </View>
+          <Ionicons color={colors.accent} name="chevron-forward-outline" size={16} />
         </AnimatedPressable>
-
-        <View style={styles.quickActions}>
-          <AnimatedPressable haptic="light" onPress={() => router.push('/(tabs)/bible')} style={[styles.quickBtn, { backgroundColor: colors.goldSoft }]}>
-            <Ionicons color={colors.gold} name="book-outline" size={18} />
-            <Text style={[styles.quickLabel, { color: colors.gold }]}>Bible</Text>
-          </AnimatedPressable>
-          <AnimatedPressable haptic="light" onPress={() => scrollRef.current?.scrollTo({ y: 0, animated: true })} style={[styles.quickBtn, { backgroundColor: colors.border }]}>
-            <Ionicons color={colors.textSecondary} name="search-outline" size={18} />
-            <Text style={[styles.quickLabel, { color: colors.textSecondary }]}>Find</Text>
-          </AnimatedPressable>
-          <AnimatedPressable haptic="light" onPress={() => openCollection('all', 'All Notes')} style={[styles.quickBtn, { backgroundColor: colors.accentSoft }]}>
-            <Ionicons color={colors.accent} name="document-text-outline" size={18} />
-            <Text style={[styles.quickLabel, { color: colors.accent }]}>Notes</Text>
-          </AnimatedPressable>
-        </View>
 
         <SearchField onChangeText={setQuery} placeholder="Search notes, tags, or scripture" value={query} />
 
@@ -233,19 +221,21 @@ const styles = StyleSheet.create({
   greeting: { gap: 4, paddingTop: 8 },
   greetingText: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 24, lineHeight: 32 },
   dateText: { fontFamily: 'DMSans_400Regular', fontSize: 14 },
-  ctaCard: { alignItems: 'center', borderRadius: 16, borderWidth: 1, flexDirection: 'row', gap: 14, paddingHorizontal: 20, paddingVertical: 18 },
-  ctaIcon: { alignItems: 'center', borderRadius: 12, height: 38, justifyContent: 'center', width: 38 },
-  ctaText: { flex: 1, fontFamily: 'DMSans_500Medium', fontSize: 16 },
-  quickActions: { flexDirection: 'row', gap: 12 },
-  quickBtn: { alignItems: 'center', borderRadius: 16, flex: 1, gap: 8, paddingVertical: 20 },
-  quickLabel: { fontFamily: 'DMSans_500Medium', fontSize: 12 },
-  section: { gap: 14 },
+  ctaCard: { alignItems: 'center', borderRadius: 18, flexDirection: 'row', gap: 14, paddingHorizontal: 20, paddingVertical: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 8, elevation: 2 },
+  ctaIcon: { alignItems: 'center', borderRadius: 14, height: 42, justifyContent: 'center', width: 42 },
+  ctaBody: { flex: 1, gap: 4 },
+  ctaTitle: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 17 },
+  ctaSubtitle: { fontFamily: 'DMSans_400Regular', fontSize: 13 },
+  quickActions: { display: 'none' },
+  quickBtn: { display: 'none' },
+  quickLabel: { display: 'none' },
+  section: { gap: 16 },
   sectionTitle: { fontFamily: 'DMSans_500Medium', fontSize: 13 },
   resultCard: { borderRadius: 14, borderWidth: 1, flexDirection: 'row', gap: 12, padding: 14 },
   resultIcon: { alignItems: 'center', borderRadius: 10, height: 32, justifyContent: 'center', width: 32 },
   resultTitle: { fontFamily: 'DMSans_500Medium', fontSize: 14 },
   resultText: { fontFamily: 'DMSans_400Regular', fontSize: 13, lineHeight: 18 },
-  noteCard: { borderRadius: 16, borderWidth: 1, gap: 8, padding: 20 },
+  noteCard: { borderRadius: 14, borderWidth: 1, gap: 8, padding: 16, marginBottom: 4 },
   noteHeader: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' },
   noteTitle: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 16 },
   noteTime: { fontFamily: 'DMSans_400Regular', fontSize: 12 },
