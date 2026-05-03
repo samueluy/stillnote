@@ -64,8 +64,8 @@ export const font = {
   subheading: { fontSize: 18, lineHeight: 26 },
   body: { fontSize: 16, lineHeight: 28 },
   bodySmall: { fontSize: 14, lineHeight: 22 },
-  caption: { fontSize: 12, lineHeight: 16 },
-  tiny: { fontSize: 11, lineHeight: 14 },
+  caption: { fontSize: 12, lineHeight: 18 },
+  tiny: { fontSize: 11, lineHeight: 16 },
 };
 
 export const shadow = {
