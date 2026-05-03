@@ -56,8 +56,9 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     flexDirection: 'row',
     gap: 5,
-    paddingHorizontal: 12,
-    paddingVertical: 7,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    minHeight: 44,
   },
   chipText: {
     fontSize: 12,

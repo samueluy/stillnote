@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   searchBox: { alignItems: 'center', borderRadius: 12, borderWidth: 1, flexDirection: 'row', gap: 10, paddingHorizontal: 14, paddingVertical: 12 },
   searchInput: { flex: 1, fontFamily: 'DMSans_400Regular', fontSize: 16 },
   filterRow: { flexDirection: 'row', gap: 8 },
-  filterPill: { borderRadius: 100, borderWidth: 1, paddingHorizontal: 14, paddingVertical: 6 },
+  filterPill: { borderRadius: 100, borderWidth: 1, paddingHorizontal: 16, paddingVertical: 12, minHeight: 44 },
   filterText: { fontFamily: 'DMSans_500Medium', fontSize: 12 },
   results: { gap: 10, paddingHorizontal: 24, paddingTop: 16, paddingBottom: 120 },
   resultCard: { borderRadius: 14, borderWidth: 1, flexDirection: 'row', gap: 12, padding: 14 },

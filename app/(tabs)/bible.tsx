@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
   readerTitle: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 22 },
   readerSub: { fontFamily: 'DMSans_400Regular', fontSize: 11, letterSpacing: 1, marginTop: 4, textTransform: 'uppercase' },
   readerTools: { gap: 8 },
-  toolBtn: { alignItems: 'center', borderRadius: 100, borderWidth: 1, height: 32, justifyContent: 'center', width: 32 },
+  toolBtn: { alignItems: 'center', borderRadius: 100, borderWidth: 1, height: 44, justifyContent: 'center', width: 44 },
   readerBody: { gap: 20 },
   verseText: { fontFamily: 'LibreBaskerville_400Regular', fontSize: 18, lineHeight: 32 },
   verseNum: { fontFamily: 'DMSans_500Medium', fontSize: 10, fontWeight: '700' },

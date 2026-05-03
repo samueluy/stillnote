@@ -169,9 +169,9 @@ const styles = StyleSheet.create({
   headerAction: {
     alignItems: 'center',
     borderRadius: 100,
-    height: 34,
+    height: 44,
     justifyContent: 'center',
-    width: 34,
+    width: 44,
   },
   searchRow: {
     alignItems: 'center',
@@ -214,8 +214,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flexDirection: 'row',
     gap: 5,
-    paddingHorizontal: 10,
-    paddingVertical: 6,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    minHeight: 44,
   },
   insertButtonText: {
     fontFamily: 'DMSans_500Medium',

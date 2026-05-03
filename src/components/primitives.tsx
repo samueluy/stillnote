@@ -434,9 +434,9 @@ const styles = StyleSheet.create({
   circleButton: {
     alignItems: 'center',
     borderRadius: 100,
-    height: 34,
+    height: 44,
     justifyContent: 'center',
-    width: 34,
+    width: 44,
   },
   sectionTitleRow: {
     alignItems: 'center',
@@ -505,8 +505,9 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     flexDirection: 'row',
     gap: 4,
-    paddingHorizontal: 14,
-    paddingVertical: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    minHeight: 44,
   },
   tagText: {
     fontFamily: 'DMSans_500Medium',
