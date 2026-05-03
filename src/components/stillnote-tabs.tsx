@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AnimatedPressable } from '@/src/components/animated-pressable';
 import { useTheme } from '@/src/theme/useTheme';
@@ -14,9 +15,10 @@ const TAB_META: Record<string, { label: string; icon: keyof typeof Ionicons.glyp
 
 export function StillnoteTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   const { colors } = useTheme();
+  const insets = useSafeAreaInsets();
 
   return (
-    <View style={[styles.shell, { backgroundColor: colors.bgCard, borderTopColor: colors.border }]}>
+    <View style={[styles.shell, { backgroundColor: colors.bgCard, borderTopColor: colors.border, paddingBottom: Math.max(insets.bottom, 8) + 8 }]}>
       {state.routes.map((route, index) => {
         const focused = state.index === index;
         const meta = TAB_META[route.name] ?? { label: route.name, icon: 'ellipse-outline', activeIcon: 'ellipse' };
@@ -47,7 +49,6 @@ const styles = StyleSheet.create({
     borderTopWidth: StyleSheet.hairlineWidth,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    paddingBottom: 28,
     paddingTop: 8,
   },
   item: {

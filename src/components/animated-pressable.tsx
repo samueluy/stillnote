@@ -35,8 +35,13 @@ export function AnimatedPressable({
     transform: [{ scale: scale.value }],
   }));
 
+  const outerStyle =
+    typeof style === 'function'
+      ? [animatedTransform, { alignSelf: 'auto' }]
+      : [animatedTransform, style as any];
+
   return (
-    <Animated.View style={animatedTransform}>
+    <Animated.View style={outerStyle}>
       <Pressable
         {...props}
         onPress={onPress}
