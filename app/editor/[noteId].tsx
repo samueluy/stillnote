@@ -10,9 +10,9 @@ import Animated, { useAnimatedKeyboard, useSharedValue, useAnimatedStyle, withTi
 import { AnimatedPressable } from '@/src/components/animated-pressable';
 import { AnimatedChip, AnimatedChipRow } from '@/src/components/animated-chip';
 import { BibleSheet } from '@/src/components/bible-sheet';
-import { AttachmentPreview, SearchField } from '@/src/components/primitives';
+import { AttachmentPreview } from '@/src/components/primitives';
 import { markdownToHtml, stripHtml } from '@/src/lib/editor';
-import { buildInsertedVerseText, createNoteFromTemplate, deleteNote, getBibleChapter, getNoteById, getVerseByReference, getVersesForReferences, saveNoteDraft, toggleNoteFavorite, createThread } from '@/src/lib/database';
+import { buildInsertedVerseText, createNoteFromTemplate, deleteNote, getBibleChapter, getNoteById, getVersesForReferences, saveNoteDraft, toggleNoteFavorite, createThread } from '@/src/lib/database';
 import { detectVerseReferences } from '@/src/lib/verse-references';
 import { useAppState } from '@/src/providers/app-provider';
 import { useTheme } from '@/src/theme/useTheme';
@@ -61,7 +61,6 @@ export default function EditorScreen() {
   const [chapterNumber, setChapterNumber] = useState(1);
   const [chapterVerses, setChapterVerses] = useState<BibleVerse[]>([]);
   const [saveState, setSaveState] = useState<'idle' | 'saving' | 'saved'>('idle');
-  const [verseSearch, setVerseSearch] = useState('');
   const [referenceVerses, setReferenceVerses] = useState<BibleVerse[]>([]);
   const [initialContent, setInitialContent] = useState('');
   const [titleFocused, setTitleFocused] = useState(false);
@@ -161,14 +160,6 @@ export default function EditorScreen() {
     }
   }, [editor]);
 
-  const insertReferenceFromSearch = useCallback(async () => {
-    const verse = await getVerseByReference(db, verseSearch.trim());
-    if (!verse) { Alert.alert('Verse not found', 'Try a reference like Genesis 1:1.'); return; }
-    const text = buildInsertedVerseText([verse]);
-    await insertVerseHtml(`<p><em>${text.replace(/\n/g, '<br>')}</em></p><p></p>`);
-    setVerseSearch('');
-  }, [db, verseSearch, insertVerseHtml]);
-
   const insertVerseIntoBody = useCallback((verse: BibleVerse) => {
     const text = buildInsertedVerseText([verse]);
     insertVerseHtml(`<p><em>${text.replace(/\n/g, '<br>')}</em></p><p></p>`);
@@ -197,18 +188,26 @@ export default function EditorScreen() {
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={[styles.container, { backgroundColor: colors.bg }]}>
       <Animated.View style={[styles.header, { backgroundColor: colors.bg, borderBottomColor: colors.border }, headerStyle]}>
         <AnimatedPressable onPress={() => isDistractionFree ? exitDistractionFree() : router.back()} style={styles.headerBtn}>
-          <Ionicons color={isDistractionFree ? colors.accent : colors.textSecondary} name={isDistractionFree ? 'eye-outline' : 'chevron-back-outline'} size={20} />
+          <Ionicons color={isDistractionFree ? colors.accent : colors.textSecondary} name={isDistractionFree ? 'eye-outline' : 'chevron-back-outline'} size={18} />
         </AnimatedPressable>
         <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>Stillnote</Text>
         <View style={styles.headerActions}>
-          <AnimatedPressable haptic="light" onPress={async () => { await toggleNoteFavorite(db, noteId); setIsFavorite((v) => !v); bumpRefreshToken(); }} style={styles.headerBtn}>
-            <Ionicons color={isFavorite ? '#E74C3C' : colors.textSecondary} name={isFavorite ? 'heart' : 'heart-outline'} size={20} />
+          <AnimatedPressable haptic="medium" onPress={async () => { await toggleNoteFavorite(db, noteId); setIsFavorite((v) => !v); bumpRefreshToken(); }} style={styles.headerBtn}>
+            <Ionicons color={isFavorite ? '#E74C3C' : colors.textSecondary} name={isFavorite ? 'heart' : 'heart-outline'} size={18} />
           </AnimatedPressable>
-          <AnimatedPressable haptic="heavy" onPress={() => Alert.alert('Delete Note', 'This cannot be undone.', [{ text: 'Cancel', style: 'cancel' }, { text: 'Delete', style: 'destructive', onPress: async () => { await deleteNote(db, noteId); bumpRefreshToken(); router.back(); } }])} style={styles.headerBtn}>
-            <Ionicons color={colors.coral} name="trash-outline" size={20} />
+          <AnimatedPressable
+            onPress={() =>
+              Alert.alert('Note Actions', undefined, [
+                { text: 'Extract to Note', onPress: extractToNewNote },
+                { text: 'Delete Note', style: 'destructive', onPress: () => Alert.alert('Delete Note', 'This cannot be undone.', [{ text: 'Cancel', style: 'cancel' }, { text: 'Delete', style: 'destructive', onPress: async () => { await deleteNote(db, noteId); bumpRefreshToken(); router.back(); } }]) },
+                { text: 'Cancel', style: 'cancel' },
+              ])
+            }
+            style={styles.headerBtn}>
+            <Ionicons color={colors.textSecondary} name="ellipsis-horizontal" size={18} />
           </AnimatedPressable>
           <AnimatedPressable onPress={() => bottomSheetRef.current?.present()} style={styles.headerBtn}>
-            <Ionicons color={colors.accent} name="book-outline" size={20} />
+            <Ionicons color={colors.accent} name="book-outline" size={18} />
           </AnimatedPressable>
         </View>
       </Animated.View>
@@ -223,22 +222,12 @@ export default function EditorScreen() {
 
         <EditorToolbar editor={editor} keyboardHeight={keyboardHeight} onBiblePress={() => bottomSheetRef.current?.present()} colors={colors} isDark={isDark} />
 
-        <AnimatedPressable onPress={extractToNewNote} style={({ pressed }) => [styles.extractBtn, { backgroundColor: colors.coralSoft }, pressed && styles.pressed]}>
-          <Ionicons color={colors.coral} name="git-branch-outline" size={14} />
-          <Text style={[styles.extractText, { color: colors.coral }]}>Extract to Note</Text>
-        </AnimatedPressable>
-
-        <View style={styles.verseSearchCard}>
-          <SearchField onChangeText={setVerseSearch} placeholder="Insert a verse like Genesis 1:1" value={verseSearch} />
-          <AnimatedPressable onPress={insertReferenceFromSearch} style={({ pressed }) => [styles.insertVerseBtn, { backgroundColor: colors.accent }, pressed && styles.pressed]}>
-            <Text style={styles.insertVerseText}>Insert Verse</Text>
-          </AnimatedPressable>
+        <View style={[styles.editorCanvas, { backgroundColor: colors.bgCard }]}>
+          <RichText editor={editor} style={styles.editor} />
         </View>
 
         {referenceVerses.length ? <AnimatedChipRow>{referenceVerses.map((v) => (<AnimatedChip key={v.reference} accent={colors.gold} bg={colors.goldSoft} icon="book-outline" label={v.reference} onPress={() => { setChapterBook(v.book); setChapterNumber(v.chapter); bottomSheetRef.current?.present(); }} />))}</AnimatedChipRow> : null}
         {hashtags.size ? <AnimatedChipRow>{Array.from(hashtags).map((t) => (<AnimatedChip key={t} accent={colors.accent} bg={colors.accentSoft} icon="pricetag-outline" label={`#${t}`} />))}</AnimatedChipRow> : null}
-
-        <RichText editor={editor} style={styles.editor} />
 
         {attachments.length ? <View style={styles.attachmentStack}>{attachments.map((a, i) => (<AttachmentPreview key={a.id} index={i} onRemove={() => setAttachments((c) => c.filter((x) => x.id !== a.id))} />))}</View> : null}
 
@@ -272,17 +261,14 @@ function EditorToolbar({ editor, keyboardHeight, onBiblePress, colors, isDark }:
         </AnimatedPressable>
         <View style={[styles.toolDivider, { backgroundColor: colors.border }]} />
         <AnimatedPressable haptic="light" onPress={() => (editor as any).toggleBlockquote?.()} style={styles.toolBtn}>
-          <Ionicons color={colors.textSecondary} name="chatbox-ellipses-outline" size={18} />
+          <Ionicons color={colors.textSecondary} name="chatbox-ellipses-outline" size={17} />
         </AnimatedPressable>
         <AnimatedPressable haptic="light" onPress={() => (editor as any).toggleBulletList?.()} style={styles.toolBtn}>
-          <Ionicons color={colors.textSecondary} name="list-outline" size={18} />
-        </AnimatedPressable>
-        <AnimatedPressable haptic="light" onPress={() => (editor as any).toggleOrderedList?.()} style={styles.toolBtn}>
-          <Ionicons color={colors.textSecondary} name="list-circle-outline" size={18} />
+          <Ionicons color={colors.textSecondary} name="list-outline" size={17} />
         </AnimatedPressable>
         <View style={[styles.toolDivider, { backgroundColor: colors.border }]} />
         <AnimatedPressable haptic="light" onPress={onBiblePress} style={styles.toolBtn}>
-          <Ionicons color={colors.textSecondary} name="book-outline" size={18} />
+          <Ionicons color={colors.textSecondary} name="book-outline" size={17} />
         </AnimatedPressable>
       </View>
     </Animated.View>
@@ -300,17 +286,13 @@ const styles = StyleSheet.create({
   breadcrumb: { fontFamily: 'DMSans_400Regular', fontSize: 11, letterSpacing: 0.5 },
   titleInput: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 28, lineHeight: 36, paddingVertical: 0 },
   titleUnderline: { height: 2, marginTop: -6, width: 0 },
-  editor: { flex: 1, minHeight: 400 },
+  editor: { flex: 1, minHeight: 300 },
+  editorCanvas: { borderRadius: 12, padding: 20, flex: 1 },
   toolbar: { left: 20, position: 'absolute', right: 20, zIndex: 100 },
   toolbarInner: { alignItems: 'center', borderRadius: 100, flexDirection: 'row', gap: 2, paddingHorizontal: 10, paddingVertical: 8, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 12, elevation: 4 },
   toolBtn: { alignItems: 'center', borderRadius: 100, height: 36, justifyContent: 'center', width: 38 },
   toolText: { fontFamily: 'DMSans_500Medium', fontSize: 16 },
   toolDivider: { height: 18, width: 1 },
-  extractBtn: { alignItems: 'center', alignSelf: 'center', borderRadius: 100, flexDirection: 'row', gap: 6, paddingHorizontal: 14, paddingVertical: 8 },
-  extractText: { fontFamily: 'DMSans_500Medium', fontSize: 12 },
-  verseSearchCard: { gap: 10 },
-  insertVerseBtn: { alignItems: 'center', alignSelf: 'flex-start', borderRadius: 100, paddingHorizontal: 14, paddingVertical: 9 },
-  insertVerseText: { color: '#FFF', fontFamily: 'DMSans_500Medium', fontSize: 13 },
   attachmentStack: { gap: 10 },
   statusRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 },
   saveIndicator: { alignItems: 'center', flexDirection: 'row', gap: 6 },
