@@ -27,12 +27,14 @@ export function AnimatedPressable({
   onPress,
   onPressIn,
   onPressOut,
+  disabled,
   ...props
 }: AnimatedPressableProps) {
   const scale = useSharedValue(1);
 
   const animatedTransform = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
+    opacity: disabled ? 0.4 : 1,
   }));
 
   const outerStyle =
@@ -45,11 +47,12 @@ export function AnimatedPressable({
       <Pressable
         {...props}
         onPress={onPress}
-        onPressIn={(e) => {
-          scale.value = withSpring(0.96, springConfig);
-          if (haptic) fireHaptic(haptic);
-          onPressIn?.(e);
-        }}
+      onPressIn={(e) => {
+        if (disabled) return;
+        scale.value = withSpring(0.96, springConfig);
+        if (haptic) fireHaptic(haptic);
+        onPressIn?.(e);
+      }}
         onPressOut={(e) => {
           scale.value = withSpring(1, springConfig);
           onPressOut?.(e);
