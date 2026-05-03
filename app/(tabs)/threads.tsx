@@ -23,7 +23,7 @@ export default function ThreadsScreen() {
   const [selectedThread, setSelectedThread] = useState<Thread | null>(null);
   const [threadNotes, setThreadNotes] = useState<Note[]>([]);
   const notesSheetRef = useRef<BottomSheetModal>(null);
-  const collectionSnapPoints = useMemo(() => ['50%', '92%'], []);
+  const collectionSnapPoints = useMemo(() => ['40%', '75%'], []);
 
   const load = useCallback(async () => {
     setSnapshot(await getWorkspaceSnapshot(db, activeSpaceId));

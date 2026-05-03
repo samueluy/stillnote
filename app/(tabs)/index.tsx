@@ -32,7 +32,7 @@ export default function WorkspaceScreen() {
   const [collectionTitle, setCollectionTitle] = useState('');
   const [collectionNotes, setCollectionNotes] = useState<Note[]>([]);
   const collectionSheetRef = useRef<BottomSheetModal>(null);
-  const collectionSnapPoints = useMemo(() => ['50%', '92%'], []);
+  const collectionSnapPoints = useMemo(() => ['40%', '75%'], []);
   const scrollRef = useRef<ScrollView>(null);
   const deferredQuery = useDeferredValue(query);
   const scrollY = useSharedValue(0);
