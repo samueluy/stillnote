@@ -5,7 +5,7 @@ export const theme = {
     bgElevated: '#FFFFFF',
     textPrimary: '#09090B',
     textSecondary: '#52525B',
-    textTertiary: '#A1A1AA',
+    textTertiary: '#71717A',
     accent: '#16A34A',
     accentSoft: '#ECFDF5',
     gold: '#B5924C',
