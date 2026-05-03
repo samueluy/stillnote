@@ -107,8 +107,11 @@ export default function SearchScreen() {
 
 const styles = StyleSheet.create({
   header: { borderBottomWidth: StyleSheet.hairlineWidth, gap: 12, paddingBottom: 12, paddingHorizontal: 20, paddingTop: 4 },
+  searchBox: { alignItems: 'center', borderRadius: 12, borderWidth: 1, flexDirection: 'row', gap: 10, paddingHorizontal: 14, paddingVertical: 12 },
+  searchInput: { flex: 1, fontFamily: 'DMSans_400Regular', fontSize: 16 },
   filterRow: { flexDirection: 'row', gap: 8 },
   filterPill: { borderRadius: 100, borderWidth: 1, paddingHorizontal: 16, paddingVertical: 12, minHeight: 44 },
+  filterText: { fontFamily: 'DMSans_500Medium', fontSize: 12 },
   results: { gap: 10, paddingHorizontal: 20, paddingTop: 16, paddingBottom: 120 },
   resultCard: { borderRadius: 14, borderWidth: 1, flexDirection: 'row', gap: 12, padding: 14 },
   resultIcon: { alignItems: 'center', borderRadius: 10, height: 32, justifyContent: 'center', width: 32 },
