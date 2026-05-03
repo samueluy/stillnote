@@ -4,6 +4,8 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { BlurView } from 'expo-blur';
 import { RichText, useEditorBridge } from '@10play/tentap-editor';
 import Animated, { useAnimatedKeyboard, useSharedValue, useAnimatedStyle, withTiming, withSpring } from 'react-native-reanimated';
 
@@ -26,6 +28,7 @@ export default function EditorScreen() {
   const router = useRouter();
   const { bumpRefreshToken } = useAppState();
   const { colors, isDark } = useTheme();
+  const insets = useSafeAreaInsets();
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const bodyRef = useRef('');
@@ -77,9 +80,25 @@ export default function EditorScreen() {
     onChange: async () => {
       try { const html = await (editor as any).getHTML(); if (html) { bodyRef.current = html; setBody(html); } } catch {}
     },
+    dynamicHeight: true,
   });
 
   const { height: keyboardHeight } = useAnimatedKeyboard();
+
+  useEffect(() => {
+    (editor as any).injectCSS?.(`
+      body { font-family: -apple-system, 'Helvetica Neue', sans-serif; font-size: 17px; line-height: 1.6; color: inherit; padding: 0; margin: 0; }
+      h1 { font-family: serif; font-size: 30px; font-weight: 500; margin-bottom: 16px; }
+      h2 { font-family: serif; font-size: 20px; font-weight: 500; margin-top: 32px; margin-bottom: 8px; }
+      h3 { font-family: serif; font-size: 18px; font-weight: 500; margin-top: 24px; margin-bottom: 6px; }
+      p { margin-bottom: 12px; }
+      ul, ol { margin: 8px 0 12px; padding-left: 20px; }
+      li { margin-bottom: 4px; }
+      blockquote { border-left: 3px solid #B5924C; margin: 16px 0; padding: 8px 16px; font-style: italic; }
+      strong { font-weight: 600; }
+      em { font-style: italic; }
+    `);
+  }, [editor]);
 
   useEffect(() => {
     let cancelled = false;
@@ -186,30 +205,32 @@ export default function EditorScreen() {
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={[styles.container, { backgroundColor: colors.bg }]}>
-      <Animated.View style={[styles.header, { backgroundColor: colors.bg, borderBottomColor: colors.border }, headerStyle]}>
-        <AnimatedPressable onPress={() => isDistractionFree ? exitDistractionFree() : router.back()} style={styles.headerBtn}>
-          <Ionicons color={isDistractionFree ? colors.accent : colors.textSecondary} name={isDistractionFree ? 'eye-outline' : 'chevron-back-outline'} size={18} />
-        </AnimatedPressable>
-        <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>Stillnote</Text>
-        <View style={styles.headerActions}>
-          <AnimatedPressable haptic="medium" onPress={async () => { await toggleNoteFavorite(db, noteId); setIsFavorite((v) => !v); bumpRefreshToken(); }} style={styles.headerBtn}>
-            <Ionicons color={isFavorite ? '#E74C3C' : colors.textSecondary} name={isFavorite ? 'heart' : 'heart-outline'} size={18} />
+      <Animated.View style={[styles.header, { paddingTop: Math.max(insets.top, 8) + 12 }, headerStyle]}>
+        <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={[styles.headerBlur, isDark ? { backgroundColor: 'rgba(11,11,12,0.78)' } : { backgroundColor: 'rgba(247,246,242,0.72)' }]}>
+          <AnimatedPressable onPress={() => isDistractionFree ? exitDistractionFree() : router.back()} style={styles.headerBtn}>
+            <Ionicons color={isDistractionFree ? colors.accent : colors.textSecondary} name={isDistractionFree ? 'eye-outline' : 'chevron-back-outline'} size={18} />
           </AnimatedPressable>
-          <AnimatedPressable
-            onPress={() =>
-              Alert.alert('Note Actions', undefined, [
-                { text: 'Extract to Note', onPress: extractToNewNote },
-                { text: 'Delete Note', style: 'destructive', onPress: () => Alert.alert('Delete Note', 'This cannot be undone.', [{ text: 'Cancel', style: 'cancel' }, { text: 'Delete', style: 'destructive', onPress: async () => { await deleteNote(db, noteId); bumpRefreshToken(); router.back(); } }]) },
-                { text: 'Cancel', style: 'cancel' },
-              ])
-            }
-            style={styles.headerBtn}>
-            <Ionicons color={colors.textSecondary} name="ellipsis-horizontal" size={18} />
-          </AnimatedPressable>
-          <AnimatedPressable onPress={() => bottomSheetRef.current?.present()} style={styles.headerBtn}>
-            <Ionicons color={colors.accent} name="book-outline" size={18} />
-          </AnimatedPressable>
-        </View>
+          <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>Stillnote</Text>
+          <View style={styles.headerActions}>
+            <AnimatedPressable haptic="medium" onPress={async () => { await toggleNoteFavorite(db, noteId); setIsFavorite((v) => !v); bumpRefreshToken(); }} style={styles.headerBtn}>
+              <Ionicons color={isFavorite ? '#E74C3C' : colors.textSecondary} name={isFavorite ? 'heart' : 'heart-outline'} size={18} />
+            </AnimatedPressable>
+            <AnimatedPressable
+              onPress={() =>
+                Alert.alert('Note Actions', undefined, [
+                  { text: 'Extract to Note', onPress: extractToNewNote },
+                  { text: 'Delete Note', style: 'destructive', onPress: () => Alert.alert('Delete Note', 'This cannot be undone.', [{ text: 'Cancel', style: 'cancel' }, { text: 'Delete', style: 'destructive', onPress: async () => { await deleteNote(db, noteId); bumpRefreshToken(); router.back(); } }]) },
+                  { text: 'Cancel', style: 'cancel' },
+                ])
+              }
+              style={styles.headerBtn}>
+              <Ionicons color={colors.textSecondary} name="ellipsis-horizontal" size={18} />
+            </AnimatedPressable>
+            <AnimatedPressable onPress={() => bottomSheetRef.current?.present()} style={styles.headerBtn}>
+              <Ionicons color={colors.accent} name="book-outline" size={18} />
+            </AnimatedPressable>
+          </View>
+        </BlurView>
       </Animated.View>
 
       <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
@@ -222,9 +243,7 @@ export default function EditorScreen() {
 
         <EditorToolbar editor={editor} keyboardHeight={keyboardHeight} onBiblePress={() => bottomSheetRef.current?.present()} colors={colors} isDark={isDark} />
 
-        <View style={[styles.editorCanvas, { backgroundColor: colors.bgCard }]}>
-          <RichText editor={editor} style={styles.editor} />
-        </View>
+        <RichText editor={editor} style={styles.editor} />
 
         {referenceVerses.length ? <AnimatedChipRow>{referenceVerses.map((v) => (<AnimatedChip key={v.reference} accent={colors.gold} bg={colors.goldSoft} icon="book-outline" label={v.reference} onPress={() => { setChapterBook(v.book); setChapterNumber(v.chapter); bottomSheetRef.current?.present(); }} />))}</AnimatedChipRow> : null}
         {hashtags.size ? <AnimatedChipRow>{Array.from(hashtags).map((t) => (<AnimatedChip key={t} accent={colors.accent} bg={colors.accentSoft} icon="pricetag-outline" label={`#${t}`} />))}</AnimatedChipRow> : null}
@@ -278,16 +297,16 @@ function EditorToolbar({ editor, keyboardHeight, onBiblePress, colors, isDark }:
 const styles = StyleSheet.create({
   container: { flex: 1 },
   centered: { alignItems: 'center', justifyContent: 'center' },
-  header: { alignItems: 'center', borderBottomWidth: StyleSheet.hairlineWidth, flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 16, paddingTop: 58, paddingBottom: 12 },
+  header: { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10 },
+  headerBlur: { alignItems: 'center', borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: 'transparent', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 12 },
   headerBtn: { alignItems: 'center', height: 34, justifyContent: 'center', width: 34 },
   headerTitle: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 18 },
   headerActions: { flexDirection: 'row', gap: 4 },
-  content: { gap: 20, paddingBottom: 56, paddingHorizontal: 24, paddingTop: 24 },
+  content: { gap: 20, paddingBottom: 56, paddingHorizontal: 24, paddingTop: 96 },
   breadcrumb: { fontFamily: 'DMSans_400Regular', fontSize: 11, letterSpacing: 0.5 },
-  titleInput: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 28, lineHeight: 36, paddingVertical: 0 },
+  titleInput: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 30, lineHeight: 38, paddingVertical: 0 },
   titleUnderline: { height: 2, marginTop: -6, width: 0 },
   editor: { flex: 1, minHeight: 300 },
-  editorCanvas: { borderRadius: 12, padding: 20, flex: 1 },
   toolbar: { left: 20, position: 'absolute', right: 20, zIndex: 100 },
   toolbarInner: { alignItems: 'center', borderRadius: 100, flexDirection: 'row', gap: 2, paddingHorizontal: 10, paddingVertical: 8, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 12, elevation: 4 },
   toolBtn: { alignItems: 'center', borderRadius: 100, height: 36, justifyContent: 'center', width: 38 },
