@@ -2,8 +2,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { BottomSheetBackdrop, BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import Animated, { useSharedValue, useAnimatedScrollHandler } from 'react-native-reanimated';
 
 import { AnimatedPressable } from '@/src/components/animated-pressable';
 import { EmptyState, Screen, TopBar } from '@/src/components/primitives';
@@ -48,11 +49,13 @@ export default function ThreadsScreen() {
   }, [activeSpaceId, db, load, router]);
 
   const threads = snapshot?.threads ?? [];
+  const scrollY = useSharedValue(0);
+  const scrollHandler = useAnimatedScrollHandler({ onScroll: (e) => { scrollY.value = e.contentOffset.y; } });
 
   return (
     <Screen>
-      <TopBar title="Threads" rightIcon="add-outline" onRightPress={handleNewThread} />
-      <View style={[styles.content, { backgroundColor: colors.bg }]}>
+      <TopBar title="Threads" rightIcon="add-outline" onRightPress={handleNewThread} scrollY={scrollY} />
+      <Animated.ScrollView onScroll={scrollHandler} scrollEventThrottle={16} contentContainerStyle={[styles.content, { backgroundColor: colors.bg, paddingTop: 72 }]}>
         {threads.length ? threads.map((thread) => (
           <AnimatedPressable
             key={thread.id}
@@ -76,7 +79,7 @@ export default function ThreadsScreen() {
         )) : (
           <EmptyState title="No threads yet" subtitle="Create a thread to organize your studies." />
         )}
-      </View>
+      </Animated.ScrollView>
 
       <BottomSheetModal ref={notesSheetRef} backdropComponent={(p) => <BottomSheetBackdrop {...p} appearsOnIndex={0} disappearsOnIndex={-1} opacity={0.35} />} handleIndicatorStyle={[styles.sheetHandle, { backgroundColor: colors.textTertiary }]} snapPoints={collectionSnapPoints}>
         <BottomSheetScrollView contentContainerStyle={styles.sheetContent}>

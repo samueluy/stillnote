@@ -3,7 +3,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useMemo, useState } from 'react';
 import { Alert, Modal, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming, useAnimatedScrollHandler } from 'react-native-reanimated';
 
 import { AnimatedPressable } from '@/src/components/animated-pressable';
 import { ConcordanceModal } from '@/src/components/concordance-modal';
@@ -53,6 +53,8 @@ export default function BibleScreen() {
 
   const chapterOpacity = useSharedValue(1);
   const chapterStyle = useAnimatedStyle(() => ({ opacity: chapterOpacity.value }));
+  const scrollY = useSharedValue(0);
+  const scrollHandler = useAnimatedScrollHandler({ onScroll: (e) => { scrollY.value = e.contentOffset.y; } });
 
   useEffect(() => { chapterOpacity.value = 0; chapterOpacity.value = withTiming(1, { duration: 300 }); }, [book, chapter, chapterOpacity]);
   useEffect(() => { if (params.reference) { const m = params.reference.match(/^(.*)\s+(\d+):(\d+)$/); if (m) { setBook(m[1]); setChapter(Number(m[2])); } } }, [params.reference]);
@@ -67,8 +69,8 @@ export default function BibleScreen() {
 
   return (
     <Screen>
-      <TopBar leftIcon="menu-outline" rightIcon="person-outline" title="Selah Study" onLeftPress={() => setIsBookPickerOpen(true)} onRightPress={() => Alert.alert('Stillnote', 'Private study companion.')} />
-      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+      <TopBar leftIcon="menu-outline" rightIcon="person-outline" title="Selah Study" onLeftPress={() => setIsBookPickerOpen(true)} onRightPress={() => Alert.alert('Stillnote', 'Private study companion.')} scrollY={scrollY} />
+      <Animated.ScrollView onScroll={scrollHandler} scrollEventThrottle={16} contentContainerStyle={[styles.content, { paddingTop: 72 }]} showsVerticalScrollIndicator={false}>
         <Animated.View style={chapterStyle}>
           <Card>
             <View style={styles.readerCard}>
@@ -151,7 +153,7 @@ export default function BibleScreen() {
             ))}
           </View>
         </View>
-      </ScrollView>
+      </Animated.ScrollView>
 
       <ConcordanceModal entry={entry} onClose={() => setIsModalVisible(false)} visible={isModalVisible} />
 

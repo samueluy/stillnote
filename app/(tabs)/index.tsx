@@ -4,6 +4,7 @@ import { useFocusEffect, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, Modal, ScrollView, StyleSheet, Text, View } from 'react-native';
+import Animated, { useSharedValue, useAnimatedScrollHandler } from 'react-native-reanimated';
 
 import { AnimatedPressable } from '@/src/components/animated-pressable';
 import { EmptyState, Screen, SearchField, TopBar } from '@/src/components/primitives';
@@ -34,6 +35,13 @@ export default function WorkspaceScreen() {
   const collectionSnapPoints = useMemo(() => ['50%', '92%'], []);
   const scrollRef = useRef<ScrollView>(null);
   const deferredQuery = useDeferredValue(query);
+  const scrollY = useSharedValue(0);
+
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      scrollY.value = event.contentOffset.y;
+    },
+  });
 
   const loadSnapshot = useCallback(async () => {
     setSnapshot(await getWorkspaceSnapshot(db, activeSpaceId));
@@ -78,8 +86,9 @@ export default function WorkspaceScreen() {
         title={snapshot?.spaces.find((s) => s.id === activeSpaceId)?.name ?? 'Journal'}
         rightIcon="settings-outline"
         onRightPress={() => setIsSpacePickerOpen(true)}
+        scrollY={scrollY}
       />
-      <PageScroll innerRef={scrollRef}>
+      <PageScroll innerRef={scrollRef} onScroll={scrollHandler} paddingTop={72}>
         <View style={styles.greeting}>
           <Text style={[styles.greetingText, { color: colors.textPrimary }]}>{getGreeting()}</Text>
           <Text style={[styles.dateText, { color: colors.textTertiary }]}>
@@ -207,12 +216,18 @@ export default function WorkspaceScreen() {
   );
 }
 
-function PageScroll({ children, innerRef }: { children: React.ReactNode; innerRef?: React.RefObject<ScrollView | null> }) {
+function PageScroll({ children, innerRef, onScroll, paddingTop }: { children: React.ReactNode; innerRef?: React.RefObject<ScrollView | null>; onScroll?: any; paddingTop?: number }) {
   const { colors } = useTheme();
   return (
-    <ScrollView ref={innerRef} contentContainerStyle={[styles.scrollContent, { backgroundColor: colors.bg }]} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
+    <Animated.ScrollView
+      ref={innerRef as any}
+      onScroll={onScroll}
+      scrollEventThrottle={16}
+      contentContainerStyle={[styles.scrollContent, { backgroundColor: colors.bg, paddingTop: paddingTop ?? 0 }]}
+      keyboardShouldPersistTaps="handled"
+      showsVerticalScrollIndicator={false}>
       {children}
-    </ScrollView>
+    </Animated.ScrollView>
   );
 }
 

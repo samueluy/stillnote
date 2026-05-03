@@ -3,6 +3,8 @@ import type { ComponentProps, ReactNode } from 'react';
 import { forwardRef } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { BlurView } from 'expo-blur';
+import Animated, { useAnimatedStyle, type SharedValue } from 'react-native-reanimated';
 
 import { AnimatedPressable } from '@/src/components/animated-pressable';
 import { useTheme } from '@/src/theme/useTheme';
@@ -81,16 +83,38 @@ export function TopBar({
   rightIcon,
   onLeftPress,
   onRightPress,
+  scrollY,
 }: {
   title: string;
   leftIcon?: IoniconName;
   rightIcon?: IoniconName;
   onLeftPress?: () => void;
   onRightPress?: () => void;
+  scrollY?: SharedValue<number>;
 }) {
-  const { colors } = useTheme();
+  const { colors, isDark } = useTheme();
+
+  const borderStyle = useAnimatedStyle(() => {
+    const offset = scrollY?.value ?? 20;
+    const opacity = Math.min(offset / 20, 1);
+    return {
+      borderBottomColor: isDark
+        ? `rgba(255,255,255,${0.06 * opacity})`
+        : `rgba(0,0,0,${0.06 * opacity})`,
+    };
+  });
+
   return (
-    <View style={[styles.topBar, { backgroundColor: colors.bg, borderBottomColor: colors.border }]}>
+    <BlurView
+      intensity={80}
+      tint={isDark ? 'dark' : 'light'}
+      style={[
+        styles.topBar,
+        isDark
+          ? { backgroundColor: 'rgba(11,11,12,0.78)' }
+          : { backgroundColor: 'rgba(247,246,242,0.72)' },
+      ]}>
+      <Animated.View style={[styles.topBarBorder, borderStyle]} />
       {leftIcon ? (
         <CircleButton icon={leftIcon} onPress={onLeftPress} />
       ) : (
@@ -102,7 +126,7 @@ export function TopBar({
       ) : (
         <View style={styles.circleButton} />
       )}
-    </View>
+    </BlurView>
   );
 }
 
@@ -384,11 +408,24 @@ const styles = StyleSheet.create({
   },
   topBar: {
     alignItems: 'center',
-    borderBottomWidth: StyleSheet.hairlineWidth,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    left: 0,
+    overflow: 'hidden',
     paddingHorizontal: 20,
     paddingVertical: 14,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    zIndex: 10,
+  },
+  topBarBorder: {
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    bottom: 0,
+    borderBottomColor: 'transparent',
+    left: 0,
+    position: 'absolute',
+    right: 0,
   },
   topBarTitle: {
     fontFamily: 'LibreBaskerville_700Bold',
