@@ -47,7 +47,7 @@ export function StillnoteTabBar({ state, descriptors, navigation }: BottomTabBar
             <Ionicons
               color={focused ? activeColor : inactiveColor}
               name={focused ? meta.activeIcon : meta.icon}
-              size={22}
+              size={24}
             />
             {focused ? <View style={[styles.indicator, { backgroundColor: activeColor }]} /> : null}
           </AnimatedPressable>
