@@ -22,7 +22,7 @@ function getGreeting() {
 export default function WorkspaceScreen() {
   const db = useSQLiteContext();
   const router = useRouter();
-  const { activeSpaceId, setActiveSpaceId, refreshToken } = useAppState();
+  const { activeSpaceId, setActiveSpaceId, refreshToken, themeMode, setThemeMode } = useAppState();
   const { colors } = useTheme();
 
   const [snapshot, setSnapshot] = useState<WorkspaceSnapshot | null>(null);
@@ -189,6 +189,21 @@ export default function WorkspaceScreen() {
                   <View style={[styles.spaceDot, { backgroundColor: space.id === activeSpaceId ? colors.accent : colors.borderStrong }]} />
                   <Text style={[styles.spaceName, { color: space.id === activeSpaceId ? colors.accent : colors.textPrimary }]}>{space.name}</Text>
                   {space.id === activeSpaceId ? <Ionicons color={colors.accent} name="checkmark-outline" size={16} /> : null}
+                </AnimatedPressable>
+              ))}
+              <View style={[styles.spaceDiv, { backgroundColor: colors.border }]} />
+              <Text style={[styles.spaceSectionTitle, { color: colors.textTertiary }]}>Theme</Text>
+              {(['light', 'dark', 'system'] as const).map((mode) => (
+                <AnimatedPressable
+                  key={mode}
+                  haptic="light"
+                  onPress={() => setThemeMode(mode)}
+                  style={[styles.spaceRow, { backgroundColor: themeMode === mode ? colors.accentSoft : 'transparent' }]}>
+                  <View style={[styles.spaceDot, { backgroundColor: themeMode === mode ? colors.accent : colors.borderStrong }]} />
+                  <Text style={[styles.spaceName, { color: themeMode === mode ? colors.accent : colors.textPrimary }]}>
+                    {mode === 'light' ? 'Light' : mode === 'dark' ? 'Dark' : 'System'}
+                  </Text>
+                  {themeMode === mode ? <Ionicons color={colors.accent} name="checkmark-outline" size={16} /> : null}
                 </AnimatedPressable>
               ))}
               <View style={[styles.spaceDiv, { backgroundColor: colors.border }]} />
