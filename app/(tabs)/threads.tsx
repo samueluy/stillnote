@@ -97,7 +97,7 @@ export default function ThreadsScreen() {
 }
 
 const styles = StyleSheet.create({
-  content: { flex: 1, gap: 12, paddingHorizontal: 24, paddingTop: 20 },
+  content: { flex: 1, gap: 12, paddingHorizontal: 20, paddingTop: 20 },
   threadCard: { alignItems: 'center', borderRadius: 14, borderLeftWidth: 4, borderWidth: 1, flexDirection: 'row', gap: 14, padding: 18 },
   threadIcon: { alignItems: 'center', borderRadius: 10, height: 38, justifyContent: 'center', width: 38 },
   threadName: { fontFamily: 'DMSans_500Medium', fontSize: 16 },

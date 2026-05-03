@@ -232,7 +232,7 @@ function PageScroll({ children, innerRef, onScroll, paddingTop }: { children: Re
 }
 
 const styles = StyleSheet.create({
-  scrollContent: { paddingHorizontal: 24, paddingBottom: 120, paddingTop: 4, gap: 28 },
+  scrollContent: { paddingHorizontal: 20, paddingBottom: 120, paddingTop: 4, gap: 28 },
   greeting: { gap: 4, paddingTop: 8 },
   greetingText: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 24, lineHeight: 32 },
   dateText: { fontFamily: 'DMSans_400Regular', fontSize: 14 },

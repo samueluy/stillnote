@@ -401,7 +401,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   pageContent: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 20,
     paddingBottom: 136,
     paddingTop: 20,
     gap: 28,

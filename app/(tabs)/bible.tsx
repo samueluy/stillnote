@@ -179,7 +179,7 @@ export default function BibleScreen() {
 }
 
 const styles = StyleSheet.create({
-  content: { gap: 28, paddingBottom: 132, paddingHorizontal: 24, paddingTop: 24 },
+  content: { gap: 28, paddingBottom: 132, paddingHorizontal: 20, paddingTop: 24 },
   readerCard: { padding: 20 },
   readerHeader: { alignItems: 'flex-start', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24, gap: 12 },
   readerTitle: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 22 },
