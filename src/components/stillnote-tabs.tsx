@@ -1,83 +1,69 @@
 import { Ionicons } from '@expo/vector-icons';
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { BlurView } from 'expo-blur';
 
-import { AnimatedPressable } from '@/src/components/animated-pressable';
-import { useTheme } from '@/src/theme/useTheme';
+import { palette } from '@/src/components/primitives';
 
-const TAB_META: Record<string, { label: string; icon: keyof typeof Ionicons.glyphMap; activeIcon: keyof typeof Ionicons.glyphMap }> = {
-  index: { label: 'Journal', icon: 'create-outline', activeIcon: 'create' },
-  threads: { label: 'Threads', icon: 'layers-outline', activeIcon: 'layers' },
-  bible: { label: 'Study', icon: 'compass-outline', activeIcon: 'compass' },
-  search: { label: 'Search', icon: 'search-outline', activeIcon: 'search' },
+const TAB_META: Record<
+  string,
+  { icon: keyof typeof Ionicons.glyphMap; activeIcon: keyof typeof Ionicons.glyphMap }
+> = {
+  index: { icon: 'create-outline', activeIcon: 'create' },
+  threads: { icon: 'folder-open-outline', activeIcon: 'folder-open' },
+  bible: { icon: 'book-outline', activeIcon: 'book' },
+  search: { icon: 'search-outline', activeIcon: 'search' },
 };
 
-export function StillnoteTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
-  const { isDark } = useTheme();
+export function StillnoteTabBar({ state, navigation }: BottomTabBarProps) {
   const insets = useSafeAreaInsets();
 
-  const activeColor = '#22C55E';
-  const inactiveColor = '#71717A';
-
   return (
-    <BlurView
-      intensity={80}
-      tint={isDark ? 'dark' : 'light'}
-      style={[
-        styles.shell,
-        {
-          paddingBottom: Math.max(insets.bottom, 8) + 8,
-          borderTopColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)',
-        },
-        isDark ? { backgroundColor: 'rgba(11,11,12,0.88)' } : { backgroundColor: 'rgba(255,255,255,0.75)' },
-      ]}>
+    <View style={[styles.shell, { paddingBottom: Math.max(insets.bottom, 10) }]}>
       {state.routes.map((route, index) => {
         const focused = state.index === index;
-        const meta = TAB_META[route.name] ?? { label: route.name, icon: 'ellipse-outline', activeIcon: 'ellipse' };
+        const meta = TAB_META[route.name] ?? {
+          icon: 'ellipse-outline',
+          activeIcon: 'ellipse',
+        };
 
         return (
-          <AnimatedPressable
+          <Pressable
             accessibilityRole="button"
-            haptic="light"
             key={route.key}
             onPress={() => navigation.navigate(route.name)}
-            style={styles.item}>
+            style={({ pressed }) => [styles.item, pressed && styles.pressed]}>
             <Ionicons
-              color={focused ? activeColor : inactiveColor}
+              color={palette.text}
               name={focused ? meta.activeIcon : meta.icon}
-              size={24}
+              size={focused ? 21 : 19}
+              style={focused ? styles.activeIcon : undefined}
             />
-            {focused ? <View style={[styles.indicator, { backgroundColor: activeColor }]} /> : null}
-          </AnimatedPressable>
+          </Pressable>
         );
       })}
-    </BlurView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   shell: {
-    alignItems: 'center',
+    backgroundColor: palette.background,
+    borderTopColor: palette.border,
     borderTopWidth: StyleSheet.hairlineWidth,
     flexDirection: 'row',
     justifyContent: 'space-around',
     paddingTop: 8,
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
   },
   item: {
     alignItems: 'center',
     flex: 1,
-    gap: 6,
-    paddingVertical: 6,
+    paddingVertical: 10,
   },
-  indicator: {
-    borderRadius: 1,
-    height: 2,
-    width: 20,
+  activeIcon: {
+    fontWeight: '700',
+  },
+  pressed: {
+    opacity: 0.7,
   },
 });

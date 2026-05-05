@@ -1,16 +1,12 @@
-import { useColorScheme } from 'react-native';
 import { theme as themeConfig } from './theme';
 import { useAppState } from '@/src/providers/app-provider';
 
 export function useTheme() {
-  const systemScheme = useColorScheme();
   const { themeMode } = useAppState();
-
-  const isDark =
-    themeMode === 'dark' || (themeMode === 'system' && systemScheme === 'dark');
+  const isDark = false;
 
   return {
-    colors: isDark ? themeConfig.dark : themeConfig.light,
+    colors: themeConfig.light,
     isDark,
     themeMode,
   };

@@ -1,14 +1,11 @@
 import { Ionicons } from '@expo/vector-icons';
 import {
   BottomSheetBackdrop,
-  type BottomSheetBackdropProps,
   BottomSheetModal,
   BottomSheetView,
-  useBottomSheetSpringConfigs,
   useBottomSheetScrollableCreator,
 } from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
-import { BlurView } from 'expo-blur';
 import { forwardRef, useMemo, useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
@@ -35,24 +32,16 @@ function VerseRow({
   const { colors } = useTheme();
   return (
     <View style={styles.verseRow}>
-      <Text style={[styles.verseNumber, { color: colors.gold }]}>{item.verse}</Text>
+      <Text style={[styles.verseNumber, { color: colors.textTertiary }]}>{item.verse}</Text>
       <Text style={[styles.verseText, { color: colors.textPrimary }]}>{item.text}</Text>
       <AnimatedPressable
         haptic="medium"
         onPress={() => onInsertVerse(item)}
-        style={({ pressed }) => [styles.insertButton, { borderColor: colors.accent }, pressed && styles.pressed]}>
+        style={({ pressed }) => [styles.insertButton, { borderColor: colors.borderStrong }, pressed && styles.pressed]}>
         <Ionicons color={colors.accent} name="add-outline" size={12} />
         <Text style={[styles.insertButtonText, { color: colors.accent }]}>Insert</Text>
       </AnimatedPressable>
     </View>
-  );
-}
-
-function BlurBackdrop(props: BottomSheetBackdropProps) {
-  return (
-    <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} opacity={0.4}>
-      <BlurView intensity={15} tint="dark" style={StyleSheet.absoluteFill} />
-    </BottomSheetBackdrop>
   );
 }
 
@@ -63,7 +52,6 @@ export const BibleSheet = forwardRef<BottomSheetModal, Props>(function BibleShee
   const animatedIndex = useSharedValue(0);
   const snapPoints = useMemo(() => ['35%', '70%'], []);
   const ScrollComponent = useBottomSheetScrollableCreator();
-  const animationConfigs = useBottomSheetSpringConfigs({ damping: 50, stiffness: 400 });
   const [sheetSearch, setSheetSearch] = useState('');
   const [isSheetSearchOpen, setIsSheetSearchOpen] = useState(false);
   const { colors } = useTheme();
@@ -86,8 +74,10 @@ export const BibleSheet = forwardRef<BottomSheetModal, Props>(function BibleShee
     <BottomSheetModal
       ref={ref}
       animatedIndex={animatedIndex}
-      animationConfigs={animationConfigs}
-      backdropComponent={BlurBackdrop}
+      backgroundStyle={{ backgroundColor: colors.bg }}
+      backdropComponent={(props) => (
+        <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} opacity={0.12} />
+      )}
       enableDynamicSizing={false}
       handleIndicatorStyle={[styles.handle, { backgroundColor: colors.textTertiary }]}
       snapPoints={snapPoints}>
@@ -157,12 +147,12 @@ const styles = StyleSheet.create({
     paddingTop: 4,
   },
   headerTitle: {
-    fontFamily: 'LibreBaskerville_700Bold',
-    fontSize: 18,
+    fontFamily: 'RobotoMono_500Medium',
+    fontSize: 14,
   },
   headerSubtitle: {
-    fontFamily: 'DMSans_400Regular',
-    fontSize: 12,
+    fontFamily: 'RobotoMono_400Regular',
+    fontSize: 11,
     marginTop: 2,
   },
   headerActions: { flexDirection: 'row', gap: 4 },
@@ -183,8 +173,8 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    fontFamily: 'DMSans_400Regular',
-    fontSize: 14,
+    fontFamily: 'RobotoMono_400Regular',
+    fontSize: 13,
   },
   listContent: { paddingBottom: 48, paddingHorizontal: 12, paddingTop: 14 },
   verseRow: {
@@ -195,31 +185,28 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   verseNumber: {
-    fontFamily: 'DMSans_500Medium',
-    fontSize: 12,
-    fontWeight: '700',
+    fontFamily: 'RobotoMono_400Regular',
+    fontSize: 11,
     marginTop: 3,
     width: 18,
   },
   verseText: {
     flex: 1,
-    fontFamily: 'LibreBaskerville_400Regular',
-    fontSize: 15,
-    lineHeight: 24,
+    fontFamily: 'RobotoMono_400Regular',
+    fontSize: 13,
+    lineHeight: 23,
   },
   insertButton: {
     alignItems: 'center',
     alignSelf: 'flex-start',
-    borderRadius: 100,
     borderWidth: 1,
     flexDirection: 'row',
     gap: 5,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    minHeight: 44,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
   },
   insertButtonText: {
-    fontFamily: 'DMSans_500Medium',
+    fontFamily: 'RobotoMono_500Medium',
     fontSize: 11,
   },
   pressed: { opacity: 0.75 },

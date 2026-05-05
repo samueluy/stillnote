@@ -1,62 +1,33 @@
 import { Ionicons } from '@expo/vector-icons';
 import type { ComponentProps, ReactNode } from 'react';
 import { forwardRef } from 'react';
-import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { BlurView } from 'expo-blur';
-import Animated, { useAnimatedStyle, type SharedValue } from 'react-native-reanimated';
-
-import { AnimatedPressable } from '@/src/components/animated-pressable';
-import { useTheme } from '@/src/theme/useTheme';
-import { theme } from '@/src/theme/theme';
 
 type IoniconName = ComponentProps<typeof Ionicons>['name'];
 
-const light = theme.light;
-const dark = theme.dark;
-
 export const palette = {
-  background: light.bg,
-  backgroundAlt: light.bg,
-  surface: light.bgCard,
-  surfaceMuted: light.accentSoft,
-  text: light.textPrimary,
-  textMuted: light.textSecondary,
-  textSoft: light.textTertiary,
-  border: light.border,
-  borderStrong: light.borderStrong,
-  blue: light.accent,
-  blueSoft: light.accentSoft,
-  gold: light.gold,
-  goldSoft: light.goldSoft,
-  tag: light.goldSoft,
-  success: light.accent,
-  scrim: light.scrim,
-};
-
-export const darkPalette = {
-  background: dark.bg,
-  backgroundAlt: dark.bg,
-  surface: dark.bgCard,
-  surfaceMuted: dark.accentSoft,
-  text: dark.textPrimary,
-  textMuted: dark.textSecondary,
-  textSoft: dark.textTertiary,
-  border: dark.border,
-  borderStrong: dark.borderStrong,
-  blue: dark.accent,
-  blueSoft: dark.accentSoft,
-  gold: dark.gold,
-  goldSoft: dark.goldSoft,
-  tag: dark.goldSoft,
-  success: dark.accent,
-  scrim: dark.scrim,
+  background: '#F8F4EE',
+  surface: '#FFFFFF',
+  text: '#131313',
+  textSecondary: 'rgba(19,19,19,0.6)',
+  textMuted: 'rgba(19,19,19,0.37)',
+  border: 'rgba(19,19,19,0.12)',
+  borderStrong: 'rgba(19,19,19,0.2)',
+  accent: '#131313',
+  scrim: 'rgba(19,19,19,0.18)',
 };
 
 export function Screen({ children }: { children: React.ReactNode }) {
-  const { colors } = useTheme();
   return (
-    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.bg }]} edges={['top']}>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
       {children}
     </SafeAreaView>
   );
@@ -83,86 +54,43 @@ export function TopBar({
   rightIcon,
   onLeftPress,
   onRightPress,
-  scrollY,
 }: {
   title: string;
   leftIcon?: IoniconName;
   rightIcon?: IoniconName;
   onLeftPress?: () => void;
   onRightPress?: () => void;
-  scrollY?: SharedValue<number>;
 }) {
-  const { colors, isDark } = useTheme();
-
-  const borderStyle = useAnimatedStyle(() => {
-    const offset = scrollY?.value ?? 20;
-    const opacity = Math.min(offset / 20, 1);
-    return {
-      borderBottomColor: isDark
-        ? `rgba(255,255,255,${0.06 * opacity})`
-        : `rgba(0,0,0,${0.06 * opacity})`,
-    };
-  });
-
   return (
-    <BlurView
-      intensity={80}
-      tint={isDark ? 'dark' : 'light'}
-      style={[
-        styles.topBar,
-        isDark
-          ? { backgroundColor: 'rgba(11,11,12,0.78)' }
-          : { backgroundColor: 'rgba(247,246,242,0.72)' },
-      ]}>
-      <Animated.View style={[styles.topBarBorder, borderStyle]} />
+    <View style={styles.topBar}>
       {leftIcon ? (
-        <CircleButton icon={leftIcon} onPress={onLeftPress} />
+        <IconButton icon={leftIcon} onPress={onLeftPress} />
       ) : (
-        <View style={styles.circleButton} />
+        <View style={styles.iconButtonSpacer} />
       )}
-      <Text style={[styles.topBarTitle, { color: colors.textPrimary }]}>{title}</Text>
+      <Text style={styles.topBarTitle}>{title}</Text>
       {rightIcon ? (
-        <CircleButton icon={rightIcon} onPress={onRightPress} />
+        <IconButton icon={rightIcon} onPress={onRightPress} />
       ) : (
-        <View style={styles.circleButton} />
+        <View style={styles.iconButtonSpacer} />
       )}
-    </BlurView>
+    </View>
   );
 }
 
-export function CircleButton({
+export function IconButton({
   icon,
   onPress,
+  active = false,
 }: {
   icon: IoniconName;
   onPress?: () => void;
+  active?: boolean;
 }) {
-  const { colors } = useTheme();
   return (
-    <AnimatedPressable
-      accessibilityRole="button"
-      onPress={onPress}
-      style={[styles.circleButton, { backgroundColor: colors.border }]}>
-      <Ionicons color={colors.textSecondary} name={icon} size={18} />
-    </AnimatedPressable>
-  );
-}
-
-export function SectionTitle({
-  title,
-  actionIcon,
-  onActionPress,
-}: {
-  title: string;
-  actionIcon?: IoniconName;
-  onActionPress?: () => void;
-}) {
-  const { colors } = useTheme();
-  return (
-    <View style={styles.sectionTitleRow}>
-      <Text style={[styles.sectionCaps, { color: colors.textTertiary }]}>{title}</Text>
-      {actionIcon ? <CircleButton icon={actionIcon} onPress={onActionPress} /> : null}
-    </View>
+    <Pressable onPress={onPress} style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}>
+      <Ionicons color={palette.text} name={icon} size={active ? 20 : 18} />
+    </Pressable>
   );
 }
 
@@ -175,181 +103,83 @@ export function SearchField({
   onChangeText: (value: string) => void;
   placeholder: string;
 }) {
-  const { colors } = useTheme();
   return (
-    <View style={[styles.searchField, { backgroundColor: colors.bgCard, borderColor: colors.border }]}>
-      <Ionicons color={colors.textTertiary} name="search-outline" size={18} />
+    <View style={styles.searchField}>
+      <Ionicons color={palette.textMuted} name="search-outline" size={16} />
       <TextInput
         onChangeText={onChangeText}
         placeholder={placeholder}
-        placeholderTextColor={colors.textTertiary}
-        style={[styles.searchInput, { color: colors.textPrimary }]}
+        placeholderTextColor={palette.textMuted}
+        style={styles.searchInput}
         value={value}
       />
     </View>
   );
 }
 
+export function SectionTitle({ title }: { title: string }) {
+  return <Text style={styles.sectionTitle}>{title}</Text>;
+}
+
 export function Card({ children }: { children: React.ReactNode }) {
-  const { colors } = useTheme();
+  return <View style={styles.card}>{children}</View>;
+}
+
+export function TextLink({
+  label,
+  onPress,
+  bordered = false,
+}: {
+  label: string;
+  onPress?: () => void;
+  bordered?: boolean;
+}) {
   return (
-    <View
-      style={[styles.card, { backgroundColor: colors.bgCard, borderColor: colors.border }]}>
-      {children}
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.textLink,
+        bordered && styles.textLinkBordered,
+        pressed && styles.pressed,
+      ]}>
+      <Text style={styles.textLinkLabel}>{label}</Text>
+    </Pressable>
+  );
+}
+
+export function ListRow({
+  left,
+  right,
+  onPress,
+}: {
+  left: ReactNode;
+  right?: ReactNode;
+  onPress?: () => void;
+}) {
+  return (
+    <Pressable onPress={onPress} style={({ pressed }) => [styles.listRow, pressed && styles.pressed]}>
+      <View style={styles.listRowLeft}>{left}</View>
+      {right ? <View>{right}</View> : null}
+    </Pressable>
+  );
+}
+
+export function Divider() {
+  return <View style={styles.divider} />;
+}
+
+export function EmptyState({
+  title,
+  subtitle,
+}: {
+  title: string;
+  subtitle: string;
+}) {
+  return (
+    <View style={styles.emptyState}>
+      <Text style={styles.emptyTitle}>{title}</Text>
+      <Text style={styles.emptySubtitle}>{subtitle}</Text>
     </View>
-  );
-}
-
-export function SmartCollectionRow({
-  icon,
-  label,
-  count,
-  onPress,
-}: {
-  icon: IoniconName;
-  label: string;
-  count?: number;
-  onPress?: () => void;
-}) {
-  const { colors } = useTheme();
-  return (
-    <AnimatedPressable onPress={onPress} style={styles.row}>
-      <View style={[styles.rowIconWrap, { backgroundColor: colors.accentSoft }]}>
-        <Ionicons color={colors.textSecondary} name={icon} size={18} />
-      </View>
-      <Text style={[styles.rowLabel, { color: colors.textPrimary }]}>{label}</Text>
-      {typeof count === 'number' ? (
-        <View style={[styles.countPill, { backgroundColor: colors.accentSoft }]}>
-          <Text style={[styles.countText, { color: colors.accent }]}>{count}</Text>
-        </View>
-      ) : null}
-      <Ionicons color={colors.borderStrong} name="chevron-forward-outline" size={16} />
-    </AnimatedPressable>
-  );
-}
-
-export function ThreadRow({
-  name,
-  count,
-  icon,
-  accent,
-  onPress,
-}: {
-  name: string;
-  count: number;
-  icon: IoniconName;
-  accent: string;
-  onPress?: () => void;
-}) {
-  const { colors } = useTheme();
-  return (
-    <AnimatedPressable
-      onPress={onPress}
-      style={[styles.row, { borderLeftColor: accent, borderLeftWidth: 3 }]}>
-      <View style={[styles.threadIconWrap, { backgroundColor: accent + '20' }]}>
-        <Ionicons color={accent} name={icon} size={16} />
-      </View>
-      <Text style={[styles.rowLabel, { color: colors.textPrimary }]}>{name}</Text>
-      <View style={[styles.countPill, { backgroundColor: colors.accentSoft }]}>
-        <Text style={[styles.countText, { color: colors.accent }]}>{count}</Text>
-      </View>
-      <Ionicons color={colors.borderStrong} name="chevron-forward-outline" size={16} />
-    </AnimatedPressable>
-  );
-}
-
-export function TagChip({
-  label,
-  outlined = false,
-  onPress,
-}: {
-  label: string;
-  outlined?: boolean;
-  onPress?: () => void;
-}) {
-  const { colors } = useTheme();
-  return (
-    <AnimatedPressable
-      onPress={onPress}
-      style={[
-        styles.tagChip,
-        outlined
-          ? { backgroundColor: 'transparent', borderColor: colors.borderStrong, borderWidth: 1 }
-          : { backgroundColor: colors.goldSoft },
-      ]}>
-      {outlined ? <Ionicons color={colors.textTertiary} name="add-outline" size={12} /> : null}
-      <Text style={[styles.tagText, { color: outlined ? colors.textTertiary : colors.gold }]}>
-        {label}
-      </Text>
-    </AnimatedPressable>
-  );
-}
-
-export function TextButton({
-  icon,
-  label,
-  onPress,
-}: {
-  icon?: IoniconName;
-  label: string;
-  onPress?: () => void;
-}) {
-  const { colors } = useTheme();
-  return (
-    <AnimatedPressable onPress={onPress} style={styles.textButton}>
-      {icon ? <Ionicons color={colors.accent} name={icon} size={16} /> : null}
-      <Text style={[styles.textButtonLabel, { color: colors.accent }]}>{label}</Text>
-    </AnimatedPressable>
-  );
-}
-
-export function Pill({
-  label,
-  active,
-  onPress,
-}: {
-  label: string;
-  active?: boolean;
-  onPress?: () => void;
-}) {
-  const { colors } = useTheme();
-  return (
-    <AnimatedPressable
-      onPress={onPress}
-      style={[
-        styles.pill,
-        active
-          ? { backgroundColor: colors.accent }
-          : { backgroundColor: 'transparent', borderColor: colors.borderStrong, borderWidth: 1 },
-      ]}>
-      <Text
-        style={[
-          styles.pillText,
-          { color: active ? '#FFFFFF' : colors.textTertiary },
-        ]}>
-        {label}
-      </Text>
-    </AnimatedPressable>
-  );
-}
-
-export function ToolbarButton({
-  icon,
-  label,
-  onPress,
-}: {
-  icon: IoniconName;
-  label: string;
-  onPress?: () => void;
-}) {
-  const { colors } = useTheme();
-  return (
-    <AnimatedPressable
-      onPress={onPress}
-      style={[styles.toolbarButton, { backgroundColor: colors.bgCard, borderColor: colors.border }]}>
-      <Ionicons color={colors.textSecondary} name={icon} size={16} />
-      <Text style={[styles.toolbarText, { color: colors.textPrimary }]}>{label}</Text>
-    </AnimatedPressable>
   );
 }
 
@@ -360,227 +190,159 @@ export function AttachmentPreview({
   index: number;
   onRemove?: () => void;
 }) {
-  const { colors } = useTheme();
   return (
-    <View
-      style={[styles.attachmentCard, { backgroundColor: colors.bgCard, borderColor: colors.border }]}>
-      <View style={styles.attachmentBody}>
-        <Ionicons color={colors.accent} name="image-outline" size={18} />
-        <Text style={[styles.attachmentTitle, { color: colors.textPrimary }]}>
-          Attachment {index + 1}
-        </Text>
-      </View>
-      <AnimatedPressable onPress={onRemove}>
-        <Ionicons color={colors.textTertiary} name="close-outline" size={18} />
-      </AnimatedPressable>
+    <View style={styles.attachmentRow}>
+      <Text style={styles.attachmentLabel}>Image {index + 1}</Text>
+      <Pressable onPress={onRemove} style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}>
+        <Ionicons color={palette.textMuted} name="close-outline" size={18} />
+      </Pressable>
     </View>
   );
 }
 
-export function EmptyState({
-  title,
-  subtitle,
+export function TagChip({
+  label,
+  onPress,
 }: {
-  title: string;
-  subtitle: string;
+  label: string;
+  onPress?: () => void;
 }) {
-  const { colors } = useTheme();
   return (
-    <View
-      style={[styles.emptyState, { backgroundColor: colors.bgCard, borderColor: colors.border }]}>
-      <Text style={[styles.emptyStateTitle, { color: colors.textPrimary }]}>{title}</Text>
-      <Text style={[styles.emptyStateSubtitle, { color: colors.textSecondary }]}>
-        {subtitle}
-      </Text>
-    </View>
+    <Pressable onPress={onPress} style={({ pressed }) => [styles.tagChip, pressed && styles.pressed]}>
+      <Text style={styles.tagLabel}>{label}</Text>
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
+    backgroundColor: palette.background,
   },
   pageContent: {
     paddingHorizontal: 20,
-    paddingBottom: 136,
-    paddingTop: 20,
-    gap: 28,
+    paddingBottom: 116,
+    paddingTop: 12,
   },
   topBar: {
     alignItems: 'center',
+    backgroundColor: palette.background,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    left: 0,
-    overflow: 'hidden',
-    paddingHorizontal: 20,
-    paddingVertical: 14,
-    position: 'absolute',
-    right: 0,
-    top: 0,
-    zIndex: 10,
-  },
-  topBarBorder: {
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    bottom: 0,
-    borderBottomColor: 'transparent',
-    left: 0,
-    position: 'absolute',
-    right: 0,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
   },
   topBarTitle: {
-    fontFamily: 'LibreBaskerville_700Bold',
-    fontSize: 18,
+    color: palette.text,
+    fontFamily: 'RobotoMono_500Medium',
+    fontSize: 14,
+    letterSpacing: 0.2,
   },
-  circleButton: {
+  iconButton: {
     alignItems: 'center',
-    borderRadius: 100,
-    height: 44,
+    height: 36,
     justifyContent: 'center',
-    width: 44,
+    width: 36,
   },
-  sectionTitleRow: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  sectionCaps: {
-    fontFamily: 'DMSans_500Medium',
-    fontSize: 13,
+  iconButtonSpacer: {
+    height: 36,
+    width: 36,
   },
   searchField: {
     alignItems: 'center',
-    borderRadius: 12,
-    borderWidth: 1,
+    borderBottomColor: palette.borderStrong,
+    borderBottomWidth: StyleSheet.hairlineWidth,
     flexDirection: 'row',
-    gap: 10,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
+    gap: 8,
+    paddingBottom: 10,
+    paddingTop: 4,
   },
   searchInput: {
+    color: palette.text,
     flex: 1,
-    fontFamily: 'DMSans_400Regular',
-    fontSize: 15,
+    fontFamily: 'RobotoMono_400Regular',
+    fontSize: 13,
+    paddingVertical: 0,
+  },
+  sectionTitle: {
+    color: palette.textMuted,
+    fontFamily: 'RobotoMono_400Regular',
+    fontSize: 11,
+    marginBottom: 8,
   },
   card: {
-    borderRadius: 16,
-    borderWidth: 1,
+    backgroundColor: palette.surface,
   },
-  row: {
+  textLink: {
+    alignSelf: 'flex-start',
+    paddingVertical: 6,
+  },
+  textLinkBordered: {
+    borderColor: palette.borderStrong,
+    borderWidth: StyleSheet.hairlineWidth,
+    paddingHorizontal: 10,
+  },
+  textLinkLabel: {
+    color: palette.text,
+    fontFamily: 'RobotoMono_500Medium',
+    fontSize: 13,
+  },
+  listRow: {
     alignItems: 'center',
     flexDirection: 'row',
-    gap: 12,
-    paddingHorizontal: 20,
-    paddingVertical: 14,
+    justifyContent: 'space-between',
+    minHeight: 52,
+    paddingVertical: 12,
   },
-  rowIconWrap: {
-    alignItems: 'center',
-    borderRadius: 8,
-    height: 32,
-    justifyContent: 'center',
-    width: 32,
-  },
-  threadIconWrap: {
-    alignItems: 'center',
-    borderRadius: 8,
-    height: 40,
-    justifyContent: 'center',
-    width: 40,
-  },
-  rowLabel: {
+  listRowLeft: {
     flex: 1,
-    fontFamily: 'DMSans_500Medium',
-    fontSize: 15,
+    paddingRight: 12,
   },
-  countPill: {
-    borderRadius: 100,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
+  divider: {
+    backgroundColor: palette.border,
+    height: StyleSheet.hairlineWidth,
   },
-  countText: {
-    fontFamily: 'DMSans_500Medium',
+  emptyState: {
+    alignItems: 'flex-start',
+    paddingVertical: 24,
+  },
+  emptyTitle: {
+    color: palette.text,
+    fontFamily: 'RobotoMono_500Medium',
+    fontSize: 14,
+    marginBottom: 6,
+  },
+  emptySubtitle: {
+    color: palette.textSecondary,
+    fontFamily: 'RobotoMono_400Regular',
+    fontSize: 12,
+    lineHeight: 20,
+  },
+  attachmentRow: {
+    alignItems: 'center',
+    borderBottomColor: palette.border,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    minHeight: 44,
+  },
+  attachmentLabel: {
+    color: palette.textSecondary,
+    fontFamily: 'RobotoMono_400Regular',
     fontSize: 12,
   },
   tagChip: {
-    alignItems: 'center',
-    borderRadius: 100,
-    flexDirection: 'row',
-    gap: 4,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    minHeight: 44,
+    borderColor: palette.borderStrong,
+    borderWidth: StyleSheet.hairlineWidth,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
   },
-  tagText: {
-    fontFamily: 'DMSans_500Medium',
-    fontSize: 13,
+  tagLabel: {
+    color: palette.textMuted,
+    fontFamily: 'RobotoMono_400Regular',
+    fontSize: 11,
   },
-  textButton: {
-    alignItems: 'center',
-    alignSelf: 'center',
-    flexDirection: 'row',
-    gap: 6,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-  },
-  textButtonLabel: {
-    fontFamily: 'DMSans_500Medium',
-    fontSize: 15,
-  },
-  pill: {
-    borderRadius: 100,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-  },
-  pillText: {
-    fontFamily: 'DMSans_500Medium',
-    fontSize: 12,
-  },
-  toolbarButton: {
-    alignItems: 'center',
-    borderRadius: 12,
-    borderWidth: 1,
-    flexDirection: 'row',
-    gap: 6,
-    paddingHorizontal: 12,
-    paddingVertical: 9,
-  },
-  toolbarText: {
-    fontFamily: 'DMSans_500Medium',
-    fontSize: 13,
-  },
-  attachmentCard: {
-    alignItems: 'center',
-    borderRadius: 12,
-    borderWidth: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-  },
-  attachmentBody: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    gap: 10,
-  },
-  attachmentTitle: {
-    fontFamily: 'DMSans_500Medium',
-    fontSize: 14,
-  },
-  emptyState: {
-    alignItems: 'center',
-    borderRadius: 16,
-    borderWidth: 1,
-    paddingHorizontal: 24,
-    paddingVertical: 24,
-  },
-  emptyStateTitle: {
-    fontFamily: 'LibreBaskerville_700Bold',
-    fontSize: 16,
-    marginBottom: 6,
-  },
-  emptyStateSubtitle: {
-    fontFamily: 'DMSans_400Regular',
-    fontSize: 14,
-    lineHeight: 20,
-    textAlign: 'center',
+  pressed: {
+    opacity: 0.7,
   },
 });

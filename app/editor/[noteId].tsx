@@ -2,321 +2,465 @@ import { Ionicons } from '@expo/vector-icons';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
+import * as ImagePicker from 'expo-image-picker';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import {
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { BlurView } from 'expo-blur';
-import { RichText, useEditorBridge } from '@10play/tentap-editor';
-import Animated, { useAnimatedKeyboard, useSharedValue, useAnimatedStyle, withTiming, withSpring } from 'react-native-reanimated';
 
-import { AnimatedPressable } from '@/src/components/animated-pressable';
-import { AnimatedChip, AnimatedChipRow } from '@/src/components/animated-chip';
 import { BibleSheet } from '@/src/components/bible-sheet';
-import { AttachmentPreview } from '@/src/components/primitives';
-import { markdownToHtml, stripHtml } from '@/src/lib/editor';
-import { buildInsertedVerseText, createNoteFromTemplate, deleteNote, getBibleChapter, getNoteById, getVersesForReferences, saveNoteDraft, toggleNoteFavorite, createThread } from '@/src/lib/database';
+import {
+  AttachmentPreview,
+  Divider,
+  TagChip,
+  palette,
+} from '@/src/components/primitives';
+import {
+  buildInsertedVerseText,
+  getBibleChapter,
+  getNoteById,
+  getVerseByReference,
+  getVersesForReferences,
+  saveNoteDraft,
+} from '@/src/lib/database';
+import { persistImageAsset } from '@/src/lib/media';
 import { detectVerseReferences } from '@/src/lib/verse-references';
-import { useAppState } from '@/src/providers/app-provider';
-import { useTheme } from '@/src/theme/useTheme';
+import { stripHtml } from '@/src/lib/editor';
 import type { BibleVerse, MediaAttachment } from '@/src/types/domain';
 
-type AttachmentDraft = Pick<MediaAttachment, 'id' | 'uri' | 'width' | 'height' | 'type' | 'createdAt'>;
+type AttachmentDraft = Pick<
+  MediaAttachment,
+  'id' | 'uri' | 'width' | 'height' | 'type' | 'createdAt'
+>;
+
+type Selection = {
+  start: number;
+  end: number;
+};
+
+function insertAtSelection(
+  value: string,
+  selection: Selection,
+  insertedText: string
+) {
+  const nextValue = `${value.slice(0, selection.start)}${insertedText}${value.slice(selection.end)}`;
+  const nextCursor = selection.start + insertedText.length;
+  return {
+    nextValue,
+    nextSelection: { start: nextCursor, end: nextCursor },
+  };
+}
 
 export default function EditorScreen() {
   const { noteId } = useLocalSearchParams<{ noteId: string }>();
   const db = useSQLiteContext();
   const router = useRouter();
-  const { bumpRefreshToken } = useAppState();
-  const { colors, isDark } = useTheme();
   const insets = useSafeAreaInsets();
 
-  const bottomSheetRef = useRef<BottomSheetModal>(null);
-  const bodyRef = useRef('');
-  const headerY = useSharedValue(0);
-  const headerOpacity = useSharedValue(1);
-  const [isDistractionFree, setIsDistractionFree] = useState(false);
-
-  const headerStyle = useAnimatedStyle(() => ({ transform: [{ translateY: headerY.value }], opacity: headerOpacity.value }));
-  const breadcrumbStyle = useAnimatedStyle(() => ({ opacity: headerOpacity.value, transform: [{ translateY: withSpring(headerOpacity.value === 1 ? 0 : -10, { damping: 20 }) }] }));
-
-  const enterDistractionFree = useCallback(() => {
-    setIsDistractionFree(true);
-    headerOpacity.value = withTiming(0, { duration: 300 });
-    headerY.value = withSpring(-20, { damping: 20, stiffness: 300 });
-  }, [headerOpacity, headerY]);
-
-  const exitDistractionFree = useCallback(() => {
-    setIsDistractionFree(false);
-    headerOpacity.value = withTiming(1, { duration: 300 });
-    headerY.value = withSpring(0, { damping: 20, stiffness: 300 });
-  }, [headerOpacity, headerY]);
+  const bodyInputRef = useRef<TextInput>(null);
+  const bibleSheetRef = useRef<BottomSheetModal>(null);
 
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [spaceId, setSpaceId] = useState('space-personal');
   const [threadId, setThreadId] = useState<string | null>(null);
-  const [threadName, setThreadName] = useState('Thread');
+  const [threadName, setThreadName] = useState('Journal');
   const [templateId, setTemplateId] = useState<string | null>(null);
+  const [selection, setSelection] = useState<Selection>({ start: 0, end: 0 });
   const [attachments, setAttachments] = useState<AttachmentDraft[]>([]);
-  const [isFavorite, setIsFavorite] = useState(false);
-  const [isReady, setIsReady] = useState(false);
+  const [lastSavedAt, setLastSavedAt] = useState<string | null>(null);
   const [chapterBook, setChapterBook] = useState('Genesis');
   const [chapterNumber, setChapterNumber] = useState(1);
   const [chapterVerses, setChapterVerses] = useState<BibleVerse[]>([]);
-  const [saveState, setSaveState] = useState<'idle' | 'saving' | 'saved'>('idle');
-  const [referenceVerses, setReferenceVerses] = useState<BibleVerse[]>([]);
-  const [initialContent, setInitialContent] = useState('');
-  const [titleFocused, setTitleFocused] = useState(false);
-
-  const saveDotOpacity = useSharedValue(0);
-  const titleUnderlineWidth = useSharedValue(0);
-  const saveDotStyle = useAnimatedStyle(() => ({ opacity: saveDotOpacity.value }));
-  const titleUnderlineStyle = useAnimatedStyle(() => ({ width: `${titleUnderlineWidth.value * 100}%` }));
-
-  const editor = useEditorBridge({
-    autofocus: true,
-    avoidIosKeyboard: true,
-    initialContent,
-    onChange: async () => {
-      try { const html = await (editor as any).getHTML(); if (html) { bodyRef.current = html; setBody(html); } } catch {}
-    },
-    dynamicHeight: true,
-  });
-
-  const { height: keyboardHeight } = useAnimatedKeyboard();
-
-  useEffect(() => {
-    (editor as any).injectCSS?.(`
-      body { font-family: -apple-system, 'Helvetica Neue', sans-serif; font-size: 17px; line-height: 1.6; color: inherit; padding: 0; margin: 0; }
-      h1 { font-family: serif; font-size: 30px; font-weight: 500; margin-bottom: 16px; }
-      h2 { font-family: serif; font-size: 20px; font-weight: 500; margin-top: 32px; margin-bottom: 8px; }
-      h3 { font-family: serif; font-size: 18px; font-weight: 500; margin-top: 24px; margin-bottom: 6px; }
-      p { margin-bottom: 12px; }
-      ul, ol { margin: 8px 0 12px; padding-left: 20px; }
-      li { margin-bottom: 4px; }
-      blockquote { border-left: 3px solid #B5924C; margin: 16px 0; padding: 8px 16px; font-style: italic; }
-      strong { font-weight: 600; }
-      em { font-style: italic; }
-    `);
-  }, [editor]);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
-    async function load() {
+
+    async function loadNote() {
       const payload = await getNoteById(db, noteId);
-      if (!payload || cancelled) return;
-      const rawBody = payload.note.markdownBody || '';
-      const isHtml = rawBody.trim().startsWith('<');
-      const htmlBody = isHtml ? rawBody : markdownToHtml(rawBody);
+      if (!payload || cancelled) {
+        return;
+      }
+
+      const loadedBody = payload.note.markdownBody.includes('<')
+        ? stripHtml(payload.note.markdownBody)
+        : payload.note.markdownBody;
+
       setTitle(payload.note.title);
-      setInitialContent(htmlBody);
+      setBody(loadedBody);
       setSpaceId(payload.note.spaceId);
       setThreadId(payload.note.primaryThreadId);
-      setThreadName(payload.thread?.name ?? 'Study Note');
+      setThreadName(payload.thread?.name ?? 'Journal');
       setTemplateId(payload.note.templateId);
       setAttachments(payload.attachments as AttachmentDraft[]);
-      setIsFavorite(payload.note.isFavorite);
-      bodyRef.current = htmlBody;
       setIsReady(true);
     }
-    load();
-    return () => { cancelled = true; };
+
+    loadNote();
+    return () => {
+      cancelled = true;
+    };
   }, [db, noteId]);
 
-  const plainText = useMemo(() => stripHtml(body), [body]);
-  const references = useMemo(() => detectVerseReferences(plainText), [plainText]);
-  const hashtags = useMemo(() => {
-    const matches = plainText.matchAll(/(?:^|\s)#([\p{L}\p{N}_-]+)/gu);
-    return new Set(Array.from(matches, (m) => m[1].toLowerCase()));
-  }, [plainText]);
+  const references = useMemo(() => detectVerseReferences(body), [body]);
+  const hashtags = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          Array.from(body.matchAll(/(?:^|\s)#([\p{L}\p{N}_-]+)/gu)).map((match) => `#${match[1]}`)
+        )
+      ),
+    [body]
+  );
 
   useEffect(() => {
     let cancelled = false;
-    async function loadCh() {
-      const first = references[0];
-      const book = first?.book ?? 'Genesis';
-      const ch = first?.chapterStart ?? 1;
-      setChapterBook(book); setChapterNumber(ch);
-      const verses = await getBibleChapter(db, book, ch);
-      if (!cancelled) setChapterVerses(verses);
+
+    async function loadChapter() {
+      const firstReference = references[0];
+      const nextBook = firstReference?.book ?? 'Genesis';
+      const nextChapter = firstReference?.chapterStart ?? 1;
+      setChapterBook(nextBook);
+      setChapterNumber(nextChapter);
+      const verses = await getBibleChapter(db, nextBook, nextChapter);
+      if (!cancelled) {
+        setChapterVerses(verses);
+      }
     }
-    loadCh();
-    return () => { cancelled = true; };
+
+    loadChapter();
+    return () => {
+      cancelled = true;
+    };
   }, [db, references]);
 
   useEffect(() => {
-    let cancelled = false;
-    async function loadChips() {
-      if (!references.length) { setReferenceVerses([]); return; }
-      const verses = await getVersesForReferences(db, references.map((r) => `${r.book} ${r.chapterStart}:${r.verseStart}`));
-      if (!cancelled) setReferenceVerses(verses);
+    if (!isReady) {
+      return;
     }
-    loadChips();
-    return () => { cancelled = true; };
-  }, [db, references]);
 
-  useEffect(() => {
-    if (!isReady) return;
     const timeout = setTimeout(async () => {
-      setSaveState('saving');
-      await saveNoteDraft(db, { id: noteId, title: title.trim() || 'Untitled Note', markdownBody: bodyRef.current, templateId, spaceId, threadId, attachments });
-      setSaveState('saved');
-    }, 400);
+      await saveNoteDraft(db, {
+        id: noteId,
+        title: title.trim() || 'Untitled',
+        markdownBody: body,
+        templateId,
+        spaceId,
+        threadId,
+        attachments,
+      });
+      setLastSavedAt(
+        new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
+      );
+    }, 220);
+
     return () => clearTimeout(timeout);
   }, [attachments, body, db, isReady, noteId, spaceId, templateId, threadId, title]);
 
-  useEffect(() => {
-    if (saveState === 'saving') saveDotOpacity.value = 1;
-    else if (saveState === 'saved') { saveDotOpacity.value = 1; saveDotOpacity.value = withTiming(0, { duration: 1400 }); }
-  }, [saveState, saveDotOpacity]);
+  const applyPrefix = useCallback(
+    (prefix: string) => {
+      const result = insertAtSelection(body, selection, prefix);
+      setBody(result.nextValue);
+      setSelection(result.nextSelection);
+      requestAnimationFrame(() => bodyInputRef.current?.focus());
+    },
+    [body, selection]
+  );
 
-  const insertVerseHtml = useCallback(async (verseHtml: string) => {
-    try {
-      const current = await (editor as any).getHTML();
-      (editor as any).setContent(current + verseHtml);
-    } catch {
-      editor.webviewRef.current?.injectJavaScript(`document.execCommand('insertHTML', false, ${JSON.stringify(verseHtml)}); true;`);
+  const handleAttachImage = useCallback(async () => {
+    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permission.granted) {
+      Alert.alert('Permission required', 'Photo access is needed to add an image.');
+      return;
     }
-  }, [editor]);
 
-  const insertVerseIntoBody = useCallback((verse: BibleVerse) => {
-    const text = buildInsertedVerseText([verse]);
-    insertVerseHtml(`<p><em>${text.replace(/\n/g, '<br>')}</em></p><p></p>`);
-    bottomSheetRef.current?.dismiss();
-  }, [insertVerseHtml]);
+    const result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      mediaTypes: ['images'],
+      quality: 0.9,
+    });
 
-  const extractToNewNote = useCallback(async () => {
-    const currentBody = bodyRef.current;
-    if (!stripHtml(currentBody).trim()) { Alert.alert('Nothing to extract', 'Write some content first.'); return; }
-    Alert.alert('Extract to Note', 'Create a new note from this content?', [{ text: 'Cancel', style: 'cancel' }, { text: 'Extract', onPress: async () => {
-      const thread = await createThread(db, { spaceId });
-      const noteId = await createNoteFromTemplate(db, { templateId: templateId ?? '', spaceId, threadId: thread.id, title: title ? `Branch: ${title}` : 'Extracted Note' });
-      await saveNoteDraft(db, { id: noteId, title: title ? `Branch: ${title}` : 'Extracted Note', markdownBody: currentBody, templateId, spaceId, threadId: thread.id });
-      bumpRefreshToken();
-      Alert.alert('Note created', 'The new note has been created from this content.');
-    } }]);
-  }, [body, db, spaceId, templateId, title, bumpRefreshToken]);
+    if (result.canceled || !result.assets[0]) {
+      return;
+    }
+
+    const persisted = await persistImageAsset(result.assets[0]);
+    setAttachments((current) => [
+      ...current,
+      {
+        id: `media-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        createdAt: new Date().toISOString(),
+        type: 'image',
+        ...persisted,
+      },
+    ]);
+  }, []);
+
+  const insertVerseFromSheet = useCallback(
+    (verse: BibleVerse) => {
+      const result = insertAtSelection(body, selection, `${buildInsertedVerseText([verse])}\n`);
+      setBody(result.nextValue);
+      setSelection(result.nextSelection);
+      bibleSheetRef.current?.dismiss();
+      requestAnimationFrame(() => bodyInputRef.current?.focus());
+    },
+    [body, selection]
+  );
+
+  const openVerseReference = useCallback(
+    async (reference: string) => {
+      const verse = await getVerseByReference(db, reference);
+      if (!verse) {
+        return;
+      }
+      setChapterBook(verse.book);
+      setChapterNumber(verse.chapter);
+      const verses = await getBibleChapter(db, verse.book, verse.chapter);
+      setChapterVerses(verses);
+      bibleSheetRef.current?.present();
+    },
+    [db]
+  );
+
+  const referencedVerses = useMemo(() => references.map((reference) => `${reference.book} ${reference.chapterStart}:${reference.verseStart}`), [references]);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function warmReferences() {
+      if (!referencedVerses.length) {
+        return;
+      }
+      const verses = await getVersesForReferences(db, referencedVerses);
+      if (!cancelled && verses[0]) {
+        setChapterBook(verses[0].book);
+        setChapterNumber(verses[0].chapter);
+      }
+    }
+    warmReferences();
+    return () => {
+      cancelled = true;
+    };
+  }, [db, referencedVerses]);
 
   if (!isReady) {
-    return <View style={[styles.container, styles.centered, { backgroundColor: colors.bg }]}><Text style={[styles.loadingText, { color: colors.textSecondary }]}>Preparing your study note…</Text></View>;
+    return (
+      <View style={styles.loadingState}>
+        <Text style={styles.loadingText}>Preparing note…</Text>
+      </View>
+    );
   }
 
-  const wordCount = plainText ? plainText.split(/\s+/).filter(Boolean).length : 0;
-
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={[styles.container, { backgroundColor: colors.bg }]}>
-      <Animated.View style={[styles.header, { paddingTop: Math.max(insets.top, 8) + 12 }, headerStyle]}>
-        <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={[styles.headerBlur, isDark ? { backgroundColor: 'rgba(11,11,12,0.78)' } : { backgroundColor: 'rgba(247,246,242,0.72)' }]}>
-          <AnimatedPressable onPress={() => isDistractionFree ? exitDistractionFree() : router.back()} style={styles.headerBtn}>
-            <Ionicons color={isDistractionFree ? colors.accent : colors.textSecondary} name={isDistractionFree ? 'eye-outline' : 'chevron-back-outline'} size={18} />
-          </AnimatedPressable>
-          <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>Stillnote</Text>
-          <View style={styles.headerActions}>
-            <AnimatedPressable haptic="medium" onPress={async () => { await toggleNoteFavorite(db, noteId); setIsFavorite((v) => !v); bumpRefreshToken(); }} style={styles.headerBtn}>
-              <Ionicons color={isFavorite ? '#E74C3C' : colors.textSecondary} name={isFavorite ? 'heart' : 'heart-outline'} size={18} />
-            </AnimatedPressable>
-            <AnimatedPressable
-              onPress={() =>
-                Alert.alert('Note Actions', undefined, [
-                  { text: 'Extract to Note', onPress: extractToNewNote },
-                  { text: 'Delete Note', style: 'destructive', onPress: () => Alert.alert('Delete Note', 'This cannot be undone.', [{ text: 'Cancel', style: 'cancel' }, { text: 'Delete', style: 'destructive', onPress: async () => { await deleteNote(db, noteId); bumpRefreshToken(); router.back(); } }]) },
-                  { text: 'Cancel', style: 'cancel' },
-                ])
-              }
-              style={styles.headerBtn}>
-              <Ionicons color={colors.textSecondary} name="ellipsis-horizontal" size={18} />
-            </AnimatedPressable>
-            <AnimatedPressable onPress={() => bottomSheetRef.current?.present()} style={styles.headerBtn}>
-              <Ionicons color={colors.accent} name="book-outline" size={18} />
-            </AnimatedPressable>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      style={styles.container}>
+      <View style={[styles.header, { paddingTop: Math.max(insets.top, 8) }]}>
+        <Pressable onPress={() => router.back()} style={({ pressed }) => [styles.headerButton, pressed && styles.pressed]}>
+          <Ionicons color={palette.text} name="chevron-back-outline" size={18} />
+        </Pressable>
+        <Text style={styles.headerLabel}>{threadName}</Text>
+        <Pressable
+          onPress={() => bibleSheetRef.current?.present()}
+          style={({ pressed }) => [styles.headerButton, pressed && styles.pressed]}>
+          <Ionicons color={palette.text} name="book-outline" size={18} />
+        </Pressable>
+      </View>
+
+      <ScrollView
+        contentContainerStyle={[styles.content, { paddingBottom: 96 + insets.bottom }]}
+        keyboardShouldPersistTaps="handled">
+        <TextInput
+          onChangeText={setTitle}
+          placeholder="Untitled"
+          placeholderTextColor={palette.textMuted}
+          style={styles.titleInput}
+          value={title}
+        />
+
+        <Divider />
+
+        <TextInput
+          multiline
+          onChangeText={setBody}
+          onSelectionChange={(event) => setSelection(event.nativeEvent.selection)}
+          placeholder="Start typing..."
+          placeholderTextColor={palette.textMuted}
+          ref={bodyInputRef}
+          scrollEnabled={false}
+          selection={selection}
+          style={styles.bodyInput}
+          textAlignVertical="top"
+          value={body}
+        />
+
+        {references.length ? (
+          <View style={styles.referenceRow}>
+            {references.map((reference) => (
+              <TagChip
+                key={reference.normalized}
+                label={reference.normalized}
+                onPress={() => openVerseReference(`${reference.book} ${reference.chapterStart}:${reference.verseStart}`)}
+              />
+            ))}
           </View>
-        </BlurView>
-      </Animated.View>
+        ) : null}
 
-      <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-        <Animated.View style={breadcrumbStyle}>
-          <Text style={[styles.breadcrumb, { color: colors.textTertiary }]}>Threads <Text style={{ color: colors.borderStrong }}>›</Text> {threadName}</Text>
-        </Animated.View>
-
-        <TextInput onBlur={() => { exitDistractionFree(); setTitleFocused(false); titleUnderlineWidth.value = withTiming(0, { duration: 350 }); }} onChangeText={setTitle} onFocus={() => { enterDistractionFree(); setTitleFocused(true); titleUnderlineWidth.value = withTiming(1, { duration: 350 }); }} placeholder="Untitled" placeholderTextColor={colors.textTertiary} selectionColor={colors.accent} style={[styles.titleInput, { color: colors.textPrimary }]} value={title} />
-        <Animated.View style={[styles.titleUnderline, { backgroundColor: colors.accent }, titleUnderlineStyle, titleFocused && { backgroundColor: colors.accent }]} />
-
-        <EditorToolbar editor={editor} keyboardHeight={keyboardHeight} onBiblePress={() => bottomSheetRef.current?.present()} colors={colors} isDark={isDark} />
-
-        <RichText editor={editor} style={styles.editor} />
-
-        {referenceVerses.length ? <AnimatedChipRow>{referenceVerses.map((v) => (<AnimatedChip key={v.reference} accent={colors.gold} bg={colors.goldSoft} icon="book-outline" label={v.reference} onPress={() => { setChapterBook(v.book); setChapterNumber(v.chapter); bottomSheetRef.current?.present(); }} />))}</AnimatedChipRow> : null}
-        {hashtags.size ? <AnimatedChipRow>{Array.from(hashtags).map((t) => (<AnimatedChip key={t} accent={colors.accent} bg={colors.accentSoft} icon="pricetag-outline" label={`#${t}`} />))}</AnimatedChipRow> : null}
-
-        {attachments.length ? <View style={styles.attachmentStack}>{attachments.map((a, i) => (<AttachmentPreview key={a.id} index={i} onRemove={() => setAttachments((c) => c.filter((x) => x.id !== a.id))} />))}</View> : null}
-
-        <View style={styles.statusRow}>
-          <View style={styles.saveIndicator}>
-            <Animated.View style={[styles.saveDot, saveDotStyle, { backgroundColor: saveState === 'saved' ? colors.accent : saveState === 'saving' ? colors.coral : colors.textTertiary }]} />
-            <Text style={[styles.statusText, { color: colors.textTertiary }]}>{saveState === 'saving' ? 'Saving…' : saveState === 'saved' ? 'Saved' : ''}</Text>
+        {hashtags.length ? (
+          <View style={styles.referenceRow}>
+            {hashtags.map((tag) => (
+              <TagChip key={tag} label={tag} />
+            ))}
           </View>
-          <Text style={[styles.statusText, { color: colors.textTertiary }]}>{wordCount} words · {Math.max(1, Math.ceil(wordCount / 200))} min · {hashtags.size} tags</Text>
-        </View>
+        ) : null}
+
+        {attachments.length ? (
+          <View style={styles.attachmentStack}>
+            {attachments.map((attachment, index) => (
+              <AttachmentPreview
+                index={index}
+                key={attachment.id}
+                onRemove={() =>
+                  setAttachments((current) =>
+                    current.filter((item) => item.id !== attachment.id)
+                  )
+                }
+              />
+            ))}
+          </View>
+        ) : null}
+
+        <Text style={styles.saveState}>
+          {lastSavedAt ? `Saved locally at ${lastSavedAt}` : 'Autosave is on'}
+        </Text>
       </ScrollView>
 
-      <BibleSheet book={chapterBook} chapter={chapterNumber} onInsertVerse={insertVerseIntoBody} ref={bottomSheetRef} translationName="King James Version" verses={chapterVerses} />
+      <View style={[styles.toolbar, { paddingBottom: Math.max(insets.bottom, 10) }]}>
+        <Pressable onPress={() => applyPrefix('## ')} style={({ pressed }) => [styles.toolbarButton, pressed && styles.pressed]}>
+          <Text style={styles.toolbarText}>Aa</Text>
+        </Pressable>
+        <Pressable onPress={() => applyPrefix('- [ ] ')} style={({ pressed }) => [styles.toolbarButton, pressed && styles.pressed]}>
+          <Ionicons color={palette.text} name="checkmark-outline" size={18} />
+        </Pressable>
+        <Pressable
+          onPress={() => Alert.alert('Voice notes', 'Voice capture will return in a quieter pass.')}
+          style={({ pressed }) => [styles.toolbarButton, pressed && styles.pressed]}>
+          <Ionicons color={palette.text} name="mic-outline" size={18} />
+        </Pressable>
+        <Pressable onPress={handleAttachImage} style={({ pressed }) => [styles.toolbarButton, pressed && styles.pressed]}>
+          <Ionicons color={palette.text} name="image-outline" size={18} />
+        </Pressable>
+      </View>
+
+      <BibleSheet
+        book={chapterBook}
+        chapter={chapterNumber}
+        onInsertVerse={insertVerseFromSheet}
+        ref={bibleSheetRef}
+        translationName="King James Version"
+        verses={chapterVerses}
+      />
     </KeyboardAvoidingView>
   );
 }
 
-function EditorToolbar({ editor, keyboardHeight, onBiblePress, colors, isDark }: any) {
-  const toolbarStyle = useAnimatedStyle(() => ({ bottom: withTiming(keyboardHeight.value + 8, { duration: 150 }) }));
-  return (
-    <Animated.View style={[styles.toolbar, toolbarStyle]}>
-      <View style={[styles.toolbarInner, { backgroundColor: isDark ? 'rgba(26,23,18,0.92)' : 'rgba(255,255,255,0.82)' }]}>
-        <AnimatedPressable haptic="light" onPress={() => (editor as any).toggleBold?.()} style={styles.toolBtn}>
-          <Text style={[styles.toolText, { color: colors.textSecondary, fontWeight: '700' }]}>B</Text>
-        </AnimatedPressable>
-        <AnimatedPressable haptic="light" onPress={() => (editor as any).toggleItalic?.()} style={styles.toolBtn}>
-          <Text style={[styles.toolText, { color: colors.textSecondary, fontStyle: 'italic' }]}>I</Text>
-        </AnimatedPressable>
-        <AnimatedPressable haptic="light" onPress={() => (editor as any).toggleUnderline?.()} style={styles.toolBtn}>
-          <Text style={[styles.toolText, { color: colors.textSecondary, textDecorationLine: 'underline' }]}>U</Text>
-        </AnimatedPressable>
-        <View style={[styles.toolDivider, { backgroundColor: colors.border }]} />
-        <AnimatedPressable haptic="light" onPress={() => (editor as any).toggleBlockquote?.()} style={styles.toolBtn}>
-          <Ionicons color={colors.textSecondary} name="chatbox-ellipses-outline" size={17} />
-        </AnimatedPressable>
-        <AnimatedPressable haptic="light" onPress={() => (editor as any).toggleBulletList?.()} style={styles.toolBtn}>
-          <Ionicons color={colors.textSecondary} name="list-outline" size={17} />
-        </AnimatedPressable>
-        <View style={[styles.toolDivider, { backgroundColor: colors.border }]} />
-        <AnimatedPressable haptic="light" onPress={onBiblePress} style={styles.toolBtn}>
-          <Ionicons color={colors.textSecondary} name="book-outline" size={17} />
-        </AnimatedPressable>
-      </View>
-    </Animated.View>
-  );
-}
-
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  centered: { alignItems: 'center', justifyContent: 'center' },
-  header: { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10 },
-  headerBlur: { alignItems: 'center', borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: 'transparent', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 12 },
-  headerBtn: { alignItems: 'center', height: 44, justifyContent: 'center', width: 44 },
-  headerTitle: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 18 },
-  headerActions: { flexDirection: 'row', gap: 4 },
-  content: { gap: 20, paddingBottom: 56, paddingHorizontal: 20, paddingTop: 96 },
-  breadcrumb: { fontFamily: 'DMSans_400Regular', fontSize: 11, letterSpacing: 0.5 },
-  titleInput: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 30, lineHeight: 42, paddingVertical: 0 },
-  titleUnderline: { height: 2, marginTop: -6, width: 0 },
-  editor: { flex: 1, minHeight: 300 },
-  toolbar: { left: 20, position: 'absolute', right: 20, zIndex: 100 },
-  toolbarInner: { alignItems: 'center', borderRadius: 100, flexDirection: 'row', gap: 2, paddingHorizontal: 10, paddingVertical: 8, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 12, elevation: 4 },
-  toolBtn: { alignItems: 'center', borderRadius: 100, height: 44, justifyContent: 'center', width: 44 },
-  toolText: { fontFamily: 'DMSans_500Medium', fontSize: 16 },
-  toolDivider: { height: 18, width: 1 },
-  attachmentStack: { gap: 10 },
-  statusRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 },
-  saveIndicator: { alignItems: 'center', flexDirection: 'row', gap: 6 },
-  saveDot: { borderRadius: 100, height: 7, width: 7 },
-  statusText: { fontFamily: 'DMSans_400Regular', fontSize: 11 },
-  loadingText: { fontFamily: 'DMSans_400Regular', fontSize: 15 },
-  pressed: { opacity: 0.85 },
+  container: {
+    backgroundColor: palette.background,
+    flex: 1,
+  },
+  loadingState: {
+    alignItems: 'center',
+    backgroundColor: palette.background,
+    flex: 1,
+    justifyContent: 'center',
+  },
+  loadingText: {
+    color: palette.textMuted,
+    fontFamily: 'RobotoMono_400Regular',
+    fontSize: 12,
+  },
+  header: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 12,
+    paddingBottom: 8,
+  },
+  headerButton: {
+    alignItems: 'center',
+    height: 36,
+    justifyContent: 'center',
+    width: 36,
+  },
+  headerLabel: {
+    color: palette.textMuted,
+    fontFamily: 'RobotoMono_400Regular',
+    fontSize: 11,
+  },
+  content: {
+    paddingHorizontal: 20,
+    paddingTop: 12,
+  },
+  titleInput: {
+    color: palette.text,
+    fontFamily: 'RobotoMono_500Medium',
+    fontSize: 20,
+    paddingBottom: 12,
+    paddingTop: 4,
+  },
+  bodyInput: {
+    color: palette.text,
+    fontFamily: 'RobotoMono_400Regular',
+    fontSize: 14,
+    lineHeight: 25,
+    minHeight: 420,
+    paddingTop: 16,
+  },
+  referenceRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginTop: 16,
+  },
+  attachmentStack: {
+    marginTop: 20,
+  },
+  saveState: {
+    color: palette.textMuted,
+    fontFamily: 'RobotoMono_400Regular',
+    fontSize: 11,
+    marginTop: 20,
+  },
+  toolbar: {
+    alignItems: 'center',
+    backgroundColor: palette.background,
+    borderTopColor: palette.border,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingTop: 8,
+  },
+  toolbarButton: {
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+  },
+  toolbarText: {
+    color: palette.text,
+    fontFamily: 'RobotoMono_500Medium',
+    fontSize: 14,
+  },
+  pressed: {
+    opacity: 0.7,
+  },
 });

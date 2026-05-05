@@ -20,7 +20,7 @@ export function ConcordanceModal({
     <Modal animationType="fade" onRequestClose={onClose} transparent visible={visible}>
       <View style={[styles.scrim, { backgroundColor: colors.scrim }]}>
         <View style={[styles.modal, { backgroundColor: colors.bgElevated }]}>
-          <View style={[styles.header, { backgroundColor: colors.textPrimary }]}>
+          <View style={[styles.header, { borderBottomColor: colors.border }]}>
             <View>
               <Text style={styles.headerEyebrow}>Offline Concordance</Text>
               <Text style={styles.headerTitle}>
@@ -28,7 +28,7 @@ export function ConcordanceModal({
               </Text>
             </View>
             <AnimatedPressable onPress={onClose}>
-              <Ionicons color="#FFFFFF" name="close-outline" size={20} />
+              <Ionicons color={colors.textPrimary} name="close-outline" size={20} />
             </AnimatedPressable>
           </View>
 
@@ -47,7 +47,7 @@ export function ConcordanceModal({
               </View>
             </View>
 
-            <View style={[styles.definitionCard, { backgroundColor: colors.accentSoft }]}>
+            <View style={[styles.definitionCard, { borderColor: colors.borderStrong }]}>
               <Text style={[styles.metaLabel, { color: colors.textTertiary }]}>
                 Lexicon Definition
               </Text>
@@ -106,63 +106,59 @@ export function ConcordanceModal({
 
 const styles = StyleSheet.create({
   scrim: { alignItems: 'center', flex: 1, justifyContent: 'center', paddingHorizontal: 16 },
-  modal: { borderRadius: 20, overflow: 'hidden', width: '100%' },
+  modal: { borderWidth: StyleSheet.hairlineWidth, overflow: 'hidden', width: '100%' },
   header: {
+    borderBottomWidth: StyleSheet.hairlineWidth,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 28,
-    paddingVertical: 22,
+    paddingHorizontal: 20,
+    paddingVertical: 18,
   },
   headerEyebrow: {
-    color: '#FFFFFF',
-    fontFamily: 'DMSans_500Medium',
+    color: 'rgba(19,19,19,0.37)',
+    fontFamily: 'RobotoMono_400Regular',
     fontSize: 11,
-    letterSpacing: 0.5,
-    opacity: 0.82,
     textTransform: 'uppercase',
   },
   headerTitle: {
-    color: '#FFFFFF',
-    fontFamily: 'LibreBaskerville_700Bold',
-    fontSize: 22,
+    color: '#131313',
+    fontFamily: 'RobotoMono_500Medium',
+    fontSize: 14,
     marginTop: 4,
   },
-  content: { gap: 22, padding: 28 },
+  content: { gap: 20, padding: 20 },
   wordRow: { alignItems: 'center', flexDirection: 'row', gap: 20 },
-  originalWord: { fontFamily: 'LibreBaskerville_700Bold', fontSize: 32 },
+  originalWord: { fontFamily: 'RobotoMono_500Medium', fontSize: 24 },
   pronunciationBlock: { gap: 4 },
   metaLabel: {
-    fontFamily: 'DMSans_500Medium',
+    fontFamily: 'RobotoMono_400Regular',
     fontSize: 11,
-    letterSpacing: 0.2,
     textTransform: 'uppercase',
   },
-  metaValue: { fontFamily: 'DMSans_400Regular', fontSize: 15, lineHeight: 22 },
-  definitionCard: { borderRadius: 14, gap: 8, padding: 16 },
+  metaValue: { fontFamily: 'RobotoMono_400Regular', fontSize: 13, lineHeight: 20 },
+  definitionCard: { borderWidth: StyleSheet.hairlineWidth, gap: 8, padding: 14 },
   definitionText: {
-    fontFamily: 'DMSans_400Regular',
-    fontSize: 15,
-    lineHeight: 24,
+    fontFamily: 'RobotoMono_400Regular',
+    fontSize: 13,
+    lineHeight: 22,
   },
   metaGrid: { flexDirection: 'row', gap: 14 },
   metaCard: {
-    borderRadius: 14,
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     flex: 1,
     gap: 8,
-    padding: 16,
+    padding: 14,
   },
   usageSection: { gap: 10 },
-  usageTrack: { borderRadius: 100, flexDirection: 'row', height: 8, overflow: 'hidden' },
+  usageTrack: { flexDirection: 'row', height: 6, overflow: 'hidden' },
   usageSegment: { height: '100%' },
   usageLabels: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   usageLabel: {
-    fontFamily: 'DMSans_500Medium',
+    fontFamily: 'RobotoMono_400Regular',
     fontSize: 10,
-    letterSpacing: 0.2,
     textTransform: 'uppercase',
   },
 });
