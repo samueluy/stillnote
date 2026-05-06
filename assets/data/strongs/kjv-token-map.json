@@ -1,0 +1,10552 @@
+{
+  "Genesis 1:1": [
+    {
+      "strongsId": "H7225",
+      "text": "In the beginning",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H430",
+      "text": "God",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H853",
+      "text": "created",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "H8064",
+      "text": "the heaven",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "H853",
+      "text": "and",
+      "tokenIndex": 4
+    }
+  ],
+  "Genesis 1:2": [
+    {
+      "strongsId": "H776",
+      "text": "And the earth",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H1961",
+      "text": "was",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H8414",
+      "text": "without form",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "H922",
+      "text": "and void",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "H2822",
+      "text": "and darkness",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "H6440",
+      "text": "em> upon the face",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "H8415",
+      "text": "of the deep",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "H7307",
+      "text": "And the Spirit",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "H430",
+      "text": "of God",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "H7363",
+      "text": "moved",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "H5921",
+      "text": "upon",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "H6440",
+      "text": "the face",
+      "tokenIndex": 11
+    }
+  ],
+  "Genesis 1:3": [
+    {
+      "strongsId": "H430",
+      "text": "And God",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H559",
+      "text": "said",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H1961",
+      "text": "Let there be",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "H216",
+      "text": "light",
+      "tokenIndex": 3
+    }
+  ],
+  "Genesis 1:4": [
+    {
+      "strongsId": "H430",
+      "text": "And God",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H853",
+      "text": "saw",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H216",
+      "text": "the light",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "H3588",
+      "text": "that",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "H2896",
+      "text": "em> good",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "H430",
+      "text": "and God",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "H996",
+      "text": "divided",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "H216",
+      "text": "the light",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "H996",
+      "text": "from",
+      "tokenIndex": 8
+    }
+  ],
+  "Genesis 1:5": [
+    {
+      "strongsId": "H430",
+      "text": "And God",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H7121",
+      "text": "called",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H216",
+      "text": "the light",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "H3117",
+      "text": "Day",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "H2822",
+      "text": "and the darkness",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "H7121",
+      "text": "he called",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "H3915",
+      "text": "Night",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "H6153",
+      "text": "And the evening",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "H1242",
+      "text": "and the morning",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "H259",
+      "text": "were the first",
+      "tokenIndex": 9
+    }
+  ],
+  "Genesis 1:6": [
+    {
+      "strongsId": "H430",
+      "text": "And God",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H559",
+      "text": "said",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H7549",
+      "text": "Let there be a firmament",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "H8432",
+      "text": "in the midst",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "H4325",
+      "text": "of the waters",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "H914",
+      "text": "and let it divide",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "H4325",
+      "text": "the waters",
+      "tokenIndex": 6
+    }
+  ],
+  "Genesis 1:7": [
+    {
+      "strongsId": "H430",
+      "text": "And God",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H6213",
+      "text": "made",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H7549",
+      "text": "the firmament",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "H914",
+      "text": "and divided",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "H4325",
+      "text": "the waters",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "H834",
+      "text": "which",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "H8478",
+      "text": "em> under",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "H7549",
+      "text": "the firmament",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "H4325",
+      "text": "from the waters",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "H834",
+      "text": "which",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "H5921",
+      "text": "em> above",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "H7549",
+      "text": "the firmament",
+      "tokenIndex": 11
+    }
+  ],
+  "Genesis 1:8": [
+    {
+      "strongsId": "H430",
+      "text": "And God",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H7121",
+      "text": "called",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H7549",
+      "text": "the firmament",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "H8064",
+      "text": "Heaven",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "H6153",
+      "text": "And the evening",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "H1242",
+      "text": "and the morning",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "H8145",
+      "text": "were the second",
+      "tokenIndex": 6
+    }
+  ],
+  "Genesis 1:9": [
+    {
+      "strongsId": "H430",
+      "text": "And God",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H559",
+      "text": "said",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H4325",
+      "text": "Let the waters",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "H8064",
+      "text": "under the heaven",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "H6960",
+      "text": "be gathered together",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "H413",
+      "text": "unto",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "H259",
+      "text": "one",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "H4725",
+      "text": "place",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "H3004",
+      "text": "and let the dry",
+      "tokenIndex": 8
+    }
+  ],
+  "Genesis 1:10": [
+    {
+      "strongsId": "H430",
+      "text": "And God",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H7121",
+      "text": "called",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H3004",
+      "text": "the dry",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "H776",
+      "text": "em> Earth",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "H4723",
+      "text": "and the gathering together",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "H4325",
+      "text": "of the waters",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "H7121",
+      "text": "called",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "H3220",
+      "text": "he Seas",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "H430",
+      "text": "and God",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "H7200",
+      "text": "saw",
+      "tokenIndex": 9
+    }
+  ],
+  "Genesis 1:11": [
+    {
+      "strongsId": "H430",
+      "text": "And God",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H559",
+      "text": "said",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H776",
+      "text": "Let the earth",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "H1876",
+      "text": "bring forth",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "H1877",
+      "text": "grass",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "H6212",
+      "text": "the herb",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "H2232",
+      "text": "yielding",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "H2233",
+      "text": "seed",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "H6529",
+      "text": "em> the fruit",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "H6086",
+      "text": "tree",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "H6213",
+      "text": "yielding",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "H6529",
+      "text": "fruit",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "H4327",
+      "text": "after his kind",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "H834",
+      "text": "whose",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "H2233",
+      "text": "seed",
+      "tokenIndex": 14
+    }
+  ],
+  "Genesis 1:12": [
+    {
+      "strongsId": "H776",
+      "text": "And the earth",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H3318",
+      "text": "brought forth",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H1877",
+      "text": "grass",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "H6212",
+      "text": "em> herb",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "H2232",
+      "text": "yielding",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "H2233",
+      "text": "seed",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "H4327",
+      "text": "after his kind",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "H6086",
+      "text": "and the tree",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "H6213",
+      "text": "yielding",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "H6529",
+      "text": "fruit",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "H2233",
+      "text": "whose seed",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "H4327",
+      "text": "em> in itself, after his kind",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "H430",
+      "text": "and God",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "H7200",
+      "text": "saw",
+      "tokenIndex": 13
+    }
+  ],
+  "Genesis 1:13": [
+    {
+      "strongsId": "H6153",
+      "text": "And the evening",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H1242",
+      "text": "and the morning",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H7992",
+      "text": "were the third",
+      "tokenIndex": 2
+    }
+  ],
+  "Genesis 1:14": [
+    {
+      "strongsId": "H430",
+      "text": "And God",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H559",
+      "text": "said",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H3974",
+      "text": "Let there be lights",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "H7549",
+      "text": "in the firmament",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "H8064",
+      "text": "of the heaven",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "H914",
+      "text": "to divide",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "H3117",
+      "text": "the day",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "H3915",
+      "text": "from the night",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "H226",
+      "text": "and let them be for signs",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "H4150",
+      "text": "and for seasons",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "H3117",
+      "text": "and for days",
+      "tokenIndex": 10
+    }
+  ],
+  "Genesis 1:15": [
+    {
+      "strongsId": "H3974",
+      "text": "And let them be for lights",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H7549",
+      "text": "in the firmament",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H8064",
+      "text": "of the heaven",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "H215",
+      "text": "to give light",
+      "tokenIndex": 3
+    }
+  ],
+  "Genesis 1:16": [
+    {
+      "strongsId": "H430",
+      "text": "And God",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H6213",
+      "text": "made",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H8147",
+      "text": "two",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "H1419",
+      "text": "great",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "H3974",
+      "text": "lights",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "H1419",
+      "text": "the greater",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "H3974",
+      "text": "light",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "H4475",
+      "text": "to rule",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "H3117",
+      "text": "the day",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "H6996",
+      "text": "and the lesser",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "H3974",
+      "text": "light",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "H4475",
+      "text": "to rule",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "H3915",
+      "text": "the night",
+      "tokenIndex": 12
+    }
+  ],
+  "Genesis 1:17": [
+    {
+      "strongsId": "H430",
+      "text": "And God",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H5414",
+      "text": "set",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H7549",
+      "text": "them in the firmament",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "H8064",
+      "text": "of the heaven",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "H215",
+      "text": "to give light",
+      "tokenIndex": 4
+    }
+  ],
+  "Genesis 1:18": [
+    {
+      "strongsId": "H4910",
+      "text": "And to rule",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H3117",
+      "text": "over the day",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H3915",
+      "text": "and over the night",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "H914",
+      "text": "and to divide",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "H216",
+      "text": "the light",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "H2822",
+      "text": "from the darkness",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "H430",
+      "text": "and God",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "H7200",
+      "text": "saw",
+      "tokenIndex": 7
+    }
+  ],
+  "Genesis 1:19": [
+    {
+      "strongsId": "H6153",
+      "text": "And the evening",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H1242",
+      "text": "and the morning",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H7243",
+      "text": "were the fourth",
+      "tokenIndex": 2
+    }
+  ],
+  "Genesis 1:20": [
+    {
+      "strongsId": "H430",
+      "text": "And God",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H559",
+      "text": "said",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H4325",
+      "text": "Let the waters",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "H8317",
+      "text": "bring forth abundantly",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "H8318",
+      "text": "the moving creature",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "H5315",
+      "text": "that hath",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "H2416",
+      "text": "life",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "H5775",
+      "text": "and fowl",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "H5774",
+      "text": "em> may fly",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "H5921",
+      "text": "above",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "H776",
+      "text": "the earth",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "H6440",
+      "text": "in the open",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "H7549",
+      "text": "firmament",
+      "tokenIndex": 12
+    }
+  ],
+  "Genesis 1:21": [
+    {
+      "strongsId": "H430",
+      "text": "And God",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H1254",
+      "text": "created",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H1419",
+      "text": "great",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "H8577",
+      "text": "whales",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "H2416",
+      "text": "and every living",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "H5315",
+      "text": "creature",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "H7430",
+      "text": "that moveth",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "H4325",
+      "text": "which the waters",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "H8317",
+      "text": "brought forth abundantly",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "H4327",
+      "text": "after their kind",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "H3671",
+      "text": "and every winged",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "H5775",
+      "text": "fowl",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "H4327",
+      "text": "after his kind",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "H430",
+      "text": "and God",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "H7200",
+      "text": "saw",
+      "tokenIndex": 14
+    }
+  ],
+  "Genesis 1:22": [
+    {
+      "strongsId": "H430",
+      "text": "And God",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H1288",
+      "text": "blessed",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H559",
+      "text": "them, saying",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "H6509",
+      "text": "Be fruitful",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "H7235",
+      "text": "and multiply",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "H4390",
+      "text": "and fill",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "H4325",
+      "text": "the waters",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "H3220",
+      "text": "in the seas",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "H5775",
+      "text": "and let fowl",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "H7235",
+      "text": "multiply",
+      "tokenIndex": 9
+    }
+  ],
+  "Genesis 1:23": [
+    {
+      "strongsId": "H6153",
+      "text": "And the evening",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H1242",
+      "text": "and the morning",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H2549",
+      "text": "were the fifth",
+      "tokenIndex": 2
+    }
+  ],
+  "Genesis 1:24": [
+    {
+      "strongsId": "H430",
+      "text": "And God",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H559",
+      "text": "said",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H776",
+      "text": "Let the earth",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "H3318",
+      "text": "bring forth",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "H2416",
+      "text": "the living",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "H5315",
+      "text": "creature",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "H4327",
+      "text": "after his kind",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "H929",
+      "text": "cattle",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "H7431",
+      "text": "and creeping thing",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "H2416",
+      "text": "and beast",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "H776",
+      "text": "of the earth",
+      "tokenIndex": 10
+    }
+  ],
+  "Genesis 1:25": [
+    {
+      "strongsId": "H430",
+      "text": "And God",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H6213",
+      "text": "made",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H2416",
+      "text": "the beast",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "H776",
+      "text": "of the earth",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "H4327",
+      "text": "after his kind",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "H929",
+      "text": "and cattle",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "H4327",
+      "text": "after their kind",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "H7431",
+      "text": "and every thing that creepeth",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "H127",
+      "text": "upon the earth",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "H4327",
+      "text": "after his kind",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "H430",
+      "text": "and God",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "H7200",
+      "text": "saw",
+      "tokenIndex": 11
+    }
+  ],
+  "Genesis 1:26": [
+    {
+      "strongsId": "H430",
+      "text": "And God",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H559",
+      "text": "said",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H6213",
+      "text": "Let us make",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "H120",
+      "text": "man",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "H6754",
+      "text": "in our image",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "H1823",
+      "text": "after our likeness",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "H7287",
+      "text": "and let them have dominion",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "H1710",
+      "text": "over the fish",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "H3220",
+      "text": "of the sea",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "H5775",
+      "text": "and over the fowl",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "H8064",
+      "text": "of the air",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "H929",
+      "text": "and over the cattle",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "H776",
+      "text": "and over all the earth",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "H7431",
+      "text": "and over every creeping thing",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "H7430",
+      "text": "that creepeth",
+      "tokenIndex": 14
+    }
+  ],
+  "Genesis 1:27": [
+    {
+      "strongsId": "H430",
+      "text": "So God",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H1254",
+      "text": "created",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H120",
+      "text": "man",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "H6754",
+      "text": "em> image",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "H6754",
+      "text": "in the image",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "H430",
+      "text": "of God",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "H1254",
+      "text": "created",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "H2145",
+      "text": "he him; male",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "H5347",
+      "text": "and female",
+      "tokenIndex": 8
+    }
+  ],
+  "Genesis 1:28": [
+    {
+      "strongsId": "H430",
+      "text": "And God",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H1288",
+      "text": "blessed",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H430",
+      "text": "them, and God",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "H559",
+      "text": "said",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "H6509",
+      "text": "unto them, Be fruitful",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "H7235",
+      "text": "and multiply",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "H4390",
+      "text": "and replenish",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "H776",
+      "text": "the earth",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "H3533",
+      "text": "and subdue it",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "H7287",
+      "text": "and have dominion",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "H1710",
+      "text": "over the fish",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "H3220",
+      "text": "of the sea",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "H5775",
+      "text": "and over the fowl",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "H8064",
+      "text": "of the air",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "H2416",
+      "text": "and over every living thing",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "H7430",
+      "text": "that moveth",
+      "tokenIndex": 15
+    }
+  ],
+  "Genesis 1:29": [
+    {
+      "strongsId": "H430",
+      "text": "And God",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H559",
+      "text": "said",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H2009",
+      "text": "Behold",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "H5414",
+      "text": "I have given",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "H6212",
+      "text": "you every herb",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "H2232",
+      "text": "bearing",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "H2233",
+      "text": "seed",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "H6440",
+      "text": "em> upon the face",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "H776",
+      "text": "of all the earth",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "H6086",
+      "text": "and every tree",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "H6529",
+      "text": "em> the fruit",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "H6086",
+      "text": "of a tree",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "H2232",
+      "text": "yielding",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "H2233",
+      "text": "seed",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "H1961",
+      "text": "to you it shall be",
+      "tokenIndex": 14
+    }
+  ],
+  "Genesis 1:30": [
+    {
+      "strongsId": "H2416",
+      "text": "And to every beast",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H776",
+      "text": "of the earth",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H5775",
+      "text": "and to every fowl",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "H8064",
+      "text": "of the air",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "H7430",
+      "text": "and to every thing that creepeth",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "H776",
+      "text": "upon the earth",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "H5315",
+      "text": "em> life",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "H3418",
+      "text": "em> every green",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "H6212",
+      "text": "herb",
+      "tokenIndex": 8
+    }
+  ],
+  "Genesis 1:31": [
+    {
+      "strongsId": "H430",
+      "text": "And God",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "H7200",
+      "text": "saw",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "H834",
+      "text": "every thing that",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "H6213",
+      "text": "he had made",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "H3966",
+      "text": "em> very",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "H2896",
+      "text": "good",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "H6153",
+      "text": "And the evening",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "H1242",
+      "text": "and the morning",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "H8345",
+      "text": "were the sixth",
+      "tokenIndex": 8
+    }
+  ],
+  "Matthew 6:1": [
+    {
+      "strongsId": "G4337",
+      "text": "Take heed",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G4160",
+      "text": "that ye do",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3361",
+      "text": "not",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G5216",
+      "text": "your",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1654",
+      "text": "alms",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G1715",
+      "text": "before",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G444",
+      "text": "men",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G2300",
+      "text": "to be seen",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G846",
+      "text": "of them",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G1490",
+      "text": "otherwise",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G2192",
+      "text": "ye have",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G3756",
+      "text": "no",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G3408",
+      "text": "reward",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G3844",
+      "text": "of",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G5216",
+      "text": "your",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G3962",
+      "text": "Father",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G3588",
+      "text": "which",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G1722",
+      "text": "is in",
+      "tokenIndex": 17
+    }
+  ],
+  "Matthew 6:2": [
+    {
+      "strongsId": "G3767",
+      "text": "Therefore",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3752",
+      "text": "when",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G4160",
+      "text": "thou doest",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G1654",
+      "text": "em> alms",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G4537",
+      "text": "do",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G3361",
+      "text": "not",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G4537",
+      "text": "sound a trumpet",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G1715",
+      "text": "before",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G4675",
+      "text": "thee",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G5618",
+      "text": "as",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G5273",
+      "text": "the hypocrites",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G4160",
+      "text": "do",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G4864",
+      "text": "the synagogues",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G4505",
+      "text": "the streets",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G3704",
+      "text": "that",
+      "tokenIndex": 17
+    },
+    {
+      "strongsId": "G1392",
+      "text": "they may have glory",
+      "tokenIndex": 18
+    },
+    {
+      "strongsId": "G5259",
+      "text": "of",
+      "tokenIndex": 19
+    },
+    {
+      "strongsId": "G444",
+      "text": "men",
+      "tokenIndex": 20
+    },
+    {
+      "strongsId": "G281",
+      "text": "Verily",
+      "tokenIndex": 21
+    },
+    {
+      "strongsId": "G3004",
+      "text": "I say",
+      "tokenIndex": 22
+    },
+    {
+      "strongsId": "G5213",
+      "text": "unto you",
+      "tokenIndex": 23
+    },
+    {
+      "strongsId": "G568",
+      "text": "They have",
+      "tokenIndex": 24
+    },
+    {
+      "strongsId": "G846",
+      "text": "their",
+      "tokenIndex": 25
+    }
+  ],
+  "Matthew 6:3": [
+    {
+      "strongsId": "G1161",
+      "text": "But",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G4675",
+      "text": "when thou",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G4160",
+      "text": "doest",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G1654",
+      "text": "alms",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1097",
+      "text": "let",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G3361",
+      "text": "not",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G4675",
+      "text": "thy",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G710",
+      "text": "left hand",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G1097",
+      "text": "know",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G5101",
+      "text": "what",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G4675",
+      "text": "thy",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G1188",
+      "text": "right hand",
+      "tokenIndex": 11
+    }
+  ],
+  "Matthew 6:4": [
+    {
+      "strongsId": "G3704",
+      "text": "That",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G4675",
+      "text": "thine",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G1654",
+      "text": "alms",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G5600",
+      "text": "may be",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G2927",
+      "text": "secret",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G4675",
+      "text": "thy",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G3962",
+      "text": "Father",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G3588",
+      "text": "which",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G991",
+      "text": "seeth",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G2927",
+      "text": "secret",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G846",
+      "text": "himself",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G591",
+      "text": "shall reward",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G4671",
+      "text": "thee",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G1722",
+      "text": "openly",
+      "tokenIndex": 16
+    }
+  ],
+  "Matthew 6:5": [
+    {
+      "strongsId": "G2532",
+      "text": "And",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3752",
+      "text": "when",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G4336",
+      "text": "thou prayest",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2071",
+      "text": "thou shalt",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G3756",
+      "text": "not",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G2071",
+      "text": "be",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G5618",
+      "text": "as",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G5273",
+      "text": "the hypocrites",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G3754",
+      "text": "em>: for",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G5368",
+      "text": "they love",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G4336",
+      "text": "to pray",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G2476",
+      "text": "standing",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G4864",
+      "text": "the synagogues",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G1137",
+      "text": "the corners",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G4113",
+      "text": "of the streets",
+      "tokenIndex": 17
+    },
+    {
+      "strongsId": "G3704",
+      "text": "that",
+      "tokenIndex": 18
+    },
+    {
+      "strongsId": "G302",
+      "text": "they may",
+      "tokenIndex": 19
+    },
+    {
+      "strongsId": "G5316",
+      "text": "be seen",
+      "tokenIndex": 20
+    },
+    {
+      "strongsId": "G444",
+      "text": "of men",
+      "tokenIndex": 21
+    },
+    {
+      "strongsId": "G281",
+      "text": "Verily",
+      "tokenIndex": 22
+    },
+    {
+      "strongsId": "G3004",
+      "text": "I say",
+      "tokenIndex": 23
+    },
+    {
+      "strongsId": "G3754",
+      "text": "unto you",
+      "tokenIndex": 24
+    },
+    {
+      "strongsId": "G568",
+      "text": "They have",
+      "tokenIndex": 25
+    },
+    {
+      "strongsId": "G846",
+      "text": "their",
+      "tokenIndex": 26
+    }
+  ],
+  "Matthew 6:6": [
+    {
+      "strongsId": "G1161",
+      "text": "But",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G4771",
+      "text": "thou",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3752",
+      "text": "when",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G4336",
+      "text": "thou prayest",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1525",
+      "text": "enter",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G1519",
+      "text": "into",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G4675",
+      "text": "thy",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G5009",
+      "text": "closet",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2808",
+      "text": "when thou hast shut",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G4675",
+      "text": "thy",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G2374",
+      "text": "door",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G4336",
+      "text": "pray",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G4675",
+      "text": "to thy",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G3962",
+      "text": "Father",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G3588",
+      "text": "which",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G1722",
+      "text": "is in",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G2927",
+      "text": "secret",
+      "tokenIndex": 17
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 18
+    },
+    {
+      "strongsId": "G4675",
+      "text": "thy",
+      "tokenIndex": 19
+    },
+    {
+      "strongsId": "G3962",
+      "text": "Father",
+      "tokenIndex": 20
+    },
+    {
+      "strongsId": "G3588",
+      "text": "which",
+      "tokenIndex": 21
+    },
+    {
+      "strongsId": "G991",
+      "text": "seeth",
+      "tokenIndex": 22
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 23
+    },
+    {
+      "strongsId": "G2927",
+      "text": "secret",
+      "tokenIndex": 24
+    },
+    {
+      "strongsId": "G591",
+      "text": "shall reward",
+      "tokenIndex": 25
+    },
+    {
+      "strongsId": "G4671",
+      "text": "thee",
+      "tokenIndex": 26
+    },
+    {
+      "strongsId": "G1722",
+      "text": "openly",
+      "tokenIndex": 27
+    }
+  ],
+  "Matthew 6:7": [
+    {
+      "strongsId": "G1161",
+      "text": "But",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G4336",
+      "text": "when ye pray",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G945",
+      "text": "use",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3361",
+      "text": "not",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G945",
+      "text": "vain repetitions",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G5618",
+      "text": "as",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G1482",
+      "text": "the heathen",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G1063",
+      "text": "em>: for",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G1380",
+      "text": "they think",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G3754",
+      "text": "that",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G1522",
+      "text": "they shall be heard",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G1722",
+      "text": "for",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G846",
+      "text": "their",
+      "tokenIndex": 12
+    }
+  ],
+  "Matthew 6:8": [
+    {
+      "strongsId": "G3666",
+      "text": "Be",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3361",
+      "text": "not",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3666",
+      "text": "ye",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3767",
+      "text": "therefore",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G3666",
+      "text": "like",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G846",
+      "text": "unto them",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G1063",
+      "text": "for",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G5216",
+      "text": "your",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G3962",
+      "text": "Father",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G1492",
+      "text": "knoweth",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G3739",
+      "text": "what things",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G2192",
+      "text": "ye have",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G5532",
+      "text": "need of",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G4253",
+      "text": "before",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G5209",
+      "text": "ye",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G154",
+      "text": "ask",
+      "tokenIndex": 15
+    }
+  ],
+  "Matthew 6:9": [
+    {
+      "strongsId": "G3779",
+      "text": "After this manner",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3767",
+      "text": "therefore",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G4336",
+      "text": "pray",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G5210",
+      "text": "ye",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2257",
+      "text": "Our",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G3962",
+      "text": "Father",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G3588",
+      "text": "which",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G1722",
+      "text": "art in",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G3772",
+      "text": "heaven",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G37",
+      "text": "Hallowed be",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G4675",
+      "text": "thy",
+      "tokenIndex": 10
+    }
+  ],
+  "Matthew 6:10": [
+    {
+      "strongsId": "G4675",
+      "text": "Thy",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G932",
+      "text": "kingdom",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2064",
+      "text": "come",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G4675",
+      "text": "Thy",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2307",
+      "text": "will",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G1096",
+      "text": "be done",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G1909",
+      "text": "in",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G1093",
+      "text": "earth",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G5613",
+      "text": "as",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G1722",
+      "text": "em> in",
+      "tokenIndex": 9
+    }
+  ],
+  "Matthew 6:11": [
+    {
+      "strongsId": "G1325",
+      "text": "Give",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G2254",
+      "text": "us",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G4594",
+      "text": "this day",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2257",
+      "text": "our",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1967",
+      "text": "daily",
+      "tokenIndex": 4
+    }
+  ],
+  "Matthew 6:12": [
+    {
+      "strongsId": "G2532",
+      "text": "And",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G863",
+      "text": "forgive",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2254",
+      "text": "us",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2257",
+      "text": "our",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G3783",
+      "text": "debts",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G5613",
+      "text": "as",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2249",
+      "text": "we",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G863",
+      "text": "forgive",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G2257",
+      "text": "our",
+      "tokenIndex": 8
+    }
+  ],
+  "Matthew 6:13": [
+    {
+      "strongsId": "G2532",
+      "text": "And",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1533",
+      "text": "lead",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2248",
+      "text": "us",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3361",
+      "text": "not",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1519",
+      "text": "into",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G3986",
+      "text": "temptation",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G235",
+      "text": "but",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G4506",
+      "text": "deliver",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G2248",
+      "text": "us",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G575",
+      "text": "from",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G4190",
+      "text": "evil",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G3754",
+      "text": "For",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G4675",
+      "text": "thine",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G2076",
+      "text": "is",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G932",
+      "text": "the kingdom",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G1411",
+      "text": "the power",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 17
+    },
+    {
+      "strongsId": "G1391",
+      "text": "the glory",
+      "tokenIndex": 18
+    },
+    {
+      "strongsId": "G1519",
+      "text": "for",
+      "tokenIndex": 19
+    },
+    {
+      "strongsId": "G165",
+      "text": "ever",
+      "tokenIndex": 20
+    }
+  ],
+  "Matthew 6:14": [
+    {
+      "strongsId": "G1063",
+      "text": "For",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1437",
+      "text": "if",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G863",
+      "text": "ye forgive",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G444",
+      "text": "men",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G846",
+      "text": "their",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G3900",
+      "text": "trespasses",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G5216",
+      "text": "your",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G3770",
+      "text": "heavenly",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G3962",
+      "text": "Father",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2532",
+      "text": "will also",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G863",
+      "text": "forgive",
+      "tokenIndex": 10
+    }
+  ],
+  "Matthew 6:15": [
+    {
+      "strongsId": "G1161",
+      "text": "But",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3362",
+      "text": "if",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G863",
+      "text": "ye forgive",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3362",
+      "text": "not",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G444",
+      "text": "men",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G846",
+      "text": "their",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G3900",
+      "text": "trespasses",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G3761",
+      "text": "neither",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G5216",
+      "text": "will your",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G3962",
+      "text": "Father",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G863",
+      "text": "forgive",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G5216",
+      "text": "your",
+      "tokenIndex": 11
+    }
+  ],
+  "Matthew 6:16": [
+    {
+      "strongsId": "G1161",
+      "text": "Moreover",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3752",
+      "text": "when",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3522",
+      "text": "ye fast",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G1096",
+      "text": "be",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G3361",
+      "text": "not",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G5618",
+      "text": "as",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G5273",
+      "text": "the hypocrites",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G4659",
+      "text": "of a sad countenance",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G1063",
+      "text": "for",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G853",
+      "text": "they disfigure",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G846",
+      "text": "their",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G4383",
+      "text": "faces",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G3704",
+      "text": "that",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G5316",
+      "text": "they may appear",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G444",
+      "text": "unto men",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G3522",
+      "text": "to fast",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G281",
+      "text": "Verily",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G3004",
+      "text": "I say",
+      "tokenIndex": 17
+    },
+    {
+      "strongsId": "G3754",
+      "text": "unto you",
+      "tokenIndex": 18
+    },
+    {
+      "strongsId": "G568",
+      "text": "They have",
+      "tokenIndex": 19
+    },
+    {
+      "strongsId": "G846",
+      "text": "their",
+      "tokenIndex": 20
+    }
+  ],
+  "Matthew 6:17": [
+    {
+      "strongsId": "G1161",
+      "text": "But",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G4771",
+      "text": "thou",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3522",
+      "text": "when thou fastest",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G218",
+      "text": "anoint",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G4675",
+      "text": "thine",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G2776",
+      "text": "head",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G3538",
+      "text": "wash",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G4675",
+      "text": "thy",
+      "tokenIndex": 8
+    }
+  ],
+  "Matthew 6:18": [
+    {
+      "strongsId": "G3704",
+      "text": "That",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G5316",
+      "text": "thou appear",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3361",
+      "text": "not",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G444",
+      "text": "unto men",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G3522",
+      "text": "to fast",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G235",
+      "text": "but",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G4675",
+      "text": "unto thy",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G3962",
+      "text": "Father",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G3588",
+      "text": "which",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G1722",
+      "text": "is in",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G2927",
+      "text": "secret",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G4675",
+      "text": "thy",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G3962",
+      "text": "Father",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G3588",
+      "text": "which",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G991",
+      "text": "seeth",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G2927",
+      "text": "secret",
+      "tokenIndex": 17
+    },
+    {
+      "strongsId": "G591",
+      "text": "shall reward",
+      "tokenIndex": 18
+    },
+    {
+      "strongsId": "G4671",
+      "text": "thee",
+      "tokenIndex": 19
+    },
+    {
+      "strongsId": "G1722",
+      "text": "openly",
+      "tokenIndex": 20
+    }
+  ],
+  "Matthew 6:19": [
+    {
+      "strongsId": "G2343",
+      "text": "Lay",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3361",
+      "text": "not",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2343",
+      "text": "up",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G5213",
+      "text": "for yourselves",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2344",
+      "text": "treasures",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G1909",
+      "text": "upon",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G1093",
+      "text": "earth",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G3699",
+      "text": "where",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G4597",
+      "text": "moth",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G1035",
+      "text": "rust",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G853",
+      "text": "doth corrupt",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G3699",
+      "text": "where",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G2812",
+      "text": "thieves",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G1358",
+      "text": "break through",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 16
+    }
+  ],
+  "Matthew 6:20": [
+    {
+      "strongsId": "G1161",
+      "text": "But",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G2343",
+      "text": "lay up",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G5213",
+      "text": "for yourselves",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2344",
+      "text": "treasures",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G3772",
+      "text": "heaven",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G3699",
+      "text": "where",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G3777",
+      "text": "neither",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G4597",
+      "text": "moth",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G3777",
+      "text": "nor",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G1035",
+      "text": "rust",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G853",
+      "text": "doth corrupt",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G3699",
+      "text": "where",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G2812",
+      "text": "thieves",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G1358",
+      "text": "do",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G3756",
+      "text": "not",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G1358",
+      "text": "break through",
+      "tokenIndex": 17
+    },
+    {
+      "strongsId": "G3761",
+      "text": "nor",
+      "tokenIndex": 18
+    }
+  ],
+  "Matthew 6:21": [
+    {
+      "strongsId": "G1063",
+      "text": "For",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3699",
+      "text": "where",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G5216",
+      "text": "your",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2344",
+      "text": "treasure",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2076",
+      "text": "is",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G1563",
+      "text": "there",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2071",
+      "text": "will",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G5216",
+      "text": "your",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G2588",
+      "text": "heart",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2071",
+      "text": "be",
+      "tokenIndex": 9
+    }
+  ],
+  "Matthew 6:22": [
+    {
+      "strongsId": "G3088",
+      "text": "The light",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G4983",
+      "text": "of the body",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2076",
+      "text": "is",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3788",
+      "text": "the eye",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1437",
+      "text": "if",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G3767",
+      "text": "therefore",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G4675",
+      "text": "thine",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G3788",
+      "text": "eye",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G5600",
+      "text": "be",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G573",
+      "text": "single",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G4675",
+      "text": "thy",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G3650",
+      "text": "whole",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G4983",
+      "text": "body",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G2071",
+      "text": "shall be",
+      "tokenIndex": 13
+    }
+  ],
+  "Matthew 6:23": [
+    {
+      "strongsId": "G1161",
+      "text": "But",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1437",
+      "text": "if",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G4675",
+      "text": "thine",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3788",
+      "text": "eye",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G5600",
+      "text": "be",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G4190",
+      "text": "evil",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G4675",
+      "text": "thy",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G3650",
+      "text": "whole",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G4983",
+      "text": "body",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2071",
+      "text": "shall be",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G4652",
+      "text": "full of darkness",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G1487",
+      "text": "If",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G3767",
+      "text": "therefore",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G5457",
+      "text": "the light",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G2076",
+      "text": "that is",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G4671",
+      "text": "thee",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G4655",
+      "text": "be darkness",
+      "tokenIndex": 17
+    },
+    {
+      "strongsId": "G4214",
+      "text": "how great",
+      "tokenIndex": 18
+    }
+  ],
+  "Matthew 6:24": [
+    {
+      "strongsId": "G3762",
+      "text": "No man",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1410",
+      "text": "can",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G1398",
+      "text": "serve",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G1417",
+      "text": "two",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2962",
+      "text": "masters",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G1063",
+      "text": "for",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2228",
+      "text": "either",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G3404",
+      "text": "he will hate",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G1520",
+      "text": "the one",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G25",
+      "text": "love",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G2087",
+      "text": "the other",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G2228",
+      "text": "or else",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G472",
+      "text": "he will hold",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G1520",
+      "text": "to the one",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G2706",
+      "text": "despise",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G2087",
+      "text": "the other",
+      "tokenIndex": 17
+    },
+    {
+      "strongsId": "G1410",
+      "text": "Ye cannot",
+      "tokenIndex": 18
+    },
+    {
+      "strongsId": "G1398",
+      "text": "serve",
+      "tokenIndex": 19
+    },
+    {
+      "strongsId": "G2316",
+      "text": "God",
+      "tokenIndex": 20
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 21
+    }
+  ],
+  "Matthew 6:25": [
+    {
+      "strongsId": "G5124",
+      "text": "Therefore",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3004",
+      "text": "I say",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G5213",
+      "text": "unto you",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3361",
+      "text": "Take no",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G3309",
+      "text": "thought",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G5216",
+      "text": "for your",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G5590",
+      "text": "life",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G5101",
+      "text": "what",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G5315",
+      "text": "ye shall eat",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2532",
+      "text": "or",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G5101",
+      "text": "what",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G4095",
+      "text": "ye shall drink",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G3366",
+      "text": "nor yet for",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G5216",
+      "text": "your",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G4983",
+      "text": "body",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G5101",
+      "text": "what",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G1746",
+      "text": "ye shall put on",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G2076",
+      "text": "Is",
+      "tokenIndex": 17
+    },
+    {
+      "strongsId": "G3780",
+      "text": "not",
+      "tokenIndex": 18
+    },
+    {
+      "strongsId": "G5590",
+      "text": "the life",
+      "tokenIndex": 19
+    },
+    {
+      "strongsId": "G4119",
+      "text": "more than",
+      "tokenIndex": 20
+    },
+    {
+      "strongsId": "G5160",
+      "text": "meat",
+      "tokenIndex": 21
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 22
+    },
+    {
+      "strongsId": "G4983",
+      "text": "the body",
+      "tokenIndex": 23
+    }
+  ],
+  "Matthew 6:26": [
+    {
+      "strongsId": "G1519",
+      "text": "Behold",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G4071",
+      "text": "the fowls",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3772",
+      "text": "of the air",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3754",
+      "text": "for",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G4687",
+      "text": "they sow",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G3756",
+      "text": "not",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G3761",
+      "text": "neither",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G2325",
+      "text": "do they reap",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G3761",
+      "text": "nor",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G4863",
+      "text": "gather",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G1519",
+      "text": "into",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G596",
+      "text": "barns",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G2532",
+      "text": "yet",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G5216",
+      "text": "your",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G3770",
+      "text": "heavenly",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G3962",
+      "text": "Father",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G5142",
+      "text": "feedeth",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G846",
+      "text": "them",
+      "tokenIndex": 17
+    },
+    {
+      "strongsId": "G1308",
+      "text": "Are",
+      "tokenIndex": 18
+    },
+    {
+      "strongsId": "G5210",
+      "text": "ye",
+      "tokenIndex": 19
+    },
+    {
+      "strongsId": "G3756",
+      "text": "not",
+      "tokenIndex": 20
+    },
+    {
+      "strongsId": "G3123",
+      "text": "much",
+      "tokenIndex": 21
+    },
+    {
+      "strongsId": "G1308",
+      "text": "better than",
+      "tokenIndex": 22
+    }
+  ],
+  "Matthew 6:27": [
+    {
+      "strongsId": "G5101",
+      "text": "G1161] Which",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G5216",
+      "text": "of you",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3309",
+      "text": "by taking thought",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G1410",
+      "text": "can",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G4369",
+      "text": "add",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G1520",
+      "text": "one",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G4083",
+      "text": "cubit",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G1909",
+      "text": "unto",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G846",
+      "text": "his",
+      "tokenIndex": 8
+    }
+  ],
+  "Matthew 6:28": [
+    {
+      "strongsId": "G2532",
+      "text": "And",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G5101",
+      "text": "why",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3309",
+      "text": "take ye thought",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G4012",
+      "text": "for",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1742",
+      "text": "raiment",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G2648",
+      "text": "Consider",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2918",
+      "text": "the lilies",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G68",
+      "text": "of the field",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G4459",
+      "text": "how",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G837",
+      "text": "they grow",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G2872",
+      "text": "they toil",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G3756",
+      "text": "not",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G3761",
+      "text": "neither",
+      "tokenIndex": 12
+    }
+  ],
+  "Matthew 6:29": [
+    {
+      "strongsId": "G1161",
+      "text": "And yet",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3004",
+      "text": "I say",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G5213",
+      "text": "unto you",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3754",
+      "text": "That",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G3761",
+      "text": "even",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G4672",
+      "text": "Solomon",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G3956",
+      "text": "all",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G846",
+      "text": "his",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G1391",
+      "text": "glory",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G4016",
+      "text": "was",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G3761",
+      "text": "not",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G4016",
+      "text": "arrayed",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G5613",
+      "text": "like",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G1520",
+      "text": "one",
+      "tokenIndex": 14
+    }
+  ],
+  "Matthew 6:30": [
+    {
+      "strongsId": "G1161",
+      "text": "Wherefore",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1487",
+      "text": "if",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2316",
+      "text": "God",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3779",
+      "text": "so",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G294",
+      "text": "clothe",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G5528",
+      "text": "the grass",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G68",
+      "text": "of the field",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G4594",
+      "text": "which to day",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G5607",
+      "text": "is",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G839",
+      "text": "to morrow",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G906",
+      "text": "is cast",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G1519",
+      "text": "into",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G2823",
+      "text": "the oven",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G3756",
+      "text": "em> not",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G4183",
+      "text": "much",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G3123",
+      "text": "more",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G5209",
+      "text": "em> you",
+      "tokenIndex": 17
+    }
+  ],
+  "Matthew 6:31": [
+    {
+      "strongsId": "G3767",
+      "text": "Therefore",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3361",
+      "text": "take no",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3309",
+      "text": "thought",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3004",
+      "text": "saying",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G5101",
+      "text": "What",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G5315",
+      "text": "shall we eat",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2228",
+      "text": "or",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G5101",
+      "text": "What",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G4095",
+      "text": "shall we drink",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2228",
+      "text": "or",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G5101",
+      "text": "Wherewithal",
+      "tokenIndex": 10
+    }
+  ],
+  "Matthew 6:32": [
+    {
+      "strongsId": "G1063",
+      "text": "For",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1934",
+      "text": "after",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3956",
+      "text": "all",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G5023",
+      "text": "these things",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1484",
+      "text": "do the Gentiles",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G1934",
+      "text": "seek",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G1063",
+      "text": "for",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G5216",
+      "text": "your",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G3770",
+      "text": "heavenly",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G3962",
+      "text": "Father",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G1492",
+      "text": "knoweth",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G3754",
+      "text": "that",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G5535",
+      "text": "ye have need",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G537",
+      "text": "of all",
+      "tokenIndex": 13
+    }
+  ],
+  "Matthew 6:33": [
+    {
+      "strongsId": "G1161",
+      "text": "But",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G2212",
+      "text": "seek ye",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G4412",
+      "text": "first",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G932",
+      "text": "the kingdom",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2316",
+      "text": "of God",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G846",
+      "text": "his",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G1343",
+      "text": "righteousness",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G3956",
+      "text": "all",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G5023",
+      "text": "these things",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G4369",
+      "text": "shall be added",
+      "tokenIndex": 11
+    }
+  ],
+  "Matthew 6:34": [
+    {
+      "strongsId": "G3309",
+      "text": "Take",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3767",
+      "text": "therefore",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3361",
+      "text": "no",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3309",
+      "text": "thought",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1519",
+      "text": "for",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G839",
+      "text": "the morrow",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G1063",
+      "text": "for",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G839",
+      "text": "the morrow",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G3309",
+      "text": "shall take thought",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G3588",
+      "text": "for the things",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G1438",
+      "text": "of itself",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G713",
+      "text": "Sufficient",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G2250",
+      "text": "unto the day",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G2549",
+      "text": "em> the evil",
+      "tokenIndex": 13
+    }
+  ],
+  "John 1:1": [
+    {
+      "strongsId": "G1722",
+      "text": "In",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G746",
+      "text": "the beginning",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2258",
+      "text": "was",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3056",
+      "text": "the Word",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G3056",
+      "text": "the Word",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2258",
+      "text": "was",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G4314",
+      "text": "with",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G2316",
+      "text": "God",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G3056",
+      "text": "the Word",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G2258",
+      "text": "was",
+      "tokenIndex": 11
+    }
+  ],
+  "John 1:2": [
+    {
+      "strongsId": "G3778",
+      "text": "The same",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G2258",
+      "text": "was",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G746",
+      "text": "the beginning",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G4314",
+      "text": "with",
+      "tokenIndex": 4
+    }
+  ],
+  "John 1:3": [
+    {
+      "strongsId": "G3956",
+      "text": "All things",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1096",
+      "text": "were made",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G1223",
+      "text": "by",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G846",
+      "text": "him",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G5565",
+      "text": "without",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G846",
+      "text": "him",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G1096",
+      "text": "was",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G3761",
+      "text": "not",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G1520",
+      "text": "any thing",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G1096",
+      "text": "made",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G3739",
+      "text": "that",
+      "tokenIndex": 11
+    }
+  ],
+  "John 1:4": [
+    {
+      "strongsId": "G1722",
+      "text": "In",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G846",
+      "text": "him",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2258",
+      "text": "was",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2222",
+      "text": "life",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G2222",
+      "text": "the life",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2258",
+      "text": "was",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G5457",
+      "text": "the light",
+      "tokenIndex": 7
+    }
+  ],
+  "John 1:5": [
+    {
+      "strongsId": "G2532",
+      "text": "And",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G5457",
+      "text": "the light",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G5316",
+      "text": "shineth",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G4653",
+      "text": "darkness",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G4653",
+      "text": "the darkness",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G2638",
+      "text": "comprehended",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G846",
+      "text": "it",
+      "tokenIndex": 8
+    }
+  ],
+  "John 1:6": [
+    {
+      "strongsId": "G1096",
+      "text": "There was",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G444",
+      "text": "a man",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G649",
+      "text": "sent",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3844",
+      "text": "from",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2316",
+      "text": "God",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G846",
+      "text": "whose",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G3686",
+      "text": "name",
+      "tokenIndex": 6
+    }
+  ],
+  "John 1:7": [
+    {
+      "strongsId": "G3778",
+      "text": "The same",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G2064",
+      "text": "came",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G1519",
+      "text": "for",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3141",
+      "text": "a witness",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2443",
+      "text": "to",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G3140",
+      "text": "bear witness",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G4012",
+      "text": "of",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G5457",
+      "text": "the Light",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G2443",
+      "text": "that",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G3956",
+      "text": "all",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G1223",
+      "text": "em> through",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G846",
+      "text": "him",
+      "tokenIndex": 11
+    }
+  ],
+  "John 1:8": [
+    {
+      "strongsId": "G2258",
+      "text": "He was",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3756",
+      "text": "not",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G1565",
+      "text": "that",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G5457",
+      "text": "Light",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G235",
+      "text": "but",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G2443",
+      "text": "em> to",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G3140",
+      "text": "bear witness",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G4012",
+      "text": "of",
+      "tokenIndex": 7
+    }
+  ],
+  "John 1:9": [
+    {
+      "strongsId": "G2258",
+      "text": "em> was",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G228",
+      "text": "the true",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G5457",
+      "text": "Light",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3739",
+      "text": "which",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G5461",
+      "text": "lighteth",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G444",
+      "text": "every man",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2064",
+      "text": "that cometh",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G1519",
+      "text": "into",
+      "tokenIndex": 7
+    }
+  ],
+  "John 1:10": [
+    {
+      "strongsId": "G2258",
+      "text": "He was",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2889",
+      "text": "the world",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2889",
+      "text": "the world",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G1096",
+      "text": "was made",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G1223",
+      "text": "by",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G846",
+      "text": "him",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2889",
+      "text": "the world",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G1097",
+      "text": "knew",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G846",
+      "text": "him",
+      "tokenIndex": 11
+    }
+  ],
+  "John 1:11": [
+    {
+      "strongsId": "G2064",
+      "text": "He came",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1519",
+      "text": "unto",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2398",
+      "text": "his own",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2398",
+      "text": "his own",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G3880",
+      "text": "received",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G846",
+      "text": "him",
+      "tokenIndex": 6
+    }
+  ],
+  "John 1:12": [
+    {
+      "strongsId": "G1161",
+      "text": "But",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3745",
+      "text": "as many as",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2983",
+      "text": "received",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G846",
+      "text": "him",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G846",
+      "text": "to them",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G1325",
+      "text": "gave he",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G1849",
+      "text": "power",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G1096",
+      "text": "to become",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G5043",
+      "text": "the sons",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2316",
+      "text": "of God",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G4100",
+      "text": "em> to them that believe",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G1519",
+      "text": "on",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G846",
+      "text": "his",
+      "tokenIndex": 12
+    }
+  ],
+  "John 1:13": [
+    {
+      "strongsId": "G3739",
+      "text": "Which",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1080",
+      "text": "were born",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3756",
+      "text": "not",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G1537",
+      "text": "of",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G129",
+      "text": "blood",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G3761",
+      "text": "nor",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G1537",
+      "text": "of",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G2307",
+      "text": "the will",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G4561",
+      "text": "of the flesh",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G3761",
+      "text": "nor",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G1537",
+      "text": "of",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G2307",
+      "text": "the will",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G435",
+      "text": "of man",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G235",
+      "text": "but",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G1537",
+      "text": "of",
+      "tokenIndex": 14
+    }
+  ],
+  "John 1:14": [
+    {
+      "strongsId": "G2532",
+      "text": "And",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3056",
+      "text": "the Word",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G1096",
+      "text": "was made",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G4561",
+      "text": "flesh",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G4637",
+      "text": "dwelt",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G1722",
+      "text": "among",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G2254",
+      "text": "us",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2300",
+      "text": "we beheld",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G846",
+      "text": "his",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G1391",
+      "text": "glory",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G1391",
+      "text": "the glory",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G5613",
+      "text": "as",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G3439",
+      "text": "of the only begotten",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G3844",
+      "text": "of",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G3962",
+      "text": "the Father",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G4134",
+      "text": "full",
+      "tokenIndex": 17
+    },
+    {
+      "strongsId": "G5485",
+      "text": "of grace",
+      "tokenIndex": 18
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 19
+    }
+  ],
+  "John 1:15": [
+    {
+      "strongsId": "G2491",
+      "text": "John",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3140",
+      "text": "bare witness",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G4012",
+      "text": "of",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G846",
+      "text": "him",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G2896",
+      "text": "cried",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G3004",
+      "text": "saying",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G3778",
+      "text": "This",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G2258",
+      "text": "was he",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G3739",
+      "text": "of whom",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G2036",
+      "text": "I spake",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G2064",
+      "text": "He that cometh",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G3694",
+      "text": "after",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G3450",
+      "text": "me",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G1096",
+      "text": "is preferred",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G1715",
+      "text": "before",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G3450",
+      "text": "me",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G3754",
+      "text": "for",
+      "tokenIndex": 17
+    },
+    {
+      "strongsId": "G2258",
+      "text": "he was",
+      "tokenIndex": 18
+    },
+    {
+      "strongsId": "G4413",
+      "text": "before",
+      "tokenIndex": 19
+    }
+  ],
+  "John 1:16": [
+    {
+      "strongsId": "G2532",
+      "text": "And",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1537",
+      "text": "of",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G846",
+      "text": "his",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G4138",
+      "text": "fulness",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2983",
+      "text": "have",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G3956",
+      "text": "all",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2249",
+      "text": "we",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G2983",
+      "text": "received",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G5485",
+      "text": "grace",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G473",
+      "text": "for",
+      "tokenIndex": 10
+    }
+  ],
+  "John 1:17": [
+    {
+      "strongsId": "G3754",
+      "text": "For",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3551",
+      "text": "the law",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G1325",
+      "text": "was given",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G1223",
+      "text": "by",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G3475",
+      "text": "Moses",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G5485",
+      "text": "em> grace",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G225",
+      "text": "truth",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G1096",
+      "text": "came",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G1223",
+      "text": "by",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G2424",
+      "text": "Jesus",
+      "tokenIndex": 10
+    }
+  ],
+  "John 1:18": [
+    {
+      "strongsId": "G3762",
+      "text": "No man",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3708",
+      "text": "hath seen",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2316",
+      "text": "God",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G4455",
+      "text": "at any time",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G3439",
+      "text": "the only begotten",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G5207",
+      "text": "Son",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G3588",
+      "text": "which",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G5607",
+      "text": "is",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G1519",
+      "text": "in",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2859",
+      "text": "the bosom",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G3962",
+      "text": "of the Father",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G1565",
+      "text": "he",
+      "tokenIndex": 11
+    }
+  ],
+  "John 1:19": [
+    {
+      "strongsId": "G2532",
+      "text": "And",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3778",
+      "text": "this",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2076",
+      "text": "is",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3141",
+      "text": "the record",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2491",
+      "text": "of John",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G3753",
+      "text": "when",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2453",
+      "text": "the Jews",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G649",
+      "text": "sent",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G2409",
+      "text": "priests",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G3019",
+      "text": "Levites",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G1537",
+      "text": "from",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G2414",
+      "text": "Jerusalem",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G2443",
+      "text": "to",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G2065",
+      "text": "ask",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G846",
+      "text": "him",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G5101",
+      "text": "Who",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G1488",
+      "text": "art",
+      "tokenIndex": 17
+    }
+  ],
+  "John 1:20": [
+    {
+      "strongsId": "G2532",
+      "text": "And",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3670",
+      "text": "he confessed",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G720",
+      "text": "denied",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G3756",
+      "text": "not",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G2532",
+      "text": "but",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G3754",
+      "text": "confessed",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G1473",
+      "text": "I",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G1510",
+      "text": "am",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G3756",
+      "text": "not",
+      "tokenIndex": 9
+    }
+  ],
+  "John 1:21": [
+    {
+      "strongsId": "G2532",
+      "text": "And",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G2065",
+      "text": "they asked",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G846",
+      "text": "him",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G5101",
+      "text": "What",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G3767",
+      "text": "then",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G1488",
+      "text": "Art",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G4771",
+      "text": "thou",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G2243",
+      "text": "Elias",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G2532",
+      "text": "And",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G3004",
+      "text": "he saith",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G1510",
+      "text": "I am",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G3756",
+      "text": "not",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G1488",
+      "text": "Art",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G4771",
+      "text": "thou",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G4396",
+      "text": "that prophet",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G2532",
+      "text": "And",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G611",
+      "text": "he answered",
+      "tokenIndex": 16
+    }
+  ],
+  "John 1:22": [
+    {
+      "strongsId": "G3767",
+      "text": "Then",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G2036",
+      "text": "said they",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G846",
+      "text": "unto him",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G5101",
+      "text": "Who",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1488",
+      "text": "art thou",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G2443",
+      "text": "that",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G1325",
+      "text": "we may give",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G612",
+      "text": "an answer",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G3992",
+      "text": "to them that sent",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2248",
+      "text": "us",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G5101",
+      "text": "What",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G3004",
+      "text": "sayest thou",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G4012",
+      "text": "of",
+      "tokenIndex": 12
+    }
+  ],
+  "John 1:23": [
+    {
+      "strongsId": "G5346",
+      "text": "He said",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1473",
+      "text": "I",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G5456",
+      "text": "em> the voice",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G994",
+      "text": "of one crying",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G2048",
+      "text": "the wilderness",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2116",
+      "text": "Make straight",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G3598",
+      "text": "the way",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G2962",
+      "text": "of the Lord",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2531",
+      "text": "as",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G2036",
+      "text": "said",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G4396",
+      "text": "the prophet",
+      "tokenIndex": 11
+    }
+  ],
+  "John 1:24": [
+    {
+      "strongsId": "G2532",
+      "text": "And",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3588",
+      "text": "they which",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G649",
+      "text": "were sent",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2258",
+      "text": "were",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1537",
+      "text": "of",
+      "tokenIndex": 4
+    }
+  ],
+  "John 1:25": [
+    {
+      "strongsId": "G2532",
+      "text": "And",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G2065",
+      "text": "they asked",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G846",
+      "text": "him",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2036",
+      "text": "said",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G846",
+      "text": "unto him",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G5101",
+      "text": "Why",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G907",
+      "text": "baptizest thou",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G3767",
+      "text": "then",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G1487",
+      "text": "if",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G4771",
+      "text": "thou",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G1488",
+      "text": "be",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G3756",
+      "text": "not",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G5547",
+      "text": "that Christ",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G3777",
+      "text": "nor",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G2243",
+      "text": "Elias",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G3777",
+      "text": "neither",
+      "tokenIndex": 16
+    }
+  ],
+  "John 1:26": [
+    {
+      "strongsId": "G2491",
+      "text": "John",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G611",
+      "text": "answered",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G846",
+      "text": "them",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3004",
+      "text": "saying",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1473",
+      "text": "I",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G907",
+      "text": "baptize",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G1722",
+      "text": "with",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G5204",
+      "text": "water",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G1161",
+      "text": "but",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2476",
+      "text": "there standeth one",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G3319",
+      "text": "among",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G5216",
+      "text": "you",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G3739",
+      "text": "whom",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G5210",
+      "text": "ye",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G1492",
+      "text": "know",
+      "tokenIndex": 14
+    }
+  ],
+  "John 1:27": [
+    {
+      "strongsId": "G846",
+      "text": "He",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G2076",
+      "text": "it is",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3739",
+      "text": "who",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2064",
+      "text": "coming",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G3694",
+      "text": "after",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G3450",
+      "text": "me",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G1096",
+      "text": "is preferred",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G1715",
+      "text": "before",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G3450",
+      "text": "me",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G846",
+      "text": "whose",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G5266",
+      "text": "shoe's",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G2438",
+      "text": "latchet",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G1473",
+      "text": "I",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G1510",
+      "text": "am",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G3756",
+      "text": "not",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G514",
+      "text": "worthy",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G2443",
+      "text": "to",
+      "tokenIndex": 16
+    }
+  ],
+  "John 1:28": [
+    {
+      "strongsId": "G5023",
+      "text": "These things",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1096",
+      "text": "were done",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G962",
+      "text": "Bethabara",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G4008",
+      "text": "beyond",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G2446",
+      "text": "Jordan",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G3699",
+      "text": "where",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G2491",
+      "text": "John",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G2258",
+      "text": "was",
+      "tokenIndex": 8
+    }
+  ],
+  "John 1:29": [
+    {
+      "strongsId": "G1887",
+      "text": "The next day",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G2491",
+      "text": "John",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G991",
+      "text": "seeth",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2424",
+      "text": "Jesus",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2064",
+      "text": "coming",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G4314",
+      "text": "unto",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G846",
+      "text": "him",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G3004",
+      "text": "saith",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2396",
+      "text": "Behold",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G286",
+      "text": "the Lamb",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G2316",
+      "text": "of God",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G3588",
+      "text": "which",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G142",
+      "text": "taketh away",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G266",
+      "text": "the sin",
+      "tokenIndex": 14
+    }
+  ],
+  "John 1:30": [
+    {
+      "strongsId": "G3778",
+      "text": "This",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G2076",
+      "text": "is he",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G4012",
+      "text": "of",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3739",
+      "text": "whom",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1473",
+      "text": "I",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G2036",
+      "text": "said",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G3694",
+      "text": "After",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G3450",
+      "text": "me",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G2064",
+      "text": "cometh",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G435",
+      "text": "a man",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G3739",
+      "text": "which",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G1096",
+      "text": "is preferred",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G1715",
+      "text": "before",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G3450",
+      "text": "me",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G3754",
+      "text": "for",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G2258",
+      "text": "he was",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G4413",
+      "text": "before",
+      "tokenIndex": 16
+    }
+  ],
+  "John 1:31": [
+    {
+      "strongsId": "G2504",
+      "text": "And I",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1492",
+      "text": "knew",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G846",
+      "text": "him",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3756",
+      "text": "not",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G235",
+      "text": "but",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G2443",
+      "text": "that",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G5319",
+      "text": "he should be made manifest",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G2474",
+      "text": "to Israel",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G5124",
+      "text": "therefore",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2064",
+      "text": "am",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G1473",
+      "text": "I",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G2064",
+      "text": "come",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G907",
+      "text": "baptizing",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G1722",
+      "text": "with",
+      "tokenIndex": 13
+    }
+  ],
+  "John 1:32": [
+    {
+      "strongsId": "G2532",
+      "text": "And",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G2491",
+      "text": "John",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3140",
+      "text": "bare record",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3754",
+      "text": "saying",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2300",
+      "text": "I saw",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G4151",
+      "text": "the Spirit",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2597",
+      "text": "descending",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G1537",
+      "text": "from",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G3772",
+      "text": "heaven",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G5616",
+      "text": "like",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G4058",
+      "text": "a dove",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G3306",
+      "text": "it abode",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G1909",
+      "text": "upon",
+      "tokenIndex": 13
+    }
+  ],
+  "John 1:33": [
+    {
+      "strongsId": "G2504",
+      "text": "And I",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1492",
+      "text": "knew",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G846",
+      "text": "him",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3756",
+      "text": "not",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G235",
+      "text": "but",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G3992",
+      "text": "he that sent",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G3165",
+      "text": "me",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G907",
+      "text": "to baptize",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G1722",
+      "text": "with",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G5204",
+      "text": "water",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G1565",
+      "text": "the same",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G2036",
+      "text": "said",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G3427",
+      "text": "unto me",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G1909",
+      "text": "Upon",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G302",
+      "text": "whom",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G1492",
+      "text": "thou shalt see",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G4151",
+      "text": "the Spirit",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G2597",
+      "text": "descending",
+      "tokenIndex": 17
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 18
+    },
+    {
+      "strongsId": "G3306",
+      "text": "remaining",
+      "tokenIndex": 19
+    },
+    {
+      "strongsId": "G1909",
+      "text": "on",
+      "tokenIndex": 20
+    },
+    {
+      "strongsId": "G846",
+      "text": "him",
+      "tokenIndex": 21
+    },
+    {
+      "strongsId": "G3778",
+      "text": "the same",
+      "tokenIndex": 22
+    },
+    {
+      "strongsId": "G2076",
+      "text": "is",
+      "tokenIndex": 23
+    },
+    {
+      "strongsId": "G907",
+      "text": "he which baptizeth",
+      "tokenIndex": 24
+    },
+    {
+      "strongsId": "G1722",
+      "text": "with",
+      "tokenIndex": 25
+    },
+    {
+      "strongsId": "G40",
+      "text": "the Holy",
+      "tokenIndex": 26
+    }
+  ],
+  "John 1:34": [
+    {
+      "strongsId": "G2504",
+      "text": "And I",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3708",
+      "text": "saw",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3140",
+      "text": "bare record",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G3754",
+      "text": "that",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G3778",
+      "text": "this",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2076",
+      "text": "is",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G5207",
+      "text": "the Son",
+      "tokenIndex": 7
+    }
+  ],
+  "John 1:35": [
+    {
+      "strongsId": "G3825",
+      "text": "Again",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1887",
+      "text": "the next day after",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2491",
+      "text": "John",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2476",
+      "text": "stood",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G1417",
+      "text": "two",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G1537",
+      "text": "of",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G846",
+      "text": "his",
+      "tokenIndex": 7
+    }
+  ],
+  "John 1:36": [
+    {
+      "strongsId": "G2532",
+      "text": "And",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1689",
+      "text": "looking upon",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2424",
+      "text": "Jesus",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G4043",
+      "text": "as he walked",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G3004",
+      "text": "he saith",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G2396",
+      "text": "Behold",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G286",
+      "text": "the Lamb",
+      "tokenIndex": 6
+    }
+  ],
+  "John 1:37": [
+    {
+      "strongsId": "G2532",
+      "text": "And",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1417",
+      "text": "the two",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3101",
+      "text": "disciples",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G191",
+      "text": "heard",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G846",
+      "text": "him",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G2980",
+      "text": "speak",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G190",
+      "text": "they followed",
+      "tokenIndex": 7
+    }
+  ],
+  "John 1:38": [
+    {
+      "strongsId": "G1161",
+      "text": "Then",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G2424",
+      "text": "Jesus",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G4762",
+      "text": "turned",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2300",
+      "text": "saw",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G846",
+      "text": "them",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G190",
+      "text": "following",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G3004",
+      "text": "and saith",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G846",
+      "text": "unto them",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G5101",
+      "text": "What",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G1161",
+      "text": "seek ye",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G2036",
+      "text": "They said",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G846",
+      "text": "unto him",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G4461",
+      "text": "Rabbi",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G3739",
+      "text": "which",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G3004",
+      "text": "is to say",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G2059",
+      "text": "being interpreted",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G1320",
+      "text": "Master",
+      "tokenIndex": 17
+    },
+    {
+      "strongsId": "G4226",
+      "text": "where",
+      "tokenIndex": 18
+    }
+  ],
+  "John 1:39": [
+    {
+      "strongsId": "G3004",
+      "text": "He saith",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G846",
+      "text": "unto them",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2064",
+      "text": "Come",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1492",
+      "text": "see",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G2064",
+      "text": "They came",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G1492",
+      "text": "saw",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G4226",
+      "text": "where",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G3306",
+      "text": "he dwelt",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G3306",
+      "text": "abode",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G3844",
+      "text": "with",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G846",
+      "text": "him",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G1565",
+      "text": "that",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G2250",
+      "text": "day",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G1161",
+      "text": "for",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G2258",
+      "text": "it was",
+      "tokenIndex": 17
+    },
+    {
+      "strongsId": "G5613",
+      "text": "about",
+      "tokenIndex": 18
+    },
+    {
+      "strongsId": "G1182",
+      "text": "the tenth",
+      "tokenIndex": 19
+    }
+  ],
+  "John 1:40": [
+    {
+      "strongsId": "G1520",
+      "text": "One",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1537",
+      "text": "of",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G1417",
+      "text": "the two",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3588",
+      "text": "which",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G3844",
+      "text": "heard",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G2491",
+      "text": "John",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2532",
+      "text": "em>, and",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G190",
+      "text": "followed",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G846",
+      "text": "him",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2258",
+      "text": "was",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G406",
+      "text": "Andrew",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G4613",
+      "text": "Simon",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G4074",
+      "text": "Peter's",
+      "tokenIndex": 12
+    }
+  ],
+  "John 1:41": [
+    {
+      "strongsId": "G3778",
+      "text": "He",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G4413",
+      "text": "first",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2147",
+      "text": "findeth",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2398",
+      "text": "his own",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G80",
+      "text": "brother",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G4613",
+      "text": "Simon",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G3004",
+      "text": "saith",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G846",
+      "text": "unto him",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2147",
+      "text": "We have found",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G3323",
+      "text": "the Messias",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G3739",
+      "text": "which",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G2076",
+      "text": "is",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G3177",
+      "text": "being interpreted",
+      "tokenIndex": 13
+    }
+  ],
+  "John 1:42": [
+    {
+      "strongsId": "G2532",
+      "text": "And",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G71",
+      "text": "he brought",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G846",
+      "text": "him",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G4314",
+      "text": "to",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2424",
+      "text": "Jesus",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G1161",
+      "text": "And",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2424",
+      "text": "when Jesus",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G1689",
+      "text": "beheld",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G846",
+      "text": "him",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2036",
+      "text": "he said",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G4771",
+      "text": "Thou",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G1488",
+      "text": "art",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G4613",
+      "text": "Simon",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G5207",
+      "text": "the son",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G2495",
+      "text": "of Jona",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G4771",
+      "text": "thou",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G2564",
+      "text": "shalt be called",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G2786",
+      "text": "Cephas",
+      "tokenIndex": 17
+    },
+    {
+      "strongsId": "G3739",
+      "text": "which",
+      "tokenIndex": 18
+    },
+    {
+      "strongsId": "G2059",
+      "text": "is by interpretation",
+      "tokenIndex": 19
+    }
+  ],
+  "John 1:43": [
+    {
+      "strongsId": "G1887",
+      "text": "The day following",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G2424",
+      "text": "Jesus",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2309",
+      "text": "would",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G1831",
+      "text": "go forth",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1519",
+      "text": "into",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G1056",
+      "text": "Galilee",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G2147",
+      "text": "findeth",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G5376",
+      "text": "Philip",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G3004",
+      "text": "saith",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G846",
+      "text": "unto him",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G190",
+      "text": "Follow",
+      "tokenIndex": 12
+    }
+  ],
+  "John 1:44": [
+    {
+      "strongsId": "G1161",
+      "text": "Now",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G5376",
+      "text": "Philip",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2258",
+      "text": "was",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G575",
+      "text": "of",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G966",
+      "text": "Bethsaida",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G4172",
+      "text": "the city",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G1537",
+      "text": "of",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G406",
+      "text": "Andrew",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 8
+    }
+  ],
+  "John 1:45": [
+    {
+      "strongsId": "G5376",
+      "text": "Philip",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G2147",
+      "text": "findeth",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3482",
+      "text": "Nathanael",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G3004",
+      "text": "saith",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G846",
+      "text": "unto him",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2147",
+      "text": "We have found",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G3739",
+      "text": "him, of whom",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G3475",
+      "text": "Moses",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G3551",
+      "text": "the law",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G4396",
+      "text": "the prophets",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G1125",
+      "text": "did write",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G2424",
+      "text": "Jesus",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G575",
+      "text": "of",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G3478",
+      "text": "Nazareth",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G5207",
+      "text": "the son",
+      "tokenIndex": 17
+    }
+  ],
+  "John 1:46": [
+    {
+      "strongsId": "G2532",
+      "text": "And",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3482",
+      "text": "Nathanael",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2036",
+      "text": "said",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G846",
+      "text": "unto him",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1410",
+      "text": "Can",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G5100",
+      "text": "there any",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G18",
+      "text": "good thing",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G1511",
+      "text": "come",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G1537",
+      "text": "out of",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G3478",
+      "text": "Nazareth",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G5376",
+      "text": "Philip",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G3004",
+      "text": "saith",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G846",
+      "text": "unto him",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G2064",
+      "text": "Come",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 14
+    }
+  ],
+  "John 1:47": [
+    {
+      "strongsId": "G2424",
+      "text": "Jesus",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1492",
+      "text": "saw",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3482",
+      "text": "Nathanael",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2064",
+      "text": "coming",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G4314",
+      "text": "to",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G846",
+      "text": "him",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G3004",
+      "text": "saith",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G4012",
+      "text": "of",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G846",
+      "text": "him",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G2396",
+      "text": "Behold",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G2475",
+      "text": "an Israelite",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G230",
+      "text": "indeed",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G3739",
+      "text": "whom",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G2076",
+      "text": "is",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G3756",
+      "text": "no",
+      "tokenIndex": 16
+    }
+  ],
+  "John 1:48": [
+    {
+      "strongsId": "G3482",
+      "text": "Nathanael",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3004",
+      "text": "saith",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G846",
+      "text": "unto him",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G4159",
+      "text": "Whence",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1097",
+      "text": "knowest thou",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G3165",
+      "text": "me",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2424",
+      "text": "Jesus",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G611",
+      "text": "answered",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2036",
+      "text": "said",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G846",
+      "text": "unto him",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G4253",
+      "text": "Before",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G5376",
+      "text": "that Philip",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G5455",
+      "text": "called",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G4571",
+      "text": "thee",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G5607",
+      "text": "when thou wast",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G5259",
+      "text": "under",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G4808",
+      "text": "the fig tree",
+      "tokenIndex": 17
+    },
+    {
+      "strongsId": "G1492",
+      "text": "I saw",
+      "tokenIndex": 18
+    }
+  ],
+  "John 1:49": [
+    {
+      "strongsId": "G3482",
+      "text": "Nathanael",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G611",
+      "text": "answered",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3004",
+      "text": "saith",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G846",
+      "text": "unto him",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G4461",
+      "text": "Rabbi",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G4771",
+      "text": "thou",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G1488",
+      "text": "art",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G5207",
+      "text": "the Son",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2316",
+      "text": "of God",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G4771",
+      "text": "thou",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G1488",
+      "text": "art",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G935",
+      "text": "the King",
+      "tokenIndex": 12
+    }
+  ],
+  "John 1:50": [
+    {
+      "strongsId": "G2424",
+      "text": "Jesus",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G611",
+      "text": "answered",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2036",
+      "text": "said",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G846",
+      "text": "unto him",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G3754",
+      "text": "Because",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2036",
+      "text": "I said",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G4671",
+      "text": "unto thee",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G1492",
+      "text": "I saw",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G4571",
+      "text": "thee",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G5270",
+      "text": "under",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G4808",
+      "text": "the fig tree",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G4100",
+      "text": "believest thou",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G3700",
+      "text": "thou shalt see",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G3187",
+      "text": "greater things",
+      "tokenIndex": 14
+    }
+  ],
+  "John 1:51": [
+    {
+      "strongsId": "G2532",
+      "text": "And",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3004",
+      "text": "he saith",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G846",
+      "text": "unto him",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G281",
+      "text": "Verily",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G281",
+      "text": "verily",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G3004",
+      "text": "I say",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G5213",
+      "text": "unto you",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G575",
+      "text": "Hereafter",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G3700",
+      "text": "ye shall see",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G3772",
+      "text": "heaven",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G455",
+      "text": "open",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G32",
+      "text": "the angels",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G2316",
+      "text": "of God",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G305",
+      "text": "ascending",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G2597",
+      "text": "descending",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G1909",
+      "text": "upon",
+      "tokenIndex": 17
+    },
+    {
+      "strongsId": "G5207",
+      "text": "the Son",
+      "tokenIndex": 18
+    }
+  ],
+  "Romans 8:1": [
+    {
+      "strongsId": "G686",
+      "text": "em> therefore",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3568",
+      "text": "now",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3762",
+      "text": "no",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2631",
+      "text": "condemnation",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1722",
+      "text": "to them which are in",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G5547",
+      "text": "Christ",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2424",
+      "text": "Jesus",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G4043",
+      "text": "who walk",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G3361",
+      "text": "not",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2596",
+      "text": "after",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G4561",
+      "text": "the flesh",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G235",
+      "text": "but",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G2596",
+      "text": "after",
+      "tokenIndex": 12
+    }
+  ],
+  "Romans 8:2": [
+    {
+      "strongsId": "G1063",
+      "text": "For",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3551",
+      "text": "the law",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G4151",
+      "text": "of the Spirit",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2222",
+      "text": "of life",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G5547",
+      "text": "Christ",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2424",
+      "text": "Jesus",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G1659",
+      "text": "hath made",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G3165",
+      "text": "me",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G1659",
+      "text": "free",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G575",
+      "text": "from",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G3551",
+      "text": "the law",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G266",
+      "text": "of sin",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 13
+    }
+  ],
+  "Romans 8:3": [
+    {
+      "strongsId": "G1063",
+      "text": "For",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3551",
+      "text": "what the law",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G102",
+      "text": "could not do",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G3739",
+      "text": "that",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G770",
+      "text": "it was weak",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G1223",
+      "text": "through",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G4561",
+      "text": "the flesh",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G2316",
+      "text": "God",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G3992",
+      "text": "sending",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G1438",
+      "text": "his own",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G5207",
+      "text": "Son",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G3667",
+      "text": "the likeness",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G266",
+      "text": "of sinful",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G4561",
+      "text": "flesh",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G4012",
+      "text": "for",
+      "tokenIndex": 17
+    },
+    {
+      "strongsId": "G266",
+      "text": "sin",
+      "tokenIndex": 18
+    },
+    {
+      "strongsId": "G2632",
+      "text": "condemned",
+      "tokenIndex": 19
+    },
+    {
+      "strongsId": "G266",
+      "text": "sin",
+      "tokenIndex": 20
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 21
+    }
+  ],
+  "Romans 8:4": [
+    {
+      "strongsId": "G2443",
+      "text": "That",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1345",
+      "text": "the righteousness",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3551",
+      "text": "of the law",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G4137",
+      "text": "might be fulfilled",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G2254",
+      "text": "us",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G4043",
+      "text": "who walk",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G3361",
+      "text": "not",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G2596",
+      "text": "after",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G4561",
+      "text": "the flesh",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G235",
+      "text": "but",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G2596",
+      "text": "after",
+      "tokenIndex": 11
+    }
+  ],
+  "Romans 8:5": [
+    {
+      "strongsId": "G1063",
+      "text": "For",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G5607",
+      "text": "they that are",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2596",
+      "text": "after",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G4561",
+      "text": "the flesh",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G5426",
+      "text": "do mind",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G3588",
+      "text": "the things",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G4561",
+      "text": "of the flesh",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G1161",
+      "text": "but",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G2596",
+      "text": "they that are after",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G4151",
+      "text": "the Spirit",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G3588",
+      "text": "the things",
+      "tokenIndex": 10
+    }
+  ],
+  "Romans 8:6": [
+    {
+      "strongsId": "G1063",
+      "text": "For",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G5427",
+      "text": "to be",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G4561",
+      "text": "carnally",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G5427",
+      "text": "minded",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2288",
+      "text": "em> death",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G1161",
+      "text": "but",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G5427",
+      "text": "to be",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G4151",
+      "text": "spiritually",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G5427",
+      "text": "minded",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2222",
+      "text": "em> life",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 10
+    }
+  ],
+  "Romans 8:7": [
+    {
+      "strongsId": "G1360",
+      "text": "Because",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G4561",
+      "text": "the carnal",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G5427",
+      "text": "mind",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2189",
+      "text": "em> enmity",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1519",
+      "text": "against",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G2316",
+      "text": "God",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G1063",
+      "text": "for",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G5293",
+      "text": "it is",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G3756",
+      "text": "not",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G5293",
+      "text": "subject",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G3551",
+      "text": "to the law",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G2316",
+      "text": "of God",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G3761",
+      "text": "neither",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G1063",
+      "text": "indeed",
+      "tokenIndex": 13
+    }
+  ],
+  "Romans 8:8": [
+    {
+      "strongsId": "G1161",
+      "text": "So then",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G5607",
+      "text": "they that are",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G4561",
+      "text": "the flesh",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1410",
+      "text": "cannot",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G700",
+      "text": "please",
+      "tokenIndex": 5
+    }
+  ],
+  "Romans 8:9": [
+    {
+      "strongsId": "G1161",
+      "text": "But",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G5210",
+      "text": "ye",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2075",
+      "text": "are",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3756",
+      "text": "not",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G4561",
+      "text": "the flesh",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G235",
+      "text": "but",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G4151",
+      "text": "the Spirit",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G1512",
+      "text": "if so be",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G4151",
+      "text": "that the Spirit",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G2316",
+      "text": "of God",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G3611",
+      "text": "dwell",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G5213",
+      "text": "you",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G1161",
+      "text": "Now",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G1536",
+      "text": "if any man",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G2192",
+      "text": "have",
+      "tokenIndex": 17
+    },
+    {
+      "strongsId": "G3756",
+      "text": "not",
+      "tokenIndex": 18
+    },
+    {
+      "strongsId": "G4151",
+      "text": "the Spirit",
+      "tokenIndex": 19
+    },
+    {
+      "strongsId": "G5547",
+      "text": "of Christ",
+      "tokenIndex": 20
+    },
+    {
+      "strongsId": "G3778",
+      "text": "he",
+      "tokenIndex": 21
+    },
+    {
+      "strongsId": "G2076",
+      "text": "is",
+      "tokenIndex": 22
+    },
+    {
+      "strongsId": "G3756",
+      "text": "none",
+      "tokenIndex": 23
+    }
+  ],
+  "Romans 8:10": [
+    {
+      "strongsId": "G1161",
+      "text": "And",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1487",
+      "text": "if",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G5547",
+      "text": "Christ",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G1722",
+      "text": "em> in",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G5213",
+      "text": "you",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G3303",
+      "text": "the body",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G3498",
+      "text": "em> dead",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G1223",
+      "text": "because",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G266",
+      "text": "of sin",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G1161",
+      "text": "but",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G4151",
+      "text": "the Spirit",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G2222",
+      "text": "em> life",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G1223",
+      "text": "because",
+      "tokenIndex": 12
+    }
+  ],
+  "Romans 8:11": [
+    {
+      "strongsId": "G1161",
+      "text": "But",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1487",
+      "text": "if",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G4151",
+      "text": "the Spirit",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G1453",
+      "text": "of him that raised up",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2424",
+      "text": "Jesus",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G1537",
+      "text": "from",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G3498",
+      "text": "the dead",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G3611",
+      "text": "dwell",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G5213",
+      "text": "you",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G1453",
+      "text": "he that raised up",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G5547",
+      "text": "Christ",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G1537",
+      "text": "from",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G3498",
+      "text": "the dead",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G2227",
+      "text": "shall",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G2532",
+      "text": "also",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G2227",
+      "text": "quicken",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G5216",
+      "text": "your",
+      "tokenIndex": 17
+    },
+    {
+      "strongsId": "G2349",
+      "text": "mortal",
+      "tokenIndex": 18
+    },
+    {
+      "strongsId": "G4983",
+      "text": "bodies",
+      "tokenIndex": 19
+    },
+    {
+      "strongsId": "G1223",
+      "text": "by",
+      "tokenIndex": 20
+    },
+    {
+      "strongsId": "G846",
+      "text": "his",
+      "tokenIndex": 21
+    },
+    {
+      "strongsId": "G4151",
+      "text": "Spirit",
+      "tokenIndex": 22
+    },
+    {
+      "strongsId": "G1774",
+      "text": "that dwelleth",
+      "tokenIndex": 23
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 24
+    }
+  ],
+  "Romans 8:12": [
+    {
+      "strongsId": "G3767",
+      "text": "Therefore",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G80",
+      "text": "brethren",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2070",
+      "text": "we are",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3781",
+      "text": "debtors",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G3756",
+      "text": "not",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G4561",
+      "text": "to the flesh",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2198",
+      "text": "to live",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G2596",
+      "text": "after",
+      "tokenIndex": 7
+    }
+  ],
+  "Romans 8:13": [
+    {
+      "strongsId": "G1063",
+      "text": "For",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1487",
+      "text": "if",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2198",
+      "text": "ye live",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2596",
+      "text": "after",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G4561",
+      "text": "the flesh",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G3195",
+      "text": "ye shall",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G599",
+      "text": "die",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G1161",
+      "text": "but",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G1487",
+      "text": "if",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2289",
+      "text": "ye",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G4151",
+      "text": "through the Spirit",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G2289",
+      "text": "do mortify",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G4234",
+      "text": "the deeds",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G4983",
+      "text": "of the body",
+      "tokenIndex": 13
+    }
+  ],
+  "Romans 8:14": [
+    {
+      "strongsId": "G1063",
+      "text": "For",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3745",
+      "text": "as many as",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G71",
+      "text": "are led",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G4151",
+      "text": "by the Spirit",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2316",
+      "text": "of God",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G3778",
+      "text": "they",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G1526",
+      "text": "are",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G5207",
+      "text": "the sons",
+      "tokenIndex": 7
+    }
+  ],
+  "Romans 8:15": [
+    {
+      "strongsId": "G1063",
+      "text": "For",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G2983",
+      "text": "ye have",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3756",
+      "text": "not",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2983",
+      "text": "received",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G4151",
+      "text": "the spirit",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G1397",
+      "text": "of bondage",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G3825",
+      "text": "again",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G1519",
+      "text": "to",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G5401",
+      "text": "fear",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G235",
+      "text": "but",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G2983",
+      "text": "ye have received",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G4151",
+      "text": "the Spirit",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G5206",
+      "text": "of adoption",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G3739",
+      "text": "whereby",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G2896",
+      "text": "we cry",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G5",
+      "text": "Abba",
+      "tokenIndex": 15
+    }
+  ],
+  "Romans 8:16": [
+    {
+      "strongsId": "G4151",
+      "text": "The Spirit",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G846",
+      "text": "itself",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G4828",
+      "text": "beareth witness",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2257",
+      "text": "with our",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G4151",
+      "text": "spirit",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G3754",
+      "text": "that",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2070",
+      "text": "we are",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G5043",
+      "text": "the children",
+      "tokenIndex": 7
+    }
+  ],
+  "Romans 8:17": [
+    {
+      "strongsId": "G1161",
+      "text": "And",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1487",
+      "text": "if",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G5043",
+      "text": "children",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2532",
+      "text": "then",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2818",
+      "text": "heirs",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G2818",
+      "text": "heirs",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2316",
+      "text": "of God",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G1161",
+      "text": "and",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G4789",
+      "text": "joint-heirs",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G5547",
+      "text": "with Christ",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G1512",
+      "text": "if so be",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G4841",
+      "text": "that we suffer with",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G2443",
+      "text": "em>, that",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G4888",
+      "text": "we may be",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G2532",
+      "text": "also",
+      "tokenIndex": 14
+    }
+  ],
+  "Romans 8:18": [
+    {
+      "strongsId": "G1063",
+      "text": "For",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3049",
+      "text": "I reckon",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3754",
+      "text": "that",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3804",
+      "text": "the sufferings",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G3568",
+      "text": "of this present",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G2540",
+      "text": "time",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G3756",
+      "text": "em> not",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G514",
+      "text": "worthy",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G4314",
+      "text": "em> with",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G1391",
+      "text": "the glory",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G3195",
+      "text": "which shall",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G601",
+      "text": "be revealed",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G1519",
+      "text": "in",
+      "tokenIndex": 12
+    }
+  ],
+  "Romans 8:19": [
+    {
+      "strongsId": "G1063",
+      "text": "For",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G603",
+      "text": "the earnest expectation",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2937",
+      "text": "of the creature",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G553",
+      "text": "waiteth",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G602",
+      "text": "for the manifestation",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G5207",
+      "text": "of the sons",
+      "tokenIndex": 5
+    }
+  ],
+  "Romans 8:20": [
+    {
+      "strongsId": "G1063",
+      "text": "For",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G2937",
+      "text": "the creature",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G5293",
+      "text": "was made subject",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3153",
+      "text": "to vanity",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G3756",
+      "text": "not",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G1635",
+      "text": "willingly",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G235",
+      "text": "but",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G1223",
+      "text": "by reason",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G5293",
+      "text": "of him who hath subjected",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G1909",
+      "text": "em> in",
+      "tokenIndex": 9
+    }
+  ],
+  "Romans 8:21": [
+    {
+      "strongsId": "G3754",
+      "text": "Because",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G2937",
+      "text": "the creature",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G846",
+      "text": "itself",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2532",
+      "text": "also",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1659",
+      "text": "shall be delivered",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G575",
+      "text": "from",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G1397",
+      "text": "the bondage",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G5356",
+      "text": "of corruption",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G1519",
+      "text": "into",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G1391",
+      "text": "the glorious",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G1657",
+      "text": "liberty",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G5043",
+      "text": "of the children",
+      "tokenIndex": 11
+    }
+  ],
+  "Romans 8:22": [
+    {
+      "strongsId": "G1063",
+      "text": "For",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1492",
+      "text": "we know",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3754",
+      "text": "that",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3956",
+      "text": "the whole",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2937",
+      "text": "creation",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G4959",
+      "text": "groaneth",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G4944",
+      "text": "travaileth in pain together",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G891",
+      "text": "until",
+      "tokenIndex": 8
+    }
+  ],
+  "Romans 8:23": [
+    {
+      "strongsId": "G1161",
+      "text": "And",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3756",
+      "text": "not",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3440",
+      "text": "only",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G235",
+      "text": "em>, but",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G846",
+      "text": "ourselves",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G2532",
+      "text": "also",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2192",
+      "text": "which have",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G536",
+      "text": "the firstfruits",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G4151",
+      "text": "of the Spirit",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2532",
+      "text": "even",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G2249",
+      "text": "we",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G846",
+      "text": "ourselves",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G4727",
+      "text": "groan",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G1722",
+      "text": "within",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G1438",
+      "text": "ourselves",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G553",
+      "text": "waiting",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G5206",
+      "text": "for the adoption",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G629",
+      "text": "em>, the redemption",
+      "tokenIndex": 17
+    },
+    {
+      "strongsId": "G2257",
+      "text": "of our",
+      "tokenIndex": 18
+    }
+  ],
+  "Romans 8:24": [
+    {
+      "strongsId": "G1063",
+      "text": "For",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G4982",
+      "text": "we are saved",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G1680",
+      "text": "by hope",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G1161",
+      "text": "but",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1680",
+      "text": "hope",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G991",
+      "text": "that is seen",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2076",
+      "text": "is",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G3756",
+      "text": "not",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G1680",
+      "text": "hope",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G1063",
+      "text": "for",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G3739",
+      "text": "what",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G5100",
+      "text": "a man",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G991",
+      "text": "seeth",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G5101",
+      "text": "why",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G1679",
+      "text": "doth he",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G2532",
+      "text": "yet",
+      "tokenIndex": 15
+    }
+  ],
+  "Romans 8:25": [
+    {
+      "strongsId": "G1161",
+      "text": "But",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1487",
+      "text": "if",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G1679",
+      "text": "we hope",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3739",
+      "text": "for that",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G991",
+      "text": "we see",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G3756",
+      "text": "not",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G553",
+      "text": "em> do we",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G1223",
+      "text": "with",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G5281",
+      "text": "patience",
+      "tokenIndex": 8
+    }
+  ],
+  "Romans 8:26": [
+    {
+      "strongsId": "G5615",
+      "text": "G1161] Likewise",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G4151",
+      "text": "the Spirit",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2532",
+      "text": "also",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G4878",
+      "text": "helpeth",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2257",
+      "text": "our",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G769",
+      "text": "infirmities",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G1063",
+      "text": "for",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G1492",
+      "text": "we know",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G3756",
+      "text": "not",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G5101",
+      "text": "what",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G4336",
+      "text": "we should pray for",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G2526",
+      "text": "as",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G1163",
+      "text": "we ought",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G235",
+      "text": "but",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G4151",
+      "text": "the Spirit",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G846",
+      "text": "itself",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G5241",
+      "text": "maketh intercession",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G5228",
+      "text": "for",
+      "tokenIndex": 17
+    },
+    {
+      "strongsId": "G2257",
+      "text": "us",
+      "tokenIndex": 18
+    },
+    {
+      "strongsId": "G4726",
+      "text": "with groanings",
+      "tokenIndex": 19
+    }
+  ],
+  "Romans 8:27": [
+    {
+      "strongsId": "G1161",
+      "text": "And",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G2045",
+      "text": "he that searcheth",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2588",
+      "text": "the hearts",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G1492",
+      "text": "knoweth",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G5101",
+      "text": "what",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G5427",
+      "text": "em> the mind",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G4151",
+      "text": "of the Spirit",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G3754",
+      "text": "because",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G1793",
+      "text": "he maketh intercession",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G5228",
+      "text": "for",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G40",
+      "text": "the saints",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G2596",
+      "text": "according",
+      "tokenIndex": 11
+    }
+  ],
+  "Romans 8:28": [
+    {
+      "strongsId": "G1161",
+      "text": "And",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1492",
+      "text": "we know",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3956",
+      "text": "that all things",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G4903",
+      "text": "work together",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1519",
+      "text": "for",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G18",
+      "text": "good",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G3754",
+      "text": "to them that",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G25",
+      "text": "love",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G2316",
+      "text": "God",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G5607",
+      "text": "to them who are",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G2822",
+      "text": "the called",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G2596",
+      "text": "according",
+      "tokenIndex": 11
+    }
+  ],
+  "Romans 8:29": [
+    {
+      "strongsId": "G3754",
+      "text": "For",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3739",
+      "text": "whom",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G4267",
+      "text": "he did foreknow",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G4309",
+      "text": "he",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2532",
+      "text": "also",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G4309",
+      "text": "did predestinate",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G4832",
+      "text": "em> conformed",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G1504",
+      "text": "to the image",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G846",
+      "text": "of his",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G5207",
+      "text": "Son",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G1519",
+      "text": "that",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G846",
+      "text": "he",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G1511",
+      "text": "might be",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G4416",
+      "text": "the firstborn",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G1722",
+      "text": "among",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G4183",
+      "text": "many",
+      "tokenIndex": 15
+    }
+  ],
+  "Romans 8:30": [
+    {
+      "strongsId": "G1161",
+      "text": "Moreover",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3739",
+      "text": "whom",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G4309",
+      "text": "he did predestinate",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G5128",
+      "text": "them",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2564",
+      "text": "he",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G2532",
+      "text": "also",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2564",
+      "text": "called",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G2532",
+      "text": "and",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G3739",
+      "text": "whom",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2564",
+      "text": "he called",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G5128",
+      "text": "them",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G1344",
+      "text": "he",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G2532",
+      "text": "also",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G1344",
+      "text": "justified",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G1161",
+      "text": "and",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G3739",
+      "text": "whom",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G1344",
+      "text": "he justified",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G5128",
+      "text": "them",
+      "tokenIndex": 17
+    },
+    {
+      "strongsId": "G1392",
+      "text": "he",
+      "tokenIndex": 18
+    },
+    {
+      "strongsId": "G2532",
+      "text": "also",
+      "tokenIndex": 19
+    }
+  ],
+  "Romans 8:31": [
+    {
+      "strongsId": "G5101",
+      "text": "What",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G2046",
+      "text": "shall we",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3767",
+      "text": "then",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2046",
+      "text": "say",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G4314",
+      "text": "to",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G5023",
+      "text": "these things",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G1487",
+      "text": "If",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G2316",
+      "text": "God",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G5228",
+      "text": "em> for",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2257",
+      "text": "us",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G5101",
+      "text": "who",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G2596",
+      "text": "em> against",
+      "tokenIndex": 11
+    }
+  ],
+  "Romans 8:32": [
+    {
+      "strongsId": "G1065",
+      "text": "He that",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G5339",
+      "text": "spared",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3756",
+      "text": "not",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2398",
+      "text": "his own",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G5207",
+      "text": "Son",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G235",
+      "text": "but",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G3860",
+      "text": "delivered",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G846",
+      "text": "him",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G3860",
+      "text": "up",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G5228",
+      "text": "for",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G2257",
+      "text": "us",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G3956",
+      "text": "all",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G4459",
+      "text": "how",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G5483",
+      "text": "shall he",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G3780",
+      "text": "not",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G4862",
+      "text": "with",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G846",
+      "text": "him",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G2532",
+      "text": "also",
+      "tokenIndex": 17
+    },
+    {
+      "strongsId": "G5483",
+      "text": "freely give",
+      "tokenIndex": 18
+    },
+    {
+      "strongsId": "G2254",
+      "text": "us",
+      "tokenIndex": 19
+    }
+  ],
+  "Romans 8:33": [
+    {
+      "strongsId": "G5101",
+      "text": "Who",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1458",
+      "text": "shall lay any thing",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2596",
+      "text": "to the charge",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G2316",
+      "text": "of God's",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1588",
+      "text": "elect",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G2316",
+      "text": "em> God",
+      "tokenIndex": 5
+    }
+  ],
+  "Romans 8:34": [
+    {
+      "strongsId": "G5101",
+      "text": "Who",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G2632",
+      "text": "em> he that condemneth",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G5547",
+      "text": "em> Christ",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G599",
+      "text": "that died",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G1161",
+      "text": "yea",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G2532",
+      "text": "rather",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G1453",
+      "text": "that is risen again",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G3739",
+      "text": "who",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G2076",
+      "text": "is",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2532",
+      "text": "even",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G1722",
+      "text": "at",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G1188",
+      "text": "the right hand",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G2316",
+      "text": "of God",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G3739",
+      "text": "who",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G2532",
+      "text": "also",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G1793",
+      "text": "maketh intercession",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G5228",
+      "text": "for",
+      "tokenIndex": 16
+    }
+  ],
+  "Romans 8:35": [
+    {
+      "strongsId": "G5101",
+      "text": "Who",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G5563",
+      "text": "shall separate",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G2248",
+      "text": "us",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G575",
+      "text": "from",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G26",
+      "text": "the love",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G5547",
+      "text": "of Christ",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2347",
+      "text": "em> tribulation",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G2228",
+      "text": "or",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G4730",
+      "text": "distress",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G2228",
+      "text": "or",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G1375",
+      "text": "persecution",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G2228",
+      "text": "or",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G3042",
+      "text": "famine",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G2228",
+      "text": "or",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G1132",
+      "text": "nakedness",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G2228",
+      "text": "or",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G2794",
+      "text": "peril",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G2228",
+      "text": "or",
+      "tokenIndex": 17
+    }
+  ],
+  "Romans 8:36": [
+    {
+      "strongsId": "G2531",
+      "text": "As",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3754",
+      "text": "it is written",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G4675",
+      "text": "For thy",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G1752",
+      "text": "sake",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2289",
+      "text": "we are killed",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G3650",
+      "text": "all",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2250",
+      "text": "the day long",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G3049",
+      "text": "we are accounted",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G5613",
+      "text": "as",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G4263",
+      "text": "sheep",
+      "tokenIndex": 9
+    }
+  ],
+  "Romans 8:37": [
+    {
+      "strongsId": "G235",
+      "text": "Nay",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G1722",
+      "text": "in",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3956",
+      "text": "all",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G5125",
+      "text": "these things",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G5245",
+      "text": "we are more than conquerors",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G1223",
+      "text": "through",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G25",
+      "text": "him that loved",
+      "tokenIndex": 6
+    }
+  ],
+  "Romans 8:38": [
+    {
+      "strongsId": "G1063",
+      "text": "For",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G3982",
+      "text": "I am persuaded",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3754",
+      "text": "that",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G3777",
+      "text": "neither",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G2288",
+      "text": "death",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G3777",
+      "text": "nor",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2222",
+      "text": "life",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G3777",
+      "text": "nor",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G32",
+      "text": "angels",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G3777",
+      "text": "nor",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G746",
+      "text": "principalities",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G3777",
+      "text": "nor",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G1411",
+      "text": "powers",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G3777",
+      "text": "nor",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G1764",
+      "text": "things present",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G3777",
+      "text": "nor",
+      "tokenIndex": 15
+    }
+  ],
+  "Romans 8:39": [
+    {
+      "strongsId": "G3777",
+      "text": "Nor",
+      "tokenIndex": 0
+    },
+    {
+      "strongsId": "G5313",
+      "text": "height",
+      "tokenIndex": 1
+    },
+    {
+      "strongsId": "G3777",
+      "text": "nor",
+      "tokenIndex": 2
+    },
+    {
+      "strongsId": "G899",
+      "text": "depth",
+      "tokenIndex": 3
+    },
+    {
+      "strongsId": "G3777",
+      "text": "nor",
+      "tokenIndex": 4
+    },
+    {
+      "strongsId": "G5100",
+      "text": "any",
+      "tokenIndex": 5
+    },
+    {
+      "strongsId": "G2087",
+      "text": "other",
+      "tokenIndex": 6
+    },
+    {
+      "strongsId": "G2937",
+      "text": "creature",
+      "tokenIndex": 7
+    },
+    {
+      "strongsId": "G1410",
+      "text": "shall be able",
+      "tokenIndex": 8
+    },
+    {
+      "strongsId": "G5563",
+      "text": "to separate",
+      "tokenIndex": 9
+    },
+    {
+      "strongsId": "G2248",
+      "text": "us",
+      "tokenIndex": 10
+    },
+    {
+      "strongsId": "G575",
+      "text": "from",
+      "tokenIndex": 11
+    },
+    {
+      "strongsId": "G26",
+      "text": "the love",
+      "tokenIndex": 12
+    },
+    {
+      "strongsId": "G2316",
+      "text": "of God",
+      "tokenIndex": 13
+    },
+    {
+      "strongsId": "G1722",
+      "text": "which is in",
+      "tokenIndex": 14
+    },
+    {
+      "strongsId": "G5547",
+      "text": "Christ",
+      "tokenIndex": 15
+    },
+    {
+      "strongsId": "G2424",
+      "text": "Jesus",
+      "tokenIndex": 16
+    },
+    {
+      "strongsId": "G2257",
+      "text": "our",
+      "tokenIndex": 17
+    }
+  ]
+}

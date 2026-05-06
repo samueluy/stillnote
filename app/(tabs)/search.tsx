@@ -3,6 +3,7 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
+import { SpaceSwitcher } from '@/src/components/space-switcher';
 import {
   Divider,
   EmptyState,
@@ -12,17 +13,39 @@ import {
   TopBar,
   palette,
 } from '@/src/components/primitives';
-import { searchEverything } from '@/src/lib/database';
+import { getAllTags, getSpaces, searchNotes } from '@/src/lib/database';
 import { useAppState } from '@/src/providers/app-provider';
-import type { SearchResult } from '@/src/types/domain';
+import type { SearchResult, Space, Tag } from '@/src/types/domain';
 
 export default function SearchScreen() {
   const db = useSQLiteContext();
   const router = useRouter();
-  const { activeSpaceId } = useAppState();
+  const { activeSpaceId, setActiveSpaceId } = useAppState();
 
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
+  const [spaces, setSpaces] = useState<Space[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    getSpaces(db).then((nextSpaces) => {
+      if (!cancelled) {
+        setSpaces(nextSpaces);
+      }
+    });
+
+    getAllTags(db, activeSpaceId).then((nextTags) => {
+      if (!cancelled) {
+        setTags(nextTags);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [activeSpaceId, db]);
 
   useEffect(() => {
     let cancelled = false;
@@ -31,11 +54,14 @@ export default function SearchScreen() {
         setResults([]);
         return;
       }
-      const nextResults = await searchEverything(db, activeSpaceId, query);
+      const nextResults = await searchNotes(db, {
+        spaceId: activeSpaceId,
+        query,
+      });
       if (!cancelled) {
         setResults(nextResults);
       }
-    }, 160);
+    }, 120);
 
     return () => {
       cancelled = true;
@@ -46,56 +72,76 @@ export default function SearchScreen() {
   return (
     <Screen>
       <TopBar title="Search" />
+      <View style={styles.spaceWrap}>
+        <SpaceSwitcher activeSpaceId={activeSpaceId} onChange={setActiveSpaceId} spaces={spaces} />
+      </View>
       <View style={styles.searchWrap}>
         <SearchField
           onChangeText={setQuery}
-          placeholder="Search notes or scripture"
+          placeholder="Search notes, tags, or references"
           value={query}
         />
       </View>
 
-      <FlatList
+      <FlatList<SearchResult | Tag>
         contentContainerStyle={styles.listContent}
-        data={results}
+        data={(query.trim() ? results : tags) as (SearchResult | Tag)[]}
         ItemSeparatorComponent={Divider}
-        keyExtractor={(item) => `${item.type}-${item.id}`}
+        keyExtractor={(item) => item.id}
         ListEmptyComponent={
           query.trim() ? (
             <EmptyState title="Nothing found" subtitle="Try a different word or verse reference." />
           ) : (
             <EmptyState
-              subtitle="Find a note by title, theme, or passage reference."
-              title="Start with a search"
+              subtitle="Your tags will gather here for quiet browsing."
+              title="No tags yet"
             />
           )
         }
-        renderItem={({ item }) => (
-          <ListRow
-            left={
-              <View>
-                <Text style={styles.resultTitle}>{item.title}</Text>
-                <Text numberOfLines={2} style={styles.resultBody}>
-                  {item.body}
+        renderItem={({ item }) =>
+          query.trim() ? (
+            <ListRow
+              hapticIntent="confirm"
+              left={
+                <View>
+                  <Text style={styles.resultTitle}>{(item as SearchResult).title}</Text>
+                  <Text numberOfLines={1} style={styles.resultBody}>
+                    {(item as SearchResult).preview}
+                  </Text>
+                </View>
+              }
+              onPress={() => router.push(`/editor/${(item as SearchResult).id}`)}
+              right={
+                <Text style={styles.resultType}>
+                  {new Date((item as SearchResult).updatedAt).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                  })}
                 </Text>
-              </View>
-            }
-            onPress={() =>
-              item.type === 'note'
-                ? router.push(`/editor/${item.id}`)
-                : router.push({ pathname: '/(tabs)/bible', params: { reference: item.title } })
-            }
-            right={<Text style={styles.resultType}>{item.type}</Text>}
-          />
-        )}
+              }
+            />
+          ) : (
+            <ListRow
+              hapticIntent="selection"
+              left={<Text style={styles.tagName}>#{(item as Tag).name}</Text>}
+              onPress={() => setQuery(`#${(item as Tag).name}`)}
+              right={<Text style={styles.resultType}>{(item as Tag).noteCount ?? 0}</Text>}
+            />
+          )
+        }
       />
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  searchWrap: {
+  spaceWrap: {
     paddingHorizontal: 20,
     paddingTop: 8,
+  },
+  searchWrap: {
+    paddingHorizontal: 20,
+    paddingTop: 12,
   },
   listContent: {
     paddingBottom: 112,
@@ -119,6 +165,10 @@ const styles = StyleSheet.create({
     color: palette.textMuted,
     fontFamily: 'RobotoMono_400Regular',
     fontSize: 11,
-    textTransform: 'uppercase',
+  },
+  tagName: {
+    color: palette.text,
+    fontFamily: 'RobotoMono_500Medium',
+    fontSize: 13,
   },
 });

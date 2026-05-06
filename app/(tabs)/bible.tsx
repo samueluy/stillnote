@@ -1,206 +1,425 @@
-import { useLocalSearchParams } from 'expo-router';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 
+import strongsTokenMap from '@/assets/data/strongs/kjv-token-map.json';
+import { AnnotationCanvas } from '@/src/components/annotation-canvas';
+import { AnnotationToolbar } from '@/src/components/annotation-toolbar';
 import { ConcordanceModal } from '@/src/components/concordance-modal';
+import { PlainListSheet } from '@/src/components/plain-list-sheet';
+import { Divider, EmptyState, Screen, TextLink, TopBar, palette } from '@/src/components/primitives';
 import {
-  Divider,
-  EmptyState,
-  SearchField,
-  Screen,
-  TextLink,
-  TopBar,
-  palette,
-} from '@/src/components/primitives';
-import { BIBLE_BOOKS } from '@/src/data/bible-books';
-import { getConcordanceEntry } from '@/src/data/concordance';
-import {
+  buildBibleAnnotationTargetKey,
+  clearAnnotationStrokes,
   getBibleChapter,
-  getRecentLookups,
-  getVerseByReference,
-  trackLookup,
+  getBibleChapterCount,
+  getBibleBooks,
+  getAnnotationStrokes,
+  getStrongsEntryForToken,
+  getInstalledTranslations,
+  replaceAnnotationStrokes,
 } from '@/src/lib/database';
-import type { BibleVerse } from '@/src/types/domain';
+import { useAppState } from '@/src/providers/app-provider';
+import type {
+  AnnotationColorKey,
+  AnnotationStroke,
+  AnnotationTool,
+  BibleTranslationCode,
+  BibleVerse,
+  ConcordanceEntry,
+  InstalledTranslation,
+} from '@/src/types/domain';
 
-function VerseLine({
-  verse,
-  onLookup,
-}: {
-  verse: BibleVerse;
-  onLookup: (entryId: string) => void;
-}) {
-  if (verse.reference === 'John 1:1') {
-    return (
-      <Text style={styles.verseText}>
-        <Text style={styles.verseNumber}>{verse.verse}</Text>{' '}
-        In the{' '}
-        <Text onLongPress={() => onLookup('entry-arche')} style={styles.inlineReference}>
-          beginning
-        </Text>{' '}
-        was the Word, and the Word was with God, and the Word was God.
-      </Text>
-    );
+function normalizeToken(value: string) {
+  return value.replace(/^[^A-Za-z]+|[^A-Za-z]+$/g, '').toLowerCase();
+}
+
+function buildVerseSegments(verse: BibleVerse) {
+  const mappedTokens =
+    verse.translationCode === 'KJV'
+      ? (strongsTokenMap as Record<string, { strongsId: string; text: string; tokenIndex: number }[]>)[
+          verse.reference
+        ] ?? []
+      : [];
+
+  if (!mappedTokens.length) {
+    return [{ key: `${verse.reference}-plain`, text: verse.text, tokenIndex: null }];
   }
 
-  if (verse.reference === 'John 1:4') {
-    return (
-      <Text style={styles.verseText}>
-        <Text style={styles.verseNumber}>{verse.verse}</Text> In him was life, and the life was the{' '}
-        <Text onLongPress={() => onLookup('entry-phos')} style={styles.inlineReference}>
-          light
-        </Text>{' '}
-        of men.
-      </Text>
-    );
-  }
+  const sourceTokens = verse.text.match(/[A-Za-z']+|[^A-Za-z']+/g) ?? [verse.text];
+  let mappedIndex = 0;
 
-  return (
-    <Text style={styles.verseText}>
-      <Text style={styles.verseNumber}>{verse.verse}</Text> {verse.text}
-    </Text>
-  );
+  return sourceTokens.map((token, index) => {
+    if (!/[A-Za-z']/.test(token)) {
+      return {
+        key: `${verse.reference}-sep-${index}`,
+        text: token,
+        tokenIndex: null,
+      };
+    }
+
+    const candidate = mappedTokens[mappedIndex];
+    if (candidate && normalizeToken(candidate.text) === normalizeToken(token)) {
+      mappedIndex += 1;
+      return {
+        key: `${verse.reference}-word-${candidate.tokenIndex}`,
+        text: token,
+        tokenIndex: candidate.tokenIndex,
+      };
+    }
+
+    return {
+      key: `${verse.reference}-word-${index}`,
+      text: token,
+      tokenIndex: null,
+    };
+  });
 }
 
 export default function BibleScreen() {
-  const db = useSQLiteContext();
   const params = useLocalSearchParams<{ reference?: string }>();
+  const db = useSQLiteContext();
+  const translationSheetRef = useRef<BottomSheetModal>(null);
+  const bookSheetRef = useRef<BottomSheetModal>(null);
+  const chapterSheetRef = useRef<BottomSheetModal>(null);
+  const { activeTranslationCode, setActiveTranslationCode, lastBibleReference, setLastBibleReference } =
+    useAppState();
 
   const [book, setBook] = useState('John');
   const [chapter, setChapter] = useState(1);
-  const [jumpValue, setJumpValue] = useState('');
+  const [books, setBooks] = useState<string[]>([]);
+  const [chapterCount, setChapterCount] = useState(1);
+  const [installedTranslations, setInstalledTranslations] = useState<InstalledTranslation[]>([]);
+  const [selectedEntry, setSelectedEntry] = useState<ConcordanceEntry | null>(null);
   const [verses, setVerses] = useState<BibleVerse[]>([]);
-  const [recentLookups, setRecentLookups] = useState<string[]>([]);
-  const [lookupEntryId, setLookupEntryId] = useState('entry-arche');
-  const [isLookupVisible, setIsLookupVisible] = useState(false);
-  const [bookIndex, setBookIndex] = useState(BIBLE_BOOKS.indexOf('John'));
+  const [isAnnotating, setIsAnnotating] = useState(false);
+  const [annotationTool, setAnnotationTool] = useState<AnnotationTool>('pan');
+  const [annotationColorKey, setAnnotationColorKey] = useState<AnnotationColorKey>('ochre');
+  const [annotationStrokes, setAnnotationStrokes] = useState<AnnotationStroke[]>([]);
+  const [contentHeight, setContentHeight] = useState(1);
+  const [contentWidth, setContentWidth] = useState(1);
+  const [scrollY, setScrollY] = useState(0);
+  const [viewportHeight, setViewportHeight] = useState(1);
+  const [viewportWidth, setViewportWidth] = useState(1);
 
-  useEffect(() => {
-    if (!params.reference) {
-      return;
-    }
-    const match = params.reference.match(/^(.*)\s+(\d+):(\d+)$/);
-    if (!match) {
-      return;
-    }
-    const nextBook = match[1];
-    const nextChapter = Number(match[2]);
-    setBook(nextBook);
-    setChapter(nextChapter);
-    setBookIndex(Math.max(0, BIBLE_BOOKS.indexOf(nextBook as (typeof BIBLE_BOOKS)[number])));
-  }, [params.reference]);
-
-  const loadChapter = useCallback(async () => {
-    setVerses(await getBibleChapter(db, book, chapter));
-  }, [book, chapter, db]);
-
-  const loadLookupHistory = useCallback(async () => {
-    const history = await getRecentLookups(db);
-    setRecentLookups(history.map((item) => item.entryId));
-  }, [db]);
-
-  useEffect(() => {
-    loadChapter();
-  }, [loadChapter]);
-
-  useEffect(() => {
-    loadLookupHistory();
-  }, [loadLookupHistory]);
-
-  const stepBook = (direction: -1 | 1) => {
-    const nextIndex = Math.min(BIBLE_BOOKS.length - 1, Math.max(0, bookIndex + direction));
-    setBookIndex(nextIndex);
-    setBook(BIBLE_BOOKS[nextIndex]);
-    setChapter(1);
-  };
-
-  const stepChapter = (direction: -1 | 1) => {
-    setChapter((current) => Math.max(1, current + direction));
-  };
-
-  const jumpToReference = useCallback(async () => {
-    const verse = await getVerseByReference(db, jumpValue.trim());
-    if (!verse) {
-      return;
-    }
-    setBook(verse.book);
-    setChapter(verse.chapter);
-    setBookIndex(Math.max(0, BIBLE_BOOKS.indexOf(verse.book as (typeof BIBLE_BOOKS)[number])));
-    setJumpValue('');
-  }, [db, jumpValue]);
-
-  const handleLookup = useCallback(
-    async (entryId: string) => {
-      setLookupEntryId(entryId);
-      setIsLookupVisible(true);
-      await trackLookup(db, entryId);
-      await loadLookupHistory();
-    },
-    [db, loadLookupHistory]
+  const annotationTargetKey = useMemo(
+    () =>
+      buildBibleAnnotationTargetKey({
+        translationCode: activeTranslationCode as BibleTranslationCode,
+        book,
+        chapter,
+      }),
+    [activeTranslationCode, book, chapter]
   );
 
-  const lookupEntry = useMemo(() => getConcordanceEntry(lookupEntryId), [lookupEntryId]);
+  const applyReference = useCallback((reference: string) => {
+    const match = reference.match(/^(.*)\s+(\d+):(\d+)$/);
+    if (!match) {
+      return false;
+    }
+
+    setBook(match[1]);
+    setChapter(Number(match[2]));
+    return true;
+  }, []);
+
+  useEffect(() => {
+    if (params.reference && applyReference(params.reference)) {
+      setLastBibleReference(params.reference);
+      return;
+    }
+
+    applyReference(lastBibleReference);
+  }, [applyReference, lastBibleReference, params.reference, setLastBibleReference]);
+
+  const loadStaticData = useCallback(async () => {
+    const [nextBooks, nextTranslations] = await Promise.all([
+      getBibleBooks(db, activeTranslationCode as BibleTranslationCode),
+      getInstalledTranslations(db),
+    ]);
+    setBooks(nextBooks);
+    setInstalledTranslations(nextTranslations);
+  }, [activeTranslationCode, db]);
+
+  const loadChapterData = useCallback(async () => {
+    const [nextChapterCount, nextVerses] = await Promise.all([
+      getBibleChapterCount(db, {
+        translationCode: activeTranslationCode as BibleTranslationCode,
+        book,
+      }),
+      getBibleChapter(db, {
+        translationCode: activeTranslationCode as BibleTranslationCode,
+        book,
+        chapter,
+      }),
+    ]);
+
+    setChapterCount(nextChapterCount);
+    setVerses(nextVerses);
+    setLastBibleReference(`${book} ${chapter}:1`);
+  }, [activeTranslationCode, book, chapter, db, setLastBibleReference]);
+
+  useEffect(() => {
+    loadChapterData();
+  }, [loadChapterData]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    getAnnotationStrokes(db, {
+      targetKey: annotationTargetKey,
+      targetType: 'bible',
+    }).then((strokes) => {
+      if (!cancelled) {
+        setAnnotationStrokes(strokes);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [annotationTargetKey, db]);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadStaticData();
+    }, [loadStaticData])
+  );
+
+  const translationItems = useMemo(
+    () =>
+      installedTranslations.map((translation) => ({
+        key: translation.code,
+        label: translation.name,
+        description: translation.code,
+        onPress: () => {
+          setActiveTranslationCode(translation.code);
+          translationSheetRef.current?.dismiss();
+        },
+      })),
+    [installedTranslations, setActiveTranslationCode]
+  );
+
+  const bookItems = useMemo(
+    () =>
+      books.map((bookName) => ({
+        key: bookName,
+        label: bookName,
+        onPress: () => {
+          setBook(bookName);
+          setChapter(1);
+          bookSheetRef.current?.dismiss();
+        },
+      })),
+    [books]
+  );
+
+  const chapterItems = useMemo(
+    () =>
+      Array.from({ length: chapterCount }, (_, index) => {
+        const value = index + 1;
+        return {
+          key: String(value),
+          label: `Chapter ${value}`,
+          onPress: () => {
+            setChapter(value);
+            chapterSheetRef.current?.dismiss();
+          },
+        };
+      }),
+    [chapterCount]
+  );
+
+  const openTokenStudy = useCallback(
+    async (verse: BibleVerse, tokenIndex: number | null) => {
+      if (isAnnotating || tokenIndex === null || verse.translationCode !== 'KJV') {
+        return;
+      }
+
+      const entry = await getStrongsEntryForToken(db, {
+        reference: verse.reference,
+        tokenIndex,
+        translationCode: 'KJV',
+      });
+      if (!entry) {
+        return;
+      }
+
+      setSelectedEntry({
+        gloss: entry.definition,
+        id: entry.id,
+        lexiconDefinition: entry.definition,
+        original: entry.original,
+        partOfSpeech: entry.testament === 'OT' ? 'Hebrew' : 'Greek',
+        pronunciation: entry.pronunciation,
+        rootWord: entry.strongsId,
+        strongsId: entry.strongsId,
+        transliteration: entry.transliteration,
+        usageBreakdown: [],
+      });
+    },
+    [db, isAnnotating]
+  );
+
+  const persistStrokes = useCallback(
+    async (nextStrokes: AnnotationStroke[]) => {
+      await replaceAnnotationStrokes(db, {
+        strokes: nextStrokes,
+        targetKey: annotationTargetKey,
+        targetType: 'bible',
+      });
+    },
+    [annotationTargetKey, db]
+  );
+
+  const commitStroke = useCallback(
+    (stroke: Omit<AnnotationStroke, 'targetKey' | 'targetType'>) => {
+      const nextStroke: AnnotationStroke = {
+        ...stroke,
+        targetKey: annotationTargetKey,
+        targetType: 'bible',
+      };
+
+      setAnnotationStrokes((current) => {
+        const next = [...current, nextStroke];
+        void persistStrokes(next);
+        return next;
+      });
+    },
+    [annotationTargetKey, persistStrokes]
+  );
+
+  const undoStroke = useCallback(() => {
+    setAnnotationStrokes((current) => {
+      const next = current.slice(0, -1);
+      void persistStrokes(next);
+      return next;
+    });
+  }, [persistStrokes]);
+
+  const clearStrokes = useCallback(() => {
+    setAnnotationStrokes([]);
+    void clearAnnotationStrokes(db, {
+      targetKey: annotationTargetKey,
+      targetType: 'bible',
+    });
+  }, [annotationTargetKey, db]);
 
   return (
     <Screen>
       <TopBar title="Bible" />
       <View style={styles.controls}>
-        <View style={styles.referenceRow}>
-          <TextLink label="Prev Book" onPress={() => stepBook(-1)} />
-          <Text style={styles.referenceLabel}>{book}</Text>
-          <TextLink label="Next Book" onPress={() => stepBook(1)} />
+        <View style={styles.controlRow}>
+          <Text style={styles.controlLabel}>Book</Text>
+          <TextLink
+            hapticIntent="selection"
+            label={book}
+            onPress={() => bookSheetRef.current?.present()}
+          />
         </View>
-        <View style={styles.referenceRow}>
-          <TextLink label="−" onPress={() => stepChapter(-1)} />
-          <Text style={styles.referenceLabel}>Chapter {chapter}</Text>
-          <TextLink label="+" onPress={() => stepChapter(1)} />
+        <View style={styles.controlRow}>
+          <Text style={styles.controlLabel}>Chapter</Text>
+          <TextLink
+            hapticIntent="selection"
+            label={`Chapter ${chapter}`}
+            onPress={() => chapterSheetRef.current?.present()}
+          />
         </View>
-        <SearchField
-          onChangeText={setJumpValue}
-          placeholder="Jump to a verse, e.g. John 1:1"
-          value={jumpValue}
-        />
-        <TextLink label="Go" onPress={jumpToReference} />
+        <View style={styles.controlRow}>
+          <Text style={styles.controlLabel}>Translation</Text>
+          <TextLink
+            hapticIntent="selection"
+            label={
+              installedTranslations.find((item) => item.code === activeTranslationCode)?.code ??
+              activeTranslationCode
+            }
+            onPress={() => translationSheetRef.current?.present()}
+          />
+        </View>
+        <View style={styles.controlRow}>
+          <Text style={styles.controlLabel}>Markings</Text>
+          <TextLink
+            hapticIntent="selection"
+            label={isAnnotating ? 'Done' : 'Annotate'}
+            onPress={() => setIsAnnotating((current) => !current)}
+          />
+        </View>
       </View>
 
-      <FlatList
-        contentContainerStyle={styles.listContent}
-        data={verses}
-        ItemSeparatorComponent={Divider}
-        keyExtractor={(item) => item.reference}
-        ListEmptyComponent={<EmptyState subtitle="Choose another reference to continue reading." title="No verses found" />}
-        ListHeaderComponent={
-          recentLookups.length ? (
-            <View style={styles.lookupSection}>
-              <Text style={styles.lookupLabel}>Recent concordance lookups</Text>
-              <View style={styles.lookupRow}>
-                {recentLookups.map((entryId) => {
-                  const entry = getConcordanceEntry(entryId);
-                  return (
-                    <Pressable
-                      key={entryId}
-                      onPress={() => handleLookup(entryId)}
-                      style={({ pressed }) => [styles.lookupChip, pressed && styles.pressed]}>
-                      <Text style={styles.lookupChipText}>{entry.strongsId}</Text>
-                    </Pressable>
-                  );
-                })}
-              </View>
+      <View
+        onLayout={(event) => {
+          setViewportHeight(Math.max(event.nativeEvent.layout.height, 1));
+          setViewportWidth(Math.max(event.nativeEvent.layout.width, 1));
+        }}
+        style={styles.readerShell}>
+        <FlatList
+          contentContainerStyle={styles.listContent}
+          data={verses}
+          ItemSeparatorComponent={Divider}
+          keyExtractor={(item) => item.reference}
+          ListEmptyComponent={<EmptyState subtitle="Choose another reference to continue reading." title="No verses found" />}
+          onContentSizeChange={(width, height) => {
+            setContentWidth(Math.max(width, viewportWidth, 1));
+            setContentHeight(Math.max(height, viewportHeight, 1));
+          }}
+          onScroll={(event) => {
+            setScrollY(event.nativeEvent.contentOffset.y);
+          }}
+          renderItem={({ item }) => (
+            <View style={styles.verseRow}>
+              <Text style={styles.verseText}>
+                <Text style={styles.verseNumber}>{item.verse}</Text>{' '}
+                {buildVerseSegments(item).map((segment) =>
+                  segment.tokenIndex === null ? (
+                    <Text key={segment.key} style={styles.verseText}>
+                      {segment.text}
+                    </Text>
+                  ) : (
+                    <Text
+                      key={segment.key}
+                      onLongPress={() => void openTokenStudy(item, segment.tokenIndex)}
+                      style={styles.verseText}>
+                      {segment.text}
+                    </Text>
+                  )
+                )}
+              </Text>
             </View>
-          ) : null
-        }
-        renderItem={({ item }) => (
-          <View style={styles.verseRow}>
-            <VerseLine onLookup={handleLookup} verse={item} />
-          </View>
-        )}
-      />
+          )}
+          scrollEventThrottle={16}
+        />
+        {isAnnotating ? (
+          <AnnotationCanvas
+            activeColorKey={annotationColorKey}
+            activeTool={annotationTool}
+            contentHeight={Math.max(contentHeight, viewportHeight)}
+            contentWidth={Math.max(contentWidth, viewportWidth)}
+            onCommitStroke={commitStroke}
+            scrollY={scrollY}
+            strokes={annotationStrokes}
+          />
+        ) : null}
+      </View>
 
-      <ConcordanceModal
-        entry={lookupEntry}
-        onClose={() => setIsLookupVisible(false)}
-        visible={isLookupVisible}
-      />
+      {isAnnotating ? (
+        <AnnotationToolbar
+          activeColorKey={annotationColorKey}
+          activeTool={annotationTool}
+          canUndo={annotationStrokes.length > 0}
+          onClear={clearStrokes}
+          onDone={() => setIsAnnotating(false)}
+          onSelectColor={setAnnotationColorKey}
+          onSelectTool={setAnnotationTool}
+          onUndo={undoStroke}
+        />
+      ) : null}
+
+      <PlainListSheet items={bookItems} ref={bookSheetRef} title="Choose a book" />
+      <PlainListSheet items={chapterItems} ref={chapterSheetRef} title="Choose a chapter" />
+      <PlainListSheet items={translationItems} ref={translationSheetRef} title="Installed translations" />
+      <ConcordanceModal entry={selectedEntry} onClose={() => setSelectedEntry(null)} visible={Boolean(selectedEntry)} />
     </Screen>
   );
 }
@@ -210,21 +429,29 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 8,
   },
-  referenceRow: {
+  controlRow: {
     alignItems: 'center',
+    borderBottomColor: palette.border,
+    borderBottomWidth: StyleSheet.hairlineWidth,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 8,
+    paddingBottom: 10,
+    paddingTop: 8,
   },
-  referenceLabel: {
-    color: palette.text,
-    fontFamily: 'RobotoMono_500Medium',
-    fontSize: 13,
+  controlLabel: {
+    color: palette.textMuted,
+    fontFamily: 'RobotoMono_400Regular',
+    fontSize: 11,
   },
   listContent: {
     paddingBottom: 112,
     paddingHorizontal: 20,
     paddingTop: 16,
+  },
+  readerShell: {
+    flex: 1,
+    minHeight: 0,
+    position: 'relative',
   },
   verseRow: {
     paddingVertical: 14,
@@ -239,37 +466,5 @@ const styles = StyleSheet.create({
     fontFamily: 'RobotoMono_400Regular',
     fontSize: 14,
     lineHeight: 25,
-  },
-  inlineReference: {
-    color: palette.text,
-    textDecorationLine: 'underline',
-  },
-  lookupSection: {
-    marginBottom: 18,
-  },
-  lookupLabel: {
-    color: palette.textMuted,
-    fontFamily: 'RobotoMono_400Regular',
-    fontSize: 11,
-    marginBottom: 8,
-  },
-  lookupRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  lookupChip: {
-    borderColor: palette.borderStrong,
-    borderWidth: StyleSheet.hairlineWidth,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-  },
-  lookupChipText: {
-    color: palette.textSecondary,
-    fontFamily: 'RobotoMono_400Regular',
-    fontSize: 11,
-  },
-  pressed: {
-    opacity: 0.7,
   },
 });

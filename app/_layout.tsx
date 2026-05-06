@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { SQLiteProvider } from 'expo-sqlite';
 import { View, Text } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { LibreBaskerville_400Regular } from '@expo-google-fonts/libre-baskerville';
 import {
   useFonts,
   RobotoMono_400Regular,
@@ -18,6 +19,7 @@ export default function RootLayout() {
   const c = theme.light;
 
   const [fontsLoaded] = useFonts({
+    LibreBaskerville_400Regular,
     RobotoMono_400Regular,
     RobotoMono_500Medium,
   });
@@ -39,6 +41,10 @@ export default function RootLayout() {
           <BottomSheetModalProvider>
             <Stack screenOptions={{ headerShown: false }}>
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen
+                name="folders/[folderId]"
+                options={{ animation: 'slide_from_right', gestureEnabled: true, fullScreenGestureEnabled: true }}
+              />
               <Stack.Screen
                 name="editor/[noteId]"
                 options={{ animation: 'slide_from_right', gestureEnabled: true, fullScreenGestureEnabled: true }}

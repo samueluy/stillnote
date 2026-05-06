@@ -11,122 +11,204 @@ export type FormatAction =
   | 'numbered-list'
   | 'blockquote';
 
-function getSelectedText(text: string, selection: Selection) {
-  return text.slice(selection.start, selection.end);
+const SCRIPTURE_SENTINEL = '[Verse] ';
+
+function isScriptureQuoteLine(value: string) {
+  return value.startsWith(SCRIPTURE_SENTINEL);
 }
 
-function replaceSelection(text: string, selection: Selection, replacement: string) {
-  return `${text.slice(0, selection.start)}${replacement}${text.slice(selection.end)}`;
+function stripScriptureSentinel(value: string) {
+  return value.replace(SCRIPTURE_SENTINEL, '');
 }
 
-function getLineRange(text: string, selection: Selection) {
-  const lineStart = text.lastIndexOf('\n', Math.max(selection.start - 1, 0)) + 1;
-  const lineEndIndex = text.indexOf('\n', selection.end);
-  const lineEnd = lineEndIndex === -1 ? text.length : lineEndIndex;
-  return { start: lineStart, end: lineEnd };
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
-export function applyFormat(text: string, selection: Selection, action: FormatAction) {
-  const selectedText = getSelectedText(text, selection);
-  const hasSelection = selection.start !== selection.end;
+function applyInlineMarkdown(text: string) {
+  return escapeHtml(text)
+    .replace(/!\[([^\]]*)\]\(attachment:\/\/([^)]+)\)/g, '<img alt="$1" src="attachment://$2" data-attachment-id="$2" />')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/(?<!\*)\*(?!\s)(.+?)(?<!\s)\*(?!\*)/g, '<em>$1</em>')
+    .replace(/\+\+(.+?)\+\+/g, '<u>$1</u>');
+}
 
-  if (action === 'bold') {
-    const replacement = `**${hasSelection ? selectedText : 'bold text'}**`;
-    return {
-      nextText: replaceSelection(text, selection, replacement),
-      nextSelection: {
-        start: selection.start + 2,
-        end: selection.start + replacement.length - 2,
-      },
-    };
+function buildListBuffer(lines: string[], ordered: boolean) {
+  const items = lines.map((line) => line.replace(ordered ? /^\d+\.\s*/ : /^-\s*/, '').trim());
+  const tag = ordered ? 'ol' : 'ul';
+  return `<${tag}>${items.map((item) => `<li>${applyInlineMarkdown(item)}</li>`).join('')}</${tag}>`;
+}
+
+export function markdownToHtml(markdown: string): string {
+  if (!markdown.trim()) {
+    return '<p></p>';
   }
 
-  if (action === 'italic') {
-    const replacement = `*${hasSelection ? selectedText : 'italic text'}*`;
-    return {
-      nextText: replaceSelection(text, selection, replacement),
-      nextSelection: {
-        start: selection.start + 1,
-        end: selection.start + replacement.length - 1,
-      },
-    };
+  const lines = markdown.replace(/\r/g, '').split('\n');
+  const blocks: string[] = [];
+  let index = 0;
+
+  while (index < lines.length) {
+    const line = lines[index];
+    const trimmed = line.trim();
+
+    if (!trimmed) {
+      index += 1;
+      continue;
+    }
+
+    if (/^##\s+/.test(trimmed)) {
+      blocks.push(`<h2>${applyInlineMarkdown(trimmed.replace(/^##\s+/, ''))}</h2>`);
+      index += 1;
+      continue;
+    }
+
+    if (/^#\s+/.test(trimmed)) {
+      blocks.push(`<h1>${applyInlineMarkdown(trimmed.replace(/^#\s+/, ''))}</h1>`);
+      index += 1;
+      continue;
+    }
+
+    if (/^>\s?/.test(trimmed)) {
+      const quoteLines: string[] = [];
+      while (index < lines.length && /^>\s?/.test(lines[index].trim())) {
+        quoteLines.push(lines[index].trim().replace(/^>\s?/, ''));
+        index += 1;
+      }
+      if (quoteLines.every(isScriptureQuoteLine)) {
+        blocks.push(
+          `<aside data-scripture-quote="true"><p>${quoteLines
+            .map((line) => applyInlineMarkdown(stripScriptureSentinel(line)))
+            .join('<br />')}</p></aside>`
+        );
+      } else {
+        blocks.push(`<blockquote><p>${quoteLines.map(applyInlineMarkdown).join('<br />')}</p></blockquote>`);
+      }
+      continue;
+    }
+
+    if (/^- /.test(trimmed)) {
+      const listLines: string[] = [];
+      while (index < lines.length && /^- /.test(lines[index].trim())) {
+        listLines.push(lines[index].trim());
+        index += 1;
+      }
+      blocks.push(buildListBuffer(listLines, false));
+      continue;
+    }
+
+    if (/^\d+\.\s/.test(trimmed)) {
+      const listLines: string[] = [];
+      while (index < lines.length && /^\d+\.\s/.test(lines[index].trim())) {
+        listLines.push(lines[index].trim());
+        index += 1;
+      }
+      blocks.push(buildListBuffer(listLines, true));
+      continue;
+    }
+
+    blocks.push(`<p>${applyInlineMarkdown(trimmed)}</p>`);
+    index += 1;
   }
 
-  if (action === 'underline') {
-    const replacement = `<u>${hasSelection ? selectedText : 'underlined text'}</u>`;
-    return {
-      nextText: replaceSelection(text, selection, replacement),
-      nextSelection: {
-        start: selection.start + 3,
-        end: selection.start + replacement.length - 4,
-      },
-    };
-  }
+  return blocks.join('');
+}
 
-  const lineRange = getLineRange(text, selection);
-  const selectedLines = text.slice(lineRange.start, lineRange.end).split('\n');
+function convertInlineHtmlToMarkdown(value: string) {
+  return value
+    .replace(/<img[^>]*data-attachment-id="([^"]+)"[^>]*alt="([^"]*)"[^>]*>/g, '![$2](attachment://$1)')
+    .replace(/<img[^>]*alt="([^"]*)"[^>]*data-attachment-id="([^"]+)"[^>]*>/g, '![$1](attachment://$2)')
+    .replace(/<img[^>]*src="attachment:\/\/([^"]+)"[^>]*>/g, '![](attachment://$1)')
+    .replace(/<(strong|b)>(.*?)<\/\1>/g, '**$2**')
+    .replace(/<(em|i)>(.*?)<\/\1>/g, '*$2*')
+    .replace(/<u>(.*?)<\/u>/g, '++$1++')
+    .replace(/<a[^>]*href="stillnote:\/\/verse\/([^"]+)"[^>]*>(.*?)<\/a>/g, '$2')
+    .replace(/<span[^>]*data-tag="([^"]+)"[^>]*>(.*?)<\/span>/g, '$2')
+    .replace(/<br\s*\/?>/g, '\n')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'");
+}
 
-  if (action === 'blockquote') {
-    const replacement = selectedLines.map((line) => (line.startsWith('> ') ? line : `> ${line}`)).join('\n');
-    return {
-      nextText: `${text.slice(0, lineRange.start)}${replacement}${text.slice(lineRange.end)}`,
-      nextSelection: {
-        start: lineRange.start,
-        end: lineRange.start + replacement.length,
-      },
-    };
-  }
+export function htmlToMarkdown(html: string) {
+  const normalized = html
+    .replace(/\r/g, '')
+    .replace(/<aside[^>]*data-scripture-quote="true"[^>]*>\s*<p>([\s\S]*?)<\/p>\s*<\/aside>/g, (_, inner) => {
+      return inner
+        .split(/<br\s*\/?>/g)
+        .map((line: string) => `> ${SCRIPTURE_SENTINEL}${convertInlineHtmlToMarkdown(line).trim()}`)
+        .join('\n');
+    })
+    .replace(/<blockquote>\s*<p>([\s\S]*?)<\/p>\s*<\/blockquote>/g, (_, inner) => {
+      return inner
+        .split(/<br\s*\/?>/g)
+        .map((line: string) => `> ${convertInlineHtmlToMarkdown(line).trim()}`)
+        .join('\n');
+    })
+    .replace(/<h1>([\s\S]*?)<\/h1>/g, (_, inner) => `# ${convertInlineHtmlToMarkdown(inner).trim()}`)
+    .replace(/<h2>([\s\S]*?)<\/h2>/g, (_, inner) => `## ${convertInlineHtmlToMarkdown(inner).trim()}`)
+    .replace(/<ol>([\s\S]*?)<\/ol>/g, (_, inner) => {
+      const items = Array.from(
+        inner.matchAll(/<li>([\s\S]*?)<\/li>/g) as IterableIterator<RegExpMatchArray>
+      ).map((match) =>
+        convertInlineHtmlToMarkdown(match[1]).trim()
+      );
+      return items.map((item, index) => `${index + 1}. ${item}`).join('\n');
+    })
+    .replace(/<ul>([\s\S]*?)<\/ul>/g, (_, inner) => {
+      const items = Array.from(
+        inner.matchAll(/<li>([\s\S]*?)<\/li>/g) as IterableIterator<RegExpMatchArray>
+      ).map((match) =>
+        convertInlineHtmlToMarkdown(match[1]).trim()
+      );
+      return items.map((item) => `- ${item}`).join('\n');
+    })
+    .replace(/<p>([\s\S]*?)<\/p>/g, (_, inner) => convertInlineHtmlToMarkdown(inner).trim())
+    .replace(/<\/?(div|section|article)>/g, '')
+    .replace(/<[^>]+>/g, '')
+    .replace(/\n{3,}/g, '\n\n');
 
-  if (action === 'bulleted-list') {
-    const replacement = selectedLines.map((line) => (line.startsWith('- ') ? line : `- ${line || 'List item'}`)).join('\n');
-    return {
-      nextText: `${text.slice(0, lineRange.start)}${replacement}${text.slice(lineRange.end)}`,
-      nextSelection: {
-        start: lineRange.start,
-        end: lineRange.start + replacement.length,
-      },
-    };
-  }
-
-  const replacement = selectedLines
-    .map((line, index) => `${index + 1}. ${line.replace(/^\d+\.\s*/, '') || 'List item'}`)
-    .join('\n');
-
-  return {
-    nextText: `${text.slice(0, lineRange.start)}${replacement}${text.slice(lineRange.end)}`,
-    nextSelection: {
-      start: lineRange.start,
-      end: lineRange.start + replacement.length,
-    },
-  };
+  return normalized
+    .split('\n')
+    .map((line) => line.trimEnd())
+    .join('\n')
+    .trim();
 }
 
 export function stripMarkdown(markdown: string) {
   return markdown
+    .replace(new RegExp(`^>\\s?${SCRIPTURE_SENTINEL.replace(/[[\]]/g, '\\$&')}`, 'gm'), '')
+    .replace(/!\[[^\]]*\]\(attachment:\/\/[^)]+\)/g, ' ')
     .replace(/\*\*(.*?)\*\*/g, '$1')
     .replace(/\*(.*?)\*/g, '$1')
-    .replace(/<u>(.*?)<\/u>/g, '$1')
+    .replace(/\+\+(.*?)\+\+/g, '$1')
     .replace(/^>\s?/gm, '')
     .replace(/^\d+\.\s?/gm, '')
     .replace(/^-+\s?/gm, '')
+    .replace(/^##\s?/gm, '')
+    .replace(/^#\s?/gm, '')
+    .replace(/\s+/g, ' ')
     .trim();
 }
 
 export function stripHtml(html: string) {
   return html
-    .replace(/<[^>]*>/g, '')
+    .replace(/<img[^>]*>/g, ' ')
+    .replace(/<[^>]*>/g, ' ')
     .replace(/&nbsp;/g, ' ')
     .replace(/&amp;/g, '&')
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'")
-    .replace(/&ldquo;/g, '"')
-    .replace(/&rdquo;/g, '"')
-    .replace(/&lsquo;/g, "'")
-    .replace(/&rsquo;/g, "'")
-    .replace(/&mdash;/g, '—')
-    .replace(/&ndash;/g, '–')
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -134,30 +216,16 @@ export function stripHtml(html: string) {
 export function buildEditorSpans(body: string) {
   return JSON.stringify({
     boldCount: (body.match(/\*\*/g) ?? []).length / 2,
-    italicCount: (body.match(/(^|[^*])\*([^*]|$)/g) ?? []).length,
-    underlineCount: (body.match(/<u>/g) ?? []).length,
+    italicCount: (body.match(/(?<!\*)\*(?!\s)(.+?)(?<!\s)\*(?!\*)/g) ?? []).length,
+    underlineCount: (body.match(/\+\+/g) ?? []).length / 2,
     blockquoteCount: (body.match(/^>\s?/gm) ?? []).length,
     bulletCount: (body.match(/^-+\s?/gm) ?? []).length,
     numberedCount: (body.match(/^\d+\.\s?/gm) ?? []).length,
+    imageCount: (body.match(/!\[[^\]]*\]\(attachment:\/\/[^)]+\)/g) ?? []).length,
+    scriptureQuoteCount: (body.match(new RegExp(`^>\\s?${SCRIPTURE_SENTINEL.replace(/[[\]]/g, '\\$&')}`, 'gm')) ?? []).length,
   });
 }
 
-export function markdownToHtml(md: string): string {
-  let html = md;
-  html = html.replace(/^######\s+(.*)$/gm, '<h6>$1</h6>');
-  html = html.replace(/^#####\s+(.*)$/gm, '<h5>$1</h5>');
-  html = html.replace(/^####\s+(.*)$/gm, '<h4>$1</h4>');
-  html = html.replace(/^###\s+(.*)$/gm, '<h3>$1</h3>');
-  html = html.replace(/^##\s+(.*)$/gm, '<h2>$1</h2>');
-  html = html.replace(/^#\s+(.*)$/gm, '<h1>$1</h1>');
-  html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-  html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
-  html = html.replace(/^>\s?(.*)$/gm, '<blockquote>$1</blockquote>');
-  html = html.replace(/^- (.*)$/gm, '<li>$1</li>');
-  html = html.replace(/(<li>.*<\/li>\n?)+/g, (match) => `<ul>${match.replace(/\n$/, '')}</ul>`);
-  html = html.replace(/^(?!<[houbl]).*$/gm, (match) => {
-    const trimmed = match.trim();
-    return trimmed ? `<p>${trimmed}</p>` : '<p></p>';
-  });
-  return html.replace(/\n{2,}/g, '').trim();
+export function buildInsertedVerseQuoteMarkdown(referenceLines: string[]) {
+  return referenceLines.map((line) => `> ${SCRIPTURE_SENTINEL}${line}`).join('\n');
 }

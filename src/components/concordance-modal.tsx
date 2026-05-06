@@ -1,8 +1,6 @@
-import { Ionicons } from '@expo/vector-icons';
-import { Modal, StyleSheet, Text, View } from 'react-native';
+import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { AnimatedPressable } from '@/src/components/animated-pressable';
-import { useTheme } from '@/src/theme/useTheme';
+import { Divider, palette } from '@/src/components/primitives';
 import type { ConcordanceEntry } from '@/src/types/domain';
 
 export function ConcordanceModal({
@@ -10,92 +8,56 @@ export function ConcordanceModal({
   visible,
   onClose,
 }: {
-  entry: ConcordanceEntry;
+  entry: ConcordanceEntry | null;
   visible: boolean;
   onClose: () => void;
 }) {
-  const { colors } = useTheme();
+  if (!entry) {
+    return null;
+  }
 
   return (
     <Modal animationType="fade" onRequestClose={onClose} transparent visible={visible}>
-      <View style={[styles.scrim, { backgroundColor: colors.scrim }]}>
-        <View style={[styles.modal, { backgroundColor: colors.bgElevated }]}>
-          <View style={[styles.header, { borderBottomColor: colors.border }]}>
+      <View style={styles.scrim}>
+        <Pressable onPress={onClose} style={StyleSheet.absoluteFillObject} />
+        <View style={styles.card}>
+          <View style={styles.header}>
             <View>
-              <Text style={styles.headerEyebrow}>Offline Concordance</Text>
-              <Text style={styles.headerTitle}>
-                {entry.strongsId}. {entry.transliteration}
+              <Text style={styles.eyebrow}>Offline Strong’s</Text>
+              <Text style={styles.title}>
+                {entry.strongsId} · {entry.transliteration}
               </Text>
             </View>
-            <AnimatedPressable onPress={onClose}>
-              <Ionicons color={colors.textPrimary} name="close-outline" size={20} />
-            </AnimatedPressable>
+            <Pressable onPress={onClose} style={({ pressed }) => [styles.closeButton, pressed && styles.pressed]}>
+              <Text style={styles.closeLabel}>Close</Text>
+            </Pressable>
           </View>
 
+          <Divider />
+
           <View style={styles.content}>
-            <View style={styles.wordRow}>
-              <Text style={[styles.originalWord, { color: colors.textPrimary }]}>
-                {entry.original}
-              </Text>
-              <View style={styles.pronunciationBlock}>
-                <Text style={[styles.metaLabel, { color: colors.textTertiary }]}>
-                  Pronunciation
-                </Text>
-                <Text style={[styles.metaValue, { color: colors.textSecondary }]}>
-                  {entry.pronunciation}
-                </Text>
+            <Text style={styles.original}>{entry.original}</Text>
+            <Text style={styles.pronunciation}>{entry.pronunciation}</Text>
+
+            <View style={styles.metaRow}>
+              <View style={styles.metaBlock}>
+                <Text style={styles.metaLabel}>Part of speech</Text>
+                <Text style={styles.metaValue}>{entry.partOfSpeech}</Text>
+              </View>
+              <View style={styles.metaBlock}>
+                <Text style={styles.metaLabel}>Root word</Text>
+                <Text style={styles.metaValue}>{entry.rootWord}</Text>
               </View>
             </View>
 
-            <View style={[styles.definitionCard, { borderColor: colors.borderStrong }]}>
-              <Text style={[styles.metaLabel, { color: colors.textTertiary }]}>
-                Lexicon Definition
-              </Text>
-              <Text style={[styles.definitionText, { color: colors.textPrimary }]}>
-                {entry.lexiconDefinition}
-              </Text>
+            <View style={styles.definitionBlock}>
+              <Text style={styles.metaLabel}>Gloss</Text>
+              <Text style={styles.definition}>{entry.gloss}</Text>
             </View>
 
-            <View style={styles.metaGrid}>
-              <View style={[styles.metaCard, { borderColor: colors.border }]}>
-                <Text style={[styles.metaLabel, { color: colors.textTertiary }]}>
-                  Part of Speech
-                </Text>
-                <Text style={[styles.metaValue, { color: colors.textSecondary }]}>
-                  {entry.partOfSpeech}
-                </Text>
-              </View>
-              <View style={[styles.metaCard, { borderColor: colors.border }]}>
-                <Text style={[styles.metaLabel, { color: colors.textTertiary }]}>Root Word</Text>
-                <Text style={[styles.metaValue, { color: colors.textSecondary }]}>
-                  {entry.rootWord}
-                </Text>
-              </View>
-            </View>
-
-            <View style={styles.usageSection}>
-              <Text style={[styles.metaLabel, { color: colors.textTertiary }]}>Usage in NT</Text>
-              <View style={styles.usageTrack}>
-                {entry.usageBreakdown.map((item, index) => (
-                  <View
-                    key={item.label}
-                    style={[
-                      styles.usageSegment,
-                      {
-                        backgroundColor: index === 2 ? colors.borderStrong : colors.accent,
-                        flex: item.value,
-                      },
-                    ]}
-                  />
-                ))}
-              </View>
-              <View style={styles.usageLabels}>
-                {entry.usageBreakdown.map((item) => (
-                  <Text key={item.label} style={[styles.usageLabel, { color: colors.textTertiary }]}>
-                    {item.label}
-                  </Text>
-                ))}
-              </View>
+            <View style={styles.definitionBlock}>
+              <Text style={styles.metaLabel}>Definition</Text>
+              <Text style={styles.definition}>{entry.lexiconDefinition}</Text>
             </View>
           </View>
         </View>
@@ -105,60 +67,90 @@ export function ConcordanceModal({
 }
 
 const styles = StyleSheet.create({
-  scrim: { alignItems: 'center', flex: 1, justifyContent: 'center', paddingHorizontal: 16 },
-  modal: { borderWidth: StyleSheet.hairlineWidth, overflow: 'hidden', width: '100%' },
-  header: {
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingVertical: 18,
+  card: {
+    backgroundColor: palette.background,
+    borderColor: palette.borderStrong,
+    borderWidth: StyleSheet.hairlineWidth,
+    overflow: 'hidden',
+    width: '100%',
   },
-  headerEyebrow: {
-    color: 'rgba(19,19,19,0.37)',
-    fontFamily: 'RobotoMono_400Regular',
-    fontSize: 11,
-    textTransform: 'uppercase',
+  closeButton: {
+    paddingVertical: 4,
   },
-  headerTitle: {
-    color: '#131313',
+  closeLabel: {
+    color: palette.textSecondary,
     fontFamily: 'RobotoMono_500Medium',
-    fontSize: 14,
-    marginTop: 4,
+    fontSize: 12,
   },
-  content: { gap: 20, padding: 20 },
-  wordRow: { alignItems: 'center', flexDirection: 'row', gap: 20 },
-  originalWord: { fontFamily: 'RobotoMono_500Medium', fontSize: 24 },
-  pronunciationBlock: { gap: 4 },
-  metaLabel: {
-    fontFamily: 'RobotoMono_400Regular',
-    fontSize: 11,
-    textTransform: 'uppercase',
+  content: {
+    gap: 16,
+    padding: 20,
   },
-  metaValue: { fontFamily: 'RobotoMono_400Regular', fontSize: 13, lineHeight: 20 },
-  definitionCard: { borderWidth: StyleSheet.hairlineWidth, gap: 8, padding: 14 },
-  definitionText: {
+  definition: {
+    color: palette.text,
     fontFamily: 'RobotoMono_400Regular',
     fontSize: 13,
     lineHeight: 22,
   },
-  metaGrid: { flexDirection: 'row', gap: 14 },
-  metaCard: {
-    borderWidth: StyleSheet.hairlineWidth,
-    flex: 1,
-    gap: 8,
-    padding: 14,
+  definitionBlock: {
+    gap: 6,
   },
-  usageSection: { gap: 10 },
-  usageTrack: { flexDirection: 'row', height: 6, overflow: 'hidden' },
-  usageSegment: { height: '100%' },
-  usageLabels: {
+  eyebrow: {
+    color: palette.textMuted,
+    fontFamily: 'RobotoMono_400Regular',
+    fontSize: 11,
+    textTransform: 'uppercase',
+  },
+  header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
   },
-  usageLabel: {
+  metaBlock: {
+    flex: 1,
+    gap: 6,
+  },
+  metaLabel: {
+    color: palette.textMuted,
     fontFamily: 'RobotoMono_400Regular',
     fontSize: 10,
     textTransform: 'uppercase',
+  },
+  metaRow: {
+    flexDirection: 'row',
+    gap: 16,
+  },
+  metaValue: {
+    color: palette.text,
+    fontFamily: 'RobotoMono_400Regular',
+    fontSize: 12,
+    lineHeight: 20,
+  },
+  original: {
+    color: palette.text,
+    fontFamily: 'RobotoMono_500Medium',
+    fontSize: 28,
+  },
+  pressed: {
+    opacity: 0.7,
+  },
+  pronunciation: {
+    color: palette.textSecondary,
+    fontFamily: 'RobotoMono_400Regular',
+    fontSize: 12,
+  },
+  scrim: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(19,19,19,0.18)',
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 16,
+  },
+  title: {
+    color: palette.text,
+    fontFamily: 'RobotoMono_500Medium',
+    fontSize: 14,
+    marginTop: 4,
   },
 });

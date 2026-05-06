@@ -11,6 +11,9 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import type { HapticIntent } from '@/src/lib/haptics';
+import { triggerHaptic } from '@/src/lib/haptics';
+
 type IoniconName = ComponentProps<typeof Ionicons>['name'];
 
 export const palette = {
@@ -82,13 +85,25 @@ export function IconButton({
   icon,
   onPress,
   active = false,
+  disabled = false,
+  hapticIntent = 'selection',
 }: {
   icon: IoniconName;
   onPress?: () => void;
   active?: boolean;
+  disabled?: boolean;
+  hapticIntent?: HapticIntent;
 }) {
   return (
-    <Pressable onPress={onPress} style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}>
+    <Pressable
+      disabled={disabled}
+      onPress={() => {
+        if (!disabled && onPress) {
+          void triggerHaptic(hapticIntent);
+          onPress();
+        }
+      }}
+      style={({ pressed }) => [styles.iconButton, disabled && styles.disabled, pressed && styles.pressed]}>
       <Ionicons color={palette.text} name={icon} size={active ? 20 : 18} />
     </Pressable>
   );
@@ -129,17 +144,30 @@ export function TextLink({
   label,
   onPress,
   bordered = false,
+  disabled = false,
+  hapticIntent,
 }: {
   label: string;
   onPress?: () => void;
   bordered?: boolean;
+  disabled?: boolean;
+  hapticIntent?: HapticIntent;
 }) {
   return (
     <Pressable
-      onPress={onPress}
+      disabled={disabled}
+      onPress={() => {
+        if (!disabled && onPress) {
+          if (hapticIntent) {
+            void triggerHaptic(hapticIntent);
+          }
+          onPress();
+        }
+      }}
       style={({ pressed }) => [
         styles.textLink,
         bordered && styles.textLinkBordered,
+        disabled && styles.disabled,
         pressed && styles.pressed,
       ]}>
       <Text style={styles.textLinkLabel}>{label}</Text>
@@ -151,13 +179,25 @@ export function ListRow({
   left,
   right,
   onPress,
+  onLongPress,
+  hapticIntent,
 }: {
   left: ReactNode;
   right?: ReactNode;
   onPress?: () => void;
+  onLongPress?: () => void;
+  hapticIntent?: HapticIntent;
 }) {
   return (
-    <Pressable onPress={onPress} style={({ pressed }) => [styles.listRow, pressed && styles.pressed]}>
+    <Pressable
+      onLongPress={onLongPress}
+      onPress={() => {
+        if (hapticIntent) {
+          void triggerHaptic(hapticIntent);
+        }
+        onPress?.();
+      }}
+      style={({ pressed }) => [styles.listRow, pressed && styles.pressed]}>
       <View style={styles.listRowLeft}>{left}</View>
       {right ? <View>{right}</View> : null}
     </Pressable>
@@ -344,5 +384,8 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: 0.7,
+  },
+  disabled: {
+    opacity: 0.35,
   },
 });

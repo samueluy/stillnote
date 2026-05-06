@@ -4,15 +4,17 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { palette } from '@/src/components/primitives';
+import { selectionChange } from '@/src/lib/haptics';
 
 const TAB_META: Record<
   string,
   { icon: keyof typeof Ionicons.glyphMap; activeIcon: keyof typeof Ionicons.glyphMap }
 > = {
-  index: { icon: 'create-outline', activeIcon: 'create' },
+  index: { icon: 'home-outline', activeIcon: 'home' },
   threads: { icon: 'folder-open-outline', activeIcon: 'folder-open' },
-  bible: { icon: 'book-outline', activeIcon: 'book' },
+  bible: { icon: 'compass-outline', activeIcon: 'compass' },
   search: { icon: 'search-outline', activeIcon: 'search' },
+  settings: { icon: 'settings-outline', activeIcon: 'settings' },
 };
 
 export function StillnoteTabBar({ state, navigation }: BottomTabBarProps) {
@@ -31,7 +33,12 @@ export function StillnoteTabBar({ state, navigation }: BottomTabBarProps) {
           <Pressable
             accessibilityRole="button"
             key={route.key}
-            onPress={() => navigation.navigate(route.name)}
+            onPress={() => {
+              if (!focused) {
+                void selectionChange();
+                navigation.navigate(route.name);
+              }
+            }}
             style={({ pressed }) => [styles.item, pressed && styles.pressed]}>
             <Ionicons
               color={palette.text}

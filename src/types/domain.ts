@@ -7,37 +7,71 @@ export type Space = {
   position: number;
 };
 
-export type Thread = {
+export type Folder = {
   id: ID;
   spaceId: ID;
+  parentFolderId: ID | null;
   name: string;
-  icon: string;
-  accent: string;
-  isFavorite: boolean;
+  position: number;
   noteCount: number;
+  createdAt: string;
+  updatedAt: string;
 };
+
+export type FolderTreeRow = Folder & {
+  level: 0 | 1;
+  childCount: number;
+};
+
+export type TemplateKind =
+  | 'blank'
+  | 'soap-study'
+  | 'sermon-notes'
+  | 'inductive-study'
+  | 'topical-study';
 
 export type Template = {
   id: ID;
+  kind: TemplateKind;
   name: string;
   description: string;
-  icon: string;
   body: string;
-  threadHint: string | null;
 };
 
 export type Note = {
   id: ID;
   title: string;
   markdownBody: string;
+  richBodyHtml: string;
   editorSpans: string;
   plainText: string;
   templateId: ID | null;
   spaceId: ID;
-  primaryThreadId: ID | null;
+  folderId: ID | null;
   isFavorite: boolean;
   createdAt: string;
   updatedAt: string;
+};
+
+export type Thread = {
+  id: ID;
+  spaceId: ID;
+  name: string;
+  isFavorite: boolean;
+  createdAt: string | null;
+};
+
+export type NoteThread = {
+  noteId: ID;
+  threadId: ID;
+};
+
+export type NoteLink = {
+  id: ID;
+  parentNoteId: ID;
+  childNoteId: ID;
+  excerpt: string;
+  createdAt: string;
 };
 
 export type VerseReference = {
@@ -52,21 +86,52 @@ export type VerseReference = {
   verseEnd: number | null;
 };
 
-export type BibleTranslation = {
+export type BibleTranslationCode = 'KJV' | 'BSB' | 'WEB' | 'ASV' | 'YLT';
+
+export type InstalledTranslation = {
   id: ID;
-  code: string;
+  code: BibleTranslationCode;
   name: string;
   isBundled: boolean;
+  isDownloaded: boolean;
+  assetKey: string | null;
+  installedAt: string | null;
 };
 
 export type BibleVerse = {
   id?: number;
-  translationCode: string;
+  translationCode: BibleTranslationCode;
   book: string;
   chapter: number;
   verse: number;
   reference: string;
   text: string;
+};
+
+export type AnnotationTargetType = 'note' | 'bible';
+
+export type AnnotationTool = 'pan' | 'highlight' | 'draw';
+
+export type AnnotationColorKey = 'ochre' | 'sage' | 'graphite';
+
+export type AnnotationPoint = {
+  x: number;
+  y: number;
+};
+
+export type AnnotationStroke = {
+  id: ID;
+  targetType: AnnotationTargetType;
+  targetKey: string;
+  tool: Exclude<AnnotationTool, 'pan'>;
+  colorKey: AnnotationColorKey;
+  strokeWidth: number;
+  opacity: number;
+  points: AnnotationPoint[];
+  canvasWidth: number;
+  canvasHeight: number;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type ConcordanceEntry = {
@@ -82,10 +147,34 @@ export type ConcordanceEntry = {
   usageBreakdown: { label: string; value: number }[];
 };
 
+export type StrongsEntry = {
+  id: ID;
+  strongsId: string;
+  testament: 'OT' | 'NT';
+  original: string;
+  transliteration: string;
+  pronunciation: string;
+  definition: string;
+  createdAt: string;
+};
+
+export type StrongsToken = {
+  id: ID;
+  translationCode: BibleTranslationCode;
+  reference: string;
+  token: string;
+  tokenIndex: number;
+  strongsEntryId: ID;
+};
+
 export type Tag = {
   id: ID;
   name: string;
   noteCount?: number;
+};
+
+export type TagSuggestion = Tag & {
+  label: string;
 };
 
 export type MediaAttachment = {
@@ -98,12 +187,18 @@ export type MediaAttachment = {
   createdAt: string;
 };
 
+export type NoteDetail = {
+  note: Note;
+  attachments: MediaAttachment[];
+  folder: Folder | null;
+};
+
 export type SearchResult = {
-  id: string;
-  type: 'note' | 'verse';
+  id: ID;
   title: string;
-  subtitle: string;
-  body: string;
+  preview: string;
+  updatedAt: string;
+  folderName: string | null;
 };
 
 export type WorkspaceSnapshot = {
@@ -114,7 +209,7 @@ export type WorkspaceSnapshot = {
     favorites: number;
     recent: number;
   };
-  threads: Thread[];
+  folders: FolderTreeRow[];
   tags: Tag[];
   templates: Template[];
   dailyVerse: BibleVerse | null;

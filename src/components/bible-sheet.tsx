@@ -1,68 +1,89 @@
-import { Ionicons } from '@expo/vector-icons';
-import {
-  BottomSheetBackdrop,
-  BottomSheetModal,
-  BottomSheetView,
-  useBottomSheetScrollableCreator,
-} from '@gorhom/bottom-sheet';
-import { FlashList } from '@shopify/flash-list';
-import { forwardRef, useMemo, useState } from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
-import { useSharedValue } from 'react-native-reanimated';
+import { BottomSheetBackdrop, BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
+import { useSQLiteContext } from 'expo-sqlite';
+import { forwardRef, useCallback, useEffect, useMemo, useState } from 'react';
+import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { AnimatedPressable } from '@/src/components/animated-pressable';
-import { useTheme } from '@/src/theme/useTheme';
-import type { BibleVerse } from '@/src/types/domain';
+import { AnnotationCanvas } from '@/src/components/annotation-canvas';
+import { AnnotationToolbar } from '@/src/components/annotation-toolbar';
+import { Divider, palette } from '@/src/components/primitives';
+import {
+  buildBibleAnnotationTargetKey,
+  clearAnnotationStrokes,
+  getAnnotationStrokes,
+  replaceAnnotationStrokes,
+} from '@/src/lib/database';
+import { tapSubtle } from '@/src/lib/haptics';
+import type {
+  AnnotationColorKey,
+  AnnotationStroke,
+  AnnotationTool,
+  BibleTranslationCode,
+  BibleVerse,
+} from '@/src/types/domain';
 
 type Props = {
-  book: string;
-  chapter: number;
-  translationName: string;
+  referenceTitle: string;
   verses: BibleVerse[];
-  onInsertVerse: (verse: BibleVerse) => void;
+  onInsertVerses: () => void;
+  onDismiss?: () => void;
 };
 
-function VerseRow({
-  item,
-  onInsertVerse,
-}: {
-  item: BibleVerse;
-  onInsertVerse: (verse: BibleVerse) => void;
-}) {
-  const { colors } = useTheme();
-  return (
-    <View style={styles.verseRow}>
-      <Text style={[styles.verseNumber, { color: colors.textTertiary }]}>{item.verse}</Text>
-      <Text style={[styles.verseText, { color: colors.textPrimary }]}>{item.text}</Text>
-      <AnimatedPressable
-        haptic="medium"
-        onPress={() => onInsertVerse(item)}
-        style={({ pressed }) => [styles.insertButton, { borderColor: colors.borderStrong }, pressed && styles.pressed]}>
-        <Ionicons color={colors.accent} name="add-outline" size={12} />
-        <Text style={[styles.insertButtonText, { color: colors.accent }]}>Insert</Text>
-      </AnimatedPressable>
-    </View>
-  );
-}
-
 export const BibleSheet = forwardRef<BottomSheetModal, Props>(function BibleSheet(
-  { book, chapter, translationName, verses, onInsertVerse },
+  { referenceTitle, verses, onDismiss, onInsertVerses },
   ref
 ) {
-  const animatedIndex = useSharedValue(0);
-  const snapPoints = useMemo(() => ['35%', '70%'], []);
-  const ScrollComponent = useBottomSheetScrollableCreator();
-  const [sheetSearch, setSheetSearch] = useState('');
-  const [isSheetSearchOpen, setIsSheetSearchOpen] = useState(false);
-  const { colors } = useTheme();
+  const db = useSQLiteContext();
+  const snapPoints = useMemo(() => ['50%'], []);
+  const [isAnnotating, setIsAnnotating] = useState(false);
+  const [annotationTool, setAnnotationTool] = useState<AnnotationTool>('pan');
+  const [annotationColorKey, setAnnotationColorKey] = useState<AnnotationColorKey>('ochre');
+  const [annotationStrokes, setAnnotationStrokes] = useState<AnnotationStroke[]>([]);
+  const [contentHeight, setContentHeight] = useState(1);
+  const [contentWidth, setContentWidth] = useState(1);
+  const [scrollY, setScrollY] = useState(0);
+  const [viewportHeight, setViewportHeight] = useState(1);
+  const [viewportWidth, setViewportWidth] = useState(1);
 
-  const filteredVerses = useMemo(() => {
-    if (!sheetSearch.trim()) return verses;
-    const q = sheetSearch.toLowerCase();
-    return verses.filter(
-      (v) => v.text.toLowerCase().includes(q) || String(v.verse).includes(q)
-    );
-  }, [verses, sheetSearch]);
+  const annotationTargetKey = useMemo(() => {
+    const firstVerse = verses[0];
+    if (!firstVerse) {
+      return null;
+    }
+
+    return buildBibleAnnotationTargetKey({
+      book: firstVerse.book,
+      chapter: firstVerse.chapter,
+      translationCode: firstVerse.translationCode as BibleTranslationCode,
+    });
+  }, [verses]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    if (!annotationTargetKey) {
+      setAnnotationStrokes([]);
+      return;
+    }
+
+    getAnnotationStrokes(db, {
+      targetKey: annotationTargetKey,
+      targetType: 'bible',
+    }).then((strokes) => {
+      if (!cancelled) {
+        setAnnotationStrokes(strokes);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [annotationTargetKey, db]);
+
+  useEffect(() => {
+    setIsAnnotating(false);
+    setAnnotationTool('pan');
+    setScrollY(0);
+  }, [referenceTitle]);
 
   const dismissSheet = () => {
     if (ref && typeof ref !== 'function') {
@@ -70,144 +91,226 @@ export const BibleSheet = forwardRef<BottomSheetModal, Props>(function BibleShee
     }
   };
 
+  const persistStrokes = useCallback(
+    async (nextStrokes: AnnotationStroke[]) => {
+      if (!annotationTargetKey) {
+        return;
+      }
+
+      await replaceAnnotationStrokes(db, {
+        strokes: nextStrokes,
+        targetKey: annotationTargetKey,
+        targetType: 'bible',
+      });
+    },
+    [annotationTargetKey, db]
+  );
+
+  const commitStroke = useCallback(
+    (stroke: Omit<AnnotationStroke, 'targetKey' | 'targetType'>) => {
+      if (!annotationTargetKey) {
+        return;
+      }
+
+      const nextStroke: AnnotationStroke = {
+        ...stroke,
+        targetKey: annotationTargetKey,
+        targetType: 'bible',
+      };
+
+      setAnnotationStrokes((current) => {
+        const next = [...current, nextStroke];
+        void persistStrokes(next);
+        return next;
+      });
+    },
+    [annotationTargetKey, persistStrokes]
+  );
+
+  const undoStroke = useCallback(() => {
+    setAnnotationStrokes((current) => {
+      const next = current.slice(0, -1);
+      void persistStrokes(next);
+      return next;
+    });
+  }, [persistStrokes]);
+
+  const clearStrokes = useCallback(() => {
+    setAnnotationStrokes([]);
+    if (!annotationTargetKey) {
+      return;
+    }
+    void clearAnnotationStrokes(db, {
+      targetKey: annotationTargetKey,
+      targetType: 'bible',
+    });
+  }, [annotationTargetKey, db]);
+
   return (
     <BottomSheetModal
       ref={ref}
-      animatedIndex={animatedIndex}
-      backgroundStyle={{ backgroundColor: colors.bg }}
-      backdropComponent={(props) => (
-        <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} opacity={0.12} />
-      )}
+      backgroundStyle={styles.background}
       enableDynamicSizing={false}
-      handleIndicatorStyle={[styles.handle, { backgroundColor: colors.textTertiary }]}
+      backdropComponent={(props) => (
+        <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} opacity={0.18} />
+      )}
+      handleIndicatorStyle={styles.handle}
+      onDismiss={onDismiss}
       snapPoints={snapPoints}>
-      <BottomSheetView style={[styles.header]}>
-        <View>
-          <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>
-            {book} {chapter}
-          </Text>
-          <Text style={[styles.headerSubtitle, { color: colors.textTertiary }]}>
-            {translationName}
-          </Text>
+      <BottomSheetView style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>{referenceTitle}</Text>
+          <View style={styles.headerActions}>
+            <Pressable
+              onPress={() => {
+                void tapSubtle();
+                setIsAnnotating((current) => !current);
+              }}
+              style={({ pressed }) => [styles.closeButton, pressed && styles.pressed]}>
+              <Text style={styles.closeLabel}>{isAnnotating ? 'Done' : 'Annotate'}</Text>
+            </Pressable>
+            <Pressable onPress={dismissSheet} style={({ pressed }) => [styles.closeButton, pressed && styles.pressed]}>
+              <Text style={styles.closeLabel}>X</Text>
+            </Pressable>
+          </View>
         </View>
-        <View style={styles.headerActions}>
-          <AnimatedPressable
-            haptic="light"
-            onPress={() => { setIsSheetSearchOpen((v) => !v); setSheetSearch(''); }}
-            style={styles.headerAction}>
-            <Ionicons color={colors.textSecondary} name="search-outline" size={18} />
-          </AnimatedPressable>
-          <AnimatedPressable onPress={dismissSheet} style={styles.headerAction}>
-            <Ionicons color={colors.textSecondary} name="close-outline" size={18} />
-          </AnimatedPressable>
-        </View>
-      </BottomSheetView>
 
-      {isSheetSearchOpen ? (
-        <View style={[styles.searchRow, { backgroundColor: colors.bgCard, borderBottomColor: colors.border }]}>
-          <TextInput
-            autoFocus
-            onChangeText={setSheetSearch}
-            placeholder="Search verses…"
-            placeholderTextColor={colors.textTertiary}
-            style={[styles.searchInput, { color: colors.textPrimary }]}
-            value={sheetSearch}
+        <Divider />
+
+        <View
+          onLayout={(event) => {
+            setViewportHeight(Math.max(event.nativeEvent.layout.height, 1));
+            setViewportWidth(Math.max(event.nativeEvent.layout.width, 1));
+          }}
+          style={styles.readerShell}>
+          <FlatList
+            contentContainerStyle={styles.listContent}
+            data={verses}
+            keyExtractor={(item) => item.reference}
+            onContentSizeChange={(width, height) => {
+              setContentWidth(Math.max(width, viewportWidth, 1));
+              setContentHeight(Math.max(height, viewportHeight, 1));
+            }}
+            onScroll={(event) => {
+              setScrollY(event.nativeEvent.contentOffset.y);
+            }}
+            renderItem={({ item }) => (
+              <View style={styles.verseRow}>
+                <Text style={styles.verseText}>
+                  <Text style={styles.verseNumber}>{item.verse}</Text> {item.text}
+                </Text>
+              </View>
+            )}
+            scrollEventThrottle={16}
           />
-          {sheetSearch.trim() ? (
-            <AnimatedPressable onPress={() => setSheetSearch('')}>
-              <Ionicons color={colors.textSecondary} name="close-outline" size={16} />
-            </AnimatedPressable>
+          {isAnnotating ? (
+            <AnnotationCanvas
+              activeColorKey={annotationColorKey}
+              activeTool={annotationTool}
+              contentHeight={Math.max(contentHeight, viewportHeight)}
+              contentWidth={Math.max(contentWidth, viewportWidth)}
+              onCommitStroke={commitStroke}
+              scrollY={scrollY}
+              strokes={annotationStrokes}
+            />
           ) : null}
         </View>
-      ) : null}
 
-      <FlashList
-        data={filteredVerses}
-        keyExtractor={(item) => item.reference}
-        renderItem={({ item }) => <VerseRow item={item} onInsertVerse={onInsertVerse} />}
-        renderScrollComponent={ScrollComponent}
-        contentContainerStyle={styles.listContent}
-      />
+        {isAnnotating ? (
+          <AnnotationToolbar
+            activeColorKey={annotationColorKey}
+            activeTool={annotationTool}
+            canUndo={annotationStrokes.length > 0}
+            onClear={clearStrokes}
+            onDone={() => setIsAnnotating(false)}
+            onSelectColor={setAnnotationColorKey}
+            onSelectTool={setAnnotationTool}
+            onUndo={undoStroke}
+          />
+        ) : null}
+
+        <Divider />
+
+        <Pressable onPress={onInsertVerses} style={({ pressed }) => [styles.insertButton, pressed && styles.pressed]}>
+          <Text style={styles.insertLabel}>Insert verse</Text>
+        </Pressable>
+      </BottomSheetView>
     </BottomSheetModal>
   );
 });
 
 const styles = StyleSheet.create({
+  background: {
+    backgroundColor: palette.background,
+    borderTopColor: palette.borderStrong,
+    borderTopWidth: StyleSheet.hairlineWidth,
+  },
   handle: {
+    backgroundColor: 'rgba(19,19,19,0.3)',
     height: 4,
     width: 36,
-    borderRadius: 100,
+  },
+  container: {
+    flex: 1,
   },
   header: {
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingBottom: 12,
     paddingHorizontal: 20,
-    paddingTop: 4,
-  },
-  headerTitle: {
-    fontFamily: 'RobotoMono_500Medium',
-    fontSize: 14,
-  },
-  headerSubtitle: {
-    fontFamily: 'RobotoMono_400Regular',
-    fontSize: 11,
-    marginTop: 2,
-  },
-  headerActions: { flexDirection: 'row', gap: 4 },
-  headerAction: {
-    alignItems: 'center',
-    borderRadius: 100,
-    height: 44,
-    justifyContent: 'center',
-    width: 44,
-  },
-  searchRow: {
-    alignItems: 'center',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    flexDirection: 'row',
-    gap: 8,
-    paddingHorizontal: 16,
     paddingVertical: 10,
   },
-  searchInput: {
-    flex: 1,
-    fontFamily: 'RobotoMono_400Regular',
+  headerActions: {
+    flexDirection: 'row',
+  },
+  headerTitle: {
+    color: palette.text,
+    fontFamily: 'RobotoMono_500Medium',
     fontSize: 13,
   },
-  listContent: { paddingBottom: 48, paddingHorizontal: 12, paddingTop: 14 },
+  closeButton: {
+    paddingHorizontal: 4,
+    paddingVertical: 4,
+  },
+  closeLabel: {
+    color: palette.textSecondary,
+    fontFamily: 'RobotoMono_500Medium',
+    fontSize: 12,
+  },
+  readerShell: {
+    flex: 1,
+    minHeight: 0,
+    position: 'relative',
+  },
+  listContent: {
+    paddingBottom: 12,
+    paddingHorizontal: 20,
+    paddingTop: 12,
+  },
   verseRow: {
-    alignItems: 'flex-start',
-    flexDirection: 'row',
-    gap: 10,
-    paddingHorizontal: 8,
-    paddingVertical: 8,
+    paddingVertical: 10,
   },
   verseNumber: {
+    color: palette.textMuted,
     fontFamily: 'RobotoMono_400Regular',
     fontSize: 11,
-    marginTop: 3,
-    width: 18,
   },
   verseText: {
-    flex: 1,
+    color: palette.text,
     fontFamily: 'RobotoMono_400Regular',
-    fontSize: 13,
-    lineHeight: 23,
+    fontSize: 14,
+    lineHeight: 25,
   },
   insertButton: {
     alignItems: 'center',
-    alignSelf: 'flex-start',
-    borderWidth: 1,
-    flexDirection: 'row',
-    gap: 5,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
+    paddingVertical: 14,
   },
-  insertButtonText: {
+  insertLabel: {
+    color: palette.text,
     fontFamily: 'RobotoMono_500Medium',
-    fontSize: 11,
+    fontSize: 13,
   },
-  pressed: { opacity: 0.75 },
+  pressed: {
+    opacity: 0.7,
+  },
 });
